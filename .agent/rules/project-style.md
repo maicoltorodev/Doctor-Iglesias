@@ -1,0 +1,5 @@
+---
+trigger: always_on
+---
+
+Este no es un proyecto de web normal; separamos el codigo de desktop de movil y lo conectamos usando middleware para que el dispositivo que entre a la pagina tenga su version optimizada, aparte de eso no manejamos un scroll vertical en escritorio, usamos un scroll horizontal (smoothscroll con lenis) ya que el concepto de este proyecto es tipo galeria, por existe un componente llamado "Obra" que se usa para todas las cards que estan y que se añadan, y aparte de eso manejamos un concepto de nucleo central para el desplazamiento, es decir actualmente son 7 secciones y la pagina se recorre asi;               [NOSOTROS <- GALERIA <- CONTACTO <- INICIO -> SERVICIOS -> RESULTADOS -> TESTIMONIOS], Siempre partiendo desde el centro y las secciones a los lados de forma simetricamente invertida para dar un efecto espejo desde el INICIO, si no entiendes algo o no quedo claro algo por favor preguntar antes de asumir.

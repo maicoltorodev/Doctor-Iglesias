@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@theme {
+    --shadow-premium-levitation:
+        0 25px 50px -12px rgba(0, 0, 0, 0.4),
+        0 0 15px rgba(0, 0, 0, 0.15);
+    --shadow-premium-levitation-hover:
+        0 60px 80px -15px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(0, 0, 0, 0.25);
+
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-serif: var(--font-instrument-serif), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+    --animate-fab-double-pulse: fab-double-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --animate-spin-slow: spin 8s linear infinite;
+    --animate-spin-reverse-slow: spin 12s linear infinite reverse;
+
+    @keyframes fab-double-pulse {
+        0% {
+            transform: scale(1);
+            opacity: 0.5;
+        }
+
+        70% {
+            transform: scale(1.8);
+            opacity: 0;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 0;
+        }
+    }
+}
+
+:root {
+    --background: #ffffff;
+    --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
+}
+
+html,
+body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+    overflow: hidden !important;
+    height: 100% !important;
+    width: 100% !important;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+}
+
+@media (min-width: 1024px) {
+
+    html,
+    body {
+        cursor: none !important;
+    }
+
+    a,
+    button,
+    [role="button"] {
+        cursor: none !important;
+    }
+}
+
+body {
+    overscroll-behavior: none;
+}
+
+*::selection {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+*::-moz-selection {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+@layer utilities {
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .bg-marble-texture {
+        background-color: #f0f0f0;
+        background-image: url('/marmol.webp');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+
+    .clip-triangle-left {
+        clip-path: polygon(0 0, 0% 100%, 100% 100%);
+    }
+
+    .clip-triangle-right {
+        clip-path: polygon(100% 0, 100% 100%, 0% 100%);
+    }
+
+    .marble-architectural-sheen {
+        position: relative;
+    }
+
+    .marble-architectural-sheen::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0.2) 100%);
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    .shadow-architectural-poly {
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    }
+}
