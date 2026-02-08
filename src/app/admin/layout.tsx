@@ -19,6 +19,8 @@ import {
     Sparkles
 } from 'lucide-react';
 import { Toaster } from './components/Toaster';
+import CustomCursor from '@/components/ui/CustomCursor';
+import { useCustomCursor } from '@/hooks/useCustomCursor';
 
 interface SidebarItemProps {
     href: string;
@@ -53,6 +55,7 @@ const SidebarItem = ({ href, icon: Icon, label, isActive }: SidebarItemProps) =>
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const cursorState = useCustomCursor();
 
     const navLinks = [
         { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
@@ -155,6 +158,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 contrast-150 brightness-50"></div>
             </div>
             <div className="fixed inset-0 pointer-events-none z-[-2] bg-gradient-to-tr from-black via-[#050505] to-[#0a0a0b]"></div>
+
+            {/* Custom Cursor */}
+            <CustomCursor cursorState={cursorState} />
         </div>
     );
 }
