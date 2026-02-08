@@ -2,7 +2,6 @@
 
 import React, { use } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { notFound } from 'next/navigation';
 import { SERVICES_LIST } from '@/constants/content';
@@ -10,7 +9,7 @@ import CustomCursor from "@/components/ui/CustomCursor";
 import { useCustomCursor } from "@/hooks/useCustomCursor";
 import FloatingAction from "@/components/ui/FloatingAction";
 import { CtaButton } from '@/components/ui/CtaButton';
-import { ArrowLeft, Plus, Minus, Clock, Activity, Calendar, Sparkles } from 'lucide-react';
+import { Plus, Minus, Clock, Activity, Calendar, Sparkles } from 'lucide-react';
 import { Obra } from '@/components/ui/Obra';
 import { BackLink } from '@/components/ui/BackLink';
 
@@ -30,6 +29,13 @@ export default function ServicePage({ params }: ServicePageProps) {
     if (!service) {
         notFound();
     }
+
+    // Actualizar el título de la pestaña dinámicamente
+    React.useEffect(() => {
+        if (service) {
+            document.title = `${service.label} | Dr. Jorge Iglesias`;
+        }
+    }, [service]);
 
     const imgSrc = service.image || "/imagen-ph-1.webp";
 
@@ -321,8 +327,8 @@ export default function ServicePage({ params }: ServicePageProps) {
                         </div>
                     </div>
                     <div className="mt-20 flex flex-col items-center opacity-10 space-y-2">
-                        <span className="text-[8px] tracking-widest font-bold text-black">DR JORGE IGLESIAS</span>
-                        <span className="text-[8px] tracking-widest font-serif italic font-bold text-black">SERVICIOS DE AUTOR</span>
+                        <span className="text-[8px] tracking-widest font-bold text-black uppercase">DR JORGE IGLESIAS 2026 ®</span>
+                        <span className="text-[8px] tracking-widest font-serif italic font-bold text-black uppercase">TODOS LOS DERECHOS RESERVADOS</span>
                     </div>
                 </footer>
             </div>

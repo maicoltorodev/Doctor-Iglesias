@@ -69,24 +69,28 @@ const ResultsShell: React.FC<ResultsShellProps> = ({ editorial, items }) => {
 
                 {/* PIEZAS DE MÁRMOL ARQUITECTÓNICAS (TRIÁNGULOS) */}
                 <div className="absolute inset-0 z-50 pointer-events-none">
-                    <motion.div
-                        initial={{ x: "-100%", opacity: 0 }}
-                        animate={activeIndex === 5 ? { x: 0, opacity: 1 } : { x: "-100%", opacity: 0 }}
-                        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-                        className="absolute bottom-0 left-0 w-[500px] h-[180px] clip-triangle-left bg-marble-texture filter drop-shadow-[0_-20px_40px_rgba(0,0,0,0.25)] border-t border-r border-white/20"
-                    >
-                        {/* Brillo Especular */}
-                        <div className="absolute top-0 right-0 w-full h-[1px] bg-gradient-to-l from-white/60 to-transparent transform -rotate-[19.8deg] origin-top-right translate-y-[0.5px]"></div>
-                    </motion.div>
-                    <motion.div
-                        initial={{ x: "100%", opacity: 0 }}
-                        animate={activeIndex === 5 ? { x: 0, opacity: 1 } : { x: "100%", opacity: 0 }}
-                        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-                        className="absolute bottom-0 right-0 w-[500px] h-[180px] clip-triangle-right bg-marble-texture filter drop-shadow-[0_-20px_40px_rgba(0,0,0,0.25)] border-t border-l border-white/20"
-                    >
-                        {/* Brillo Especular */}
-                        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/60 to-transparent transform rotate-[19.8deg] origin-top-left translate-y-[0.5px]"></div>
-                    </motion.div>
+                    <div className="absolute bottom-0 left-0 w-[500px] h-[180px] pointer-events-none filter drop-shadow-[0_-20px_40px_rgba(0,0,0,0.25)]">
+                        <motion.div
+                            initial={{ x: "-100%", opacity: 0 }}
+                            animate={activeIndex === 5 ? { x: 0, opacity: 1 } : { x: "-100%", opacity: 0 }}
+                            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+                            className="absolute inset-0 clip-triangle-left bg-marble-texture border-t border-r border-white/20"
+                        >
+                            {/* Brillo Especular */}
+                            <div className="absolute top-0 right-0 w-full h-[1px] bg-gradient-to-l from-white/60 to-transparent transform -rotate-[19.8deg] origin-top-right translate-y-[0.5px]"></div>
+                        </motion.div>
+                    </div>
+                    <div className="absolute bottom-0 right-0 w-[500px] h-[180px] pointer-events-none filter drop-shadow-[0_-20px_40px_rgba(0,0,0,0.25)]">
+                        <motion.div
+                            initial={{ x: "100%", opacity: 0 }}
+                            animate={activeIndex === 5 ? { x: 0, opacity: 1 } : { x: "100%", opacity: 0 }}
+                            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+                            className="absolute inset-0 clip-triangle-right bg-marble-texture border-t border-l border-white/20"
+                        >
+                            {/* Brillo Especular */}
+                            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/60 to-transparent transform rotate-[19.8deg] origin-top-left translate-y-[0.5px]"></div>
+                        </motion.div>
+                    </div>
                 </div>
 
                 <div className="flex-shrink-0 w-[45vw]" aria-hidden="true"></div>
