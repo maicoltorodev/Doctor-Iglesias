@@ -50,11 +50,15 @@ body {
     color: var(--foreground);
     background: var(--background);
     font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Solo aplicar overflow hidden en páginas principales (no admin) */
+body:not(.admin-layout) {
     overflow: hidden !important;
     height: 100% !important;
     width: 100% !important;
-    margin: 0;
-    padding: 0;
     position: fixed;
 }
 

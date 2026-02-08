@@ -57,6 +57,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const cursorState = useCustomCursor();
 
+    // Agregar clase al body para permitir scroll en admin
+    React.useEffect(() => {
+        document.body.classList.add('admin-layout');
+        return () => {
+            document.body.classList.remove('admin-layout');
+        };
+    }, []);
+
     const navLinks = [
         { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
         { href: '/admin/content', icon: FileText, label: 'Contenido Editorial' },
