@@ -54,12 +54,17 @@ body {
     padding: 0;
 }
 
-/* Solo aplicar overflow hidden en páginas principales (no admin) */
-body:not(.admin-layout) {
+/* Overflow hidden solo en HTML para páginas principales */
+html {
     overflow: hidden !important;
     height: 100% !important;
     width: 100% !important;
-    position: fixed;
+}
+
+/* Body puede hacer scroll normalmente */
+body {
+    height: 100%;
+    width: 100%;
 }
 
 @media (min-width: 1024px) {
