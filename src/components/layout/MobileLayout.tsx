@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect, createContext, useContext } from "react";
 import MobileNavbar from "@/components/layout/mobile/Navbar";
+import FloatingAction from "@/components/ui/FloatingAction";
 
 // --- Context Definition ---
 interface MobileScrollContextType {
@@ -66,6 +67,9 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
                 >
                     {children}
                 </div>
+
+                {/* FAB MOVIL */}
+                <FloatingAction className="right-6 bottom-6 scale-90" />
             </div>
         </MobileScrollContext.Provider>
     );
