@@ -65,3 +65,11 @@ export async function getAllContent() {
         FAB_CONTENT: editorial?.fab || { sectionMessages: {} }
     };
 }
+
+/**
+ * Obtiene un servicio específico por su slug
+ */
+export async function getServiceBySlug(slug: string) {
+    const data = await getStaticData();
+    return data.services.find(service => service.slug === slug);
+}
