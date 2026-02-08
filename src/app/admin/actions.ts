@@ -3,7 +3,13 @@
 import { db } from "@/db";
 import { siteContent, services, galleryItems, results, testimonials } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
+
+// Helper function to revalidate all pages
+function revalidateAll() {
+    revalidatePath('/', 'layout');
+    revalidatePath('/mobile', 'page');
+}
 
 // 1. Update site_content (Editorial)
 export async function updateSiteContent(section: string, data: any) {
@@ -12,7 +18,7 @@ export async function updateSiteContent(section: string, data: any) {
             .set({ data, updatedAt: new Date() })
             .where(eq(siteContent.section, section));
 
-        (revalidateTag as any)("content");
+        revalidateAll();
         return { success: true };
     } catch (error) {
         console.error("Error updating site content:", error);
@@ -24,8 +30,7 @@ export async function updateSiteContent(section: string, data: any) {
 export async function createService(data: any) {
     try {
         await db.insert(services).values(data);
-        (revalidateTag as any)("content");
-        (revalidateTag as any)("services");
+        revalidateAll();
         return { success: true };
     } catch (error) {
         console.error("Error creating service:", error);
@@ -39,8 +44,7 @@ export async function updateService(id: number, data: any) {
             .set({ ...data, updatedAt: new Date() })
             .where(eq(services.id, id));
 
-        (revalidateTag as any)("content");
-        (revalidateTag as any)("services");
+        revalidateAll();
         return { success: true };
     } catch (error) {
         console.error("Error updating service:", error);
@@ -51,8 +55,7 @@ export async function updateService(id: number, data: any) {
 export async function deleteService(id: number) {
     try {
         await db.delete(services).where(eq(services.id, id));
-        (revalidateTag as any)("content");
-        (revalidateTag as any)("services");
+        revalidateAll();
         return { success: true };
     } catch (error) {
         console.error("Error deleting service:", error);
@@ -67,8 +70,7 @@ export async function updateGalleryItem(id: number, data: any) {
             .set(data)
             .where(eq(galleryItems.id, id));
 
-        (revalidateTag as any)("content");
-        (revalidateTag as any)("gallery");
+        revalidateAll();
         return { success: true };
     } catch (error) {
         console.error("Error updating gallery item:", error);
@@ -79,8 +81,7 @@ export async function updateGalleryItem(id: number, data: any) {
 export async function deleteGalleryItem(id: number) {
     try {
         await db.delete(galleryItems).where(eq(galleryItems.id, id));
-        (revalidateTag as any)("content");
-        (revalidateTag as any)("gallery");
+        revalidateAll();
         return { success: true };
     } catch (error) {
         console.error("Error deleting gallery item:", error);
@@ -95,8 +96,7 @@ export async function updateResult(id: number, data: any) {
             .set(data)
             .where(eq(results.id, id));
 
-        (revalidateTag as any)("content");
-        (revalidateTag as any)("results");
+        revalidateAll();
         return { success: true };
     } catch (error) {
         console.error("Error updating result:", error);
@@ -107,8 +107,7 @@ export async function updateResult(id: number, data: any) {
 export async function deleteResult(id: number) {
     try {
         await db.delete(results).where(eq(results.id, id));
-        (revalidateTag as any)("content");
-        (revalidateTag as any)("results");
+        revalidateAll();
         return { success: true };
     } catch (error) {
         console.error("Error deleting result:", error);
@@ -123,8 +122,7 @@ export async function updateTestimonial(id: number, data: any) {
             .set(data)
             .where(eq(testimonials.id, id));
 
-        (revalidateTag as any)("content");
-        (revalidateTag as any)("testimonials");
+        revalidateAll();
         return { success: true };
     } catch (error) {
         console.error("Error updating testimonial:", error);
@@ -135,8 +133,7 @@ export async function updateTestimonial(id: number, data: any) {
 export async function deleteTestimonial(id: number) {
     try {
         await db.delete(testimonials).where(eq(testimonials.id, id));
-        (revalidateTag as any)("content");
-        (revalidateTag as any)("testimonials");
+        revalidateAll();
         return { success: true };
     } catch (error) {
         console.error("Error deleting testimonial:", error);
