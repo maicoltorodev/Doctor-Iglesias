@@ -68,10 +68,6 @@ body {
     }
 }
 
-body {
-    overscroll-behavior: none;
-}
-
 *::selection {
     background-color: #000000 !important;
     color: #ffffff !important;

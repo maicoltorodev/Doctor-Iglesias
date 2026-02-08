@@ -1,13 +1,23 @@
 /* Scroll vertical para el panel de administración */
-html,
-body {
-    overflow: visible;
-    height: auto;
-    width: 100%;
-    position: relative;
+
+/* Resetear cualquier restricción de overflow del globals */
+html {
+    overflow: visible !important;
+    height: auto !important;
+    width: 100% !important;
+    position: relative !important;
 }
 
-/* Asegurar que el scroll funcione con la rueda del mouse */
-* {
-    overscroll-behavior: auto;
+body {
+    overflow: visible !important;
+    height: auto !important;
+    width: 100% !important;
+    position: relative !important;
+    overscroll-behavior: auto !important;
+}
+
+/* Asegurar que el contenedor principal del admin pueda hacer scroll */
+main {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
 }
