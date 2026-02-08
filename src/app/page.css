@@ -1,0 +1,21 @@
+/* Scroll horizontal para la página principal de escritorio */
+@media (min-width: 1024px) {
+
+    html,
+    body {
+        overflow: hidden !important;
+        height: 100% !important;
+        width: 100% !important;
+        position: fixed;
+    }
+}
+
+/* En móvil, scroll vertical normal */
+@media (max-width: 1023px) {
+
+    html,
+    body {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}

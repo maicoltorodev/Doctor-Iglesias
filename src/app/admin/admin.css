@@ -1,0 +1,13 @@
+/* Scroll vertical para el panel de administración */
+html,
+body {
+    overflow: visible;
+    height: auto;
+    width: 100%;
+    position: relative;
+}
+
+/* Asegurar que el scroll funcione con la rueda del mouse */
+* {
+    overscroll-behavior: auto;
+}

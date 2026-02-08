@@ -21,6 +21,7 @@ import {
 import { Toaster } from './components/Toaster';
 import CustomCursor from '@/components/ui/CustomCursor';
 import { useCustomCursor } from '@/hooks/useCustomCursor';
+import './admin.css';
 
 interface SidebarItemProps {
     href: string;

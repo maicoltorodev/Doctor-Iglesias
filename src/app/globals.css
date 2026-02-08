@@ -54,19 +54,6 @@ body {
     padding: 0;
 }
 
-/* Overflow hidden solo en HTML para páginas principales */
-html {
-    overflow: hidden !important;
-    height: 100% !important;
-    width: 100% !important;
-}
-
-/* Body puede hacer scroll normalmente */
-body {
-    height: 100%;
-    width: 100%;
-}
-
 @media (min-width: 1024px) {
 
     html,

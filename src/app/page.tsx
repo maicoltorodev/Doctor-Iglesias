@@ -9,6 +9,7 @@ import DesktopGallery from "@/components/sections/desktop/Gallery";
 import DesktopTestimonials from "@/components/sections/desktop/Testimonials";
 
 import { getAllContent } from "@/services/contentService";
+import "./page.css";
 
 // PRODUCCIÓN: Renderizado estático para máximo rendimiento
 // La página se genera una vez y se sirve como HTML pre-renderizado

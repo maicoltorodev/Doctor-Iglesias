@@ -1,0 +1,22 @@
+/* Scroll vertical para páginas de detalle de servicios (solo desktop) */
+@media (min-width: 1024px) {
+
+    html,
+    body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 100%;
+        width: 100%;
+        position: relative;
+    }
+}
+
+/* En móvil, scroll vertical normal */
+@media (max-width: 1023px) {
+
+    html,
+    body {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}

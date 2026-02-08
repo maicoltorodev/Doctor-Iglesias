@@ -3,6 +3,7 @@ import { isMobileDevice } from "@/lib/device";
 import DesktopServiceDetail from '@/components/sections/desktop/ServiceDetail';
 import MobileServiceDetail from '@/components/sections/mobile/ServiceDetail';
 import { getServiceBySlug, getAllContent } from '@/services/contentService';
+import '../service-detail.css';
 
 interface ServicePageProps {
     params: Promise<{
