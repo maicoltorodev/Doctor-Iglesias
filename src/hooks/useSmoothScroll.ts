@@ -1,12 +1,27 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Lenis from 'lenis';
-import { NAV_LINKS } from '@/constants/content';
 
-export const useSmoothScroll = () => {
+interface NavLink {
+    id: string;
+    index: number;
+    label: string;
+    isLogo?: boolean;
+}
+
+export const useSmoothScroll = (navLinks: NavLink[] = []) => {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const lenisRef = useRef<Lenis | null>(null);
-    const [activeIndex, setActiveIndex] = useState(3); // Iniciamos en Hero (Index 3)
+    const [activeIndex, setActiveIndex] = useState(3); // Iniciamos en Hero (Index 3 por defecto)
     const [visibleSections, setVisibleSections] = useState<Record<string, boolean>>({});
+
+    // Generar indexMap dinámicamente desde navLinks
+    const indexMap = useMemo(() => {
+        const map: Record<string, number> = {};
+        navLinks.forEach(link => {
+            map[link.id] = link.index;
+        });
+        return map;
+    }, [navLinks]);
 
     // 1. Intersection Observer para visibilidad
     useEffect(() => {
@@ -61,21 +76,11 @@ export const useSmoothScroll = () => {
             }
         });
 
-        const indexMap: Record<string, number> = {
-            nosotros: 0,
-            galeria: 1,
-            contacto: 2,
-            hero: 3,
-            servicios: 4,
-            resultados: 5,
-            testimonios: 6,
-        };
-
         if (activeId && indexMap[activeId] !== undefined) {
             setActiveIndex(indexMap[activeId]);
             setVisibleSections((prev) => ({ ...prev, [activeId]: true }));
         }
-    }, []);
+    }, [indexMap]);
 
     // 2. Inicialización de Lenis Horizontal (Lujo Absoluto)
     useEffect(() => {
@@ -130,8 +135,7 @@ export const useSmoothScroll = () => {
         const targetElement = document.getElementById(id);
 
         // Buscamos el índice para saber si es lado izquierdo o derecho
-        const sectionLink = NAV_LINKS.find((link: { id: string, index: number }) => link.id === id);
-        const index = sectionLink ? sectionLink.index : 3;
+        const index = indexMap[id] !== undefined ? indexMap[id] : 3;
 
         // Lógica simétrica del Doctor:
         // - Lado Derecho (Servicios, Resultados...): -100 (Margen izquierdo)

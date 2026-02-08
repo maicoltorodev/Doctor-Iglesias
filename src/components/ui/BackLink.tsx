@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ChevronLeft } from 'lucide-react';
+import { COMMON_CONTENT } from '@/constants/content';
 
 interface BackLinkProps {
     href?: string;
@@ -53,7 +54,7 @@ export const BackLink: React.FC<BackLinkProps> = ({
                             transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
                             className="text-[9px] tracking-[0.8em] uppercase font-bold text-black absolute -bottom-6 left-1/2 whitespace-nowrap"
                         >
-                            Regresar
+                            {COMMON_CONTENT.back}
                         </motion.span>
                     </div>
                 </div>

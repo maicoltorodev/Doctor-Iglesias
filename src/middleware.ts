@@ -8,8 +8,30 @@ export function middleware(request: NextRequest) {
     const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     const isMobile = mobileRegex.test(userAgent);
 
+    // Establecer header para componentes que lo necesiten
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set('x-is-mobile', isMobile ? 'true' : 'false');
+
+    const url = request.nextUrl.clone();
+
+    // Lógica de Redirección Estática (Rewrites)
+    // Si es la página de inicio y es móvil, mostramos la versión pre-renderizada móvil
+    if (url.pathname === '/' && isMobile) {
+        url.pathname = '/mobile';
+        return NextResponse.rewrite(url, {
+            request: {
+                headers: requestHeaders,
+            },
+        });
+    }
+
+    // Protección de Admin
+    if (url.pathname.startsWith('/admin') && !url.pathname.startsWith('/admin/login')) {
+        const adminSession = request.cookies.get('admin_session');
+        if (!adminSession) {
+            return NextResponse.redirect(new URL('/admin/login', request.url));
+        }
+    }
 
     return NextResponse.next({
         request: {

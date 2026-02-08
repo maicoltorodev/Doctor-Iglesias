@@ -3,15 +3,15 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { NAV_LINKS } from '@/constants/content';
 import { CtaButton } from '@/components/ui/CtaButton';
 
 interface MobileNavbarProps {
     activeIndex: number;
     scrollToSection: (id: string) => void;
+    navLinks: any[];
 }
 
-const MobileNavbar: React.FC<MobileNavbarProps> = ({ activeIndex, scrollToSection }) => {
+const MobileNavbar: React.FC<MobileNavbarProps> = ({ activeIndex, scrollToSection, navLinks }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleMobileLinkClick = (id: string) => {
@@ -74,7 +74,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ activeIndex, scrollToSectio
                 <div className="absolute inset-0 bg-marble-texture opacity-50"></div>
 
                 <div className="relative z-10 h-full flex flex-col items-center justify-center gap-8">
-                    {NAV_LINKS.filter(link => !link.isLogo).map((link, idx) => (
+                    {navLinks.filter(link => !link.isLogo).map((link, idx) => (
                         <button
                             key={link.id}
                             onClick={() => handleMobileLinkClick(link.id)}

@@ -1,19 +1,24 @@
 import ServicesShell from './Shell';
 import { ServicesEditorialBlock, ServiceCardContent } from './Content';
-import { SERVICES_LIST } from '@/constants/content';
 
-const DesktopServices = () => {
-    const serviceItems = SERVICES_LIST.map((spec) => (
+interface DesktopServicesProps {
+    content: any;
+    items: any[];
+}
+
+const DesktopServices = ({ content, items }: DesktopServicesProps) => {
+    const serviceItems = items.map((spec) => (
         <ServiceCardContent
             key={spec.slug}
             spec={spec}
             imgSrc={spec.image || "/imagen-ph-1.webp"}
+            content={content}
         />
     ));
 
     return (
         <ServicesShell
-            editorial={<ServicesEditorialBlock />}
+            editorial={<ServicesEditorialBlock content={content} />}
             items={serviceItems}
         />
     );

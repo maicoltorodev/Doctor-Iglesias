@@ -28,10 +28,14 @@ export const useDesktopScroll = () => useContext(DesktopScrollContext);
 
 interface DesktopLayoutProps {
     children: React.ReactNode;
+    navLinks: any[];
+    heroContent: any;
+    fabContent: any;
+    contactInfo: any;
 }
 
-const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
-    const { scrollContainerRef, activeIndex, visibleSections, scrollToSection } = useSmoothScroll();
+const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children, navLinks, heroContent, fabContent, contactInfo }) => {
+    const { scrollContainerRef, activeIndex, visibleSections, scrollToSection } = useSmoothScroll(navLinks);
     const { cursorRef, cursorDotRef, isHovering, setIsHovering, isLogoHovered, setIsLogoHovered } = useCustomCursor();
 
     return (
@@ -42,7 +46,13 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
             setIsLogoHovered
         }}>
             <div className="relative h-[100dvh] bg-[#e6e3e8] font-sans overflow-hidden select-none">
-                <DesktopNavbar activeIndex={activeIndex} scrollToSection={scrollToSection} isLogoHovered={isLogoHovered} />
+                <DesktopNavbar
+                    activeIndex={activeIndex}
+                    scrollToSection={scrollToSection}
+                    isLogoHovered={isLogoHovered}
+                    navLinks={navLinks}
+                    heroContent={heroContent}
+                />
 
                 <div
                     ref={scrollContainerRef}
@@ -55,7 +65,10 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
                 <CustomCursor cursorState={{ cursorRef, cursorDotRef, isHovering, setIsHovering, isLogoHovered, setIsLogoHovered }} />
 
                 {/* FAB */}
-                <FloatingAction />
+                <FloatingAction
+                    fabContent={fabContent}
+                    contactInfo={contactInfo}
+                />
             </div>
         </DesktopScrollContext.Provider>
     );

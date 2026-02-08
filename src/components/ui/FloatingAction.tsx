@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CONTACT_INFO, NAV_LINKS } from '@/constants/content';
 import { useFABStore } from '@/hooks/useFABStore';
 import { useDesktopScroll } from '@/components/layout/DesktopLayout';
 import { useMobileScroll } from '@/components/layout/MobileLayout';
@@ -9,9 +8,11 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 
 interface FloatingActionProps {
     className?: string;
+    fabContent: any;
+    contactInfo: any;
 }
 
-const FloatingAction: React.FC<FloatingActionProps> = ({ className = "" }) => {
+const FloatingAction: React.FC<FloatingActionProps> = ({ className = "", fabContent, contactInfo }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [currentMessage, setCurrentMessage] = useState("");
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -50,71 +51,9 @@ const FloatingAction: React.FC<FloatingActionProps> = ({ className = "" }) => {
         activeKeyRef.current = activeKey;
     }, [activeKey]);
 
-    // --- BASE DE DATOS DE MENSAJES (45 TOTAL) ---
-    const sectionMessages: Record<number, string[]> = {
-        0: [ // NOSOTROS
-            "Todos tenemos una historia!",
-            "Ética y excelencia médica",
-            "Más de 10 años cuidando pieles",
-            "Nuestra misión es tu bienestar",
-            "Compromiso con la dermatología"
-        ],
-        1: [ // GALERIA
-            "Explora nuestra clínica",
-            "Tecnología de última generación",
-            "Espacios diseñados para tu confort",
-            "Nuestras instalaciones premium",
-            "Vanguardia en cada rincón"
-        ],
-        2: [ // CONTACTO
-            "¿Agendamos tu valoración?",
-            "Hablemos por WhatsApp hoy",
-            "Estamos listos para atenderte",
-            "Tu cita a un solo click",
-            "Resolvamos tus dudas ahora"
-        ],
-        3: [ // INICIO
-            "¡Llego la hora de agendar!",
-            "Tu piel, es una prioridad absoluta",
-            "Dermatología estética de lujo",
-            "Descubre tu mejor versión",
-            "Cuidado experto y personalizado"
-        ],
-        4: [ // SERVICIOS
-            "Tratamientos faciales avanzados",
-            "Tecnología láser de punta",
-            "Soluciones para cada tipo de piel",
-            "Procedimientos mínimamente invasivos",
-            "Renueva tu piel con nosotros"
-        ],
-        5: [ // RESULTADOS
-            "Casos reales, cambios naturales",
-            "Mira el poder del rejuvenecimiento",
-            "Testimonios visuales de éxito",
-            "Resultados que hablan por sí solos",
-            "Transformaciones que inspiran"
-        ],
-        6: [ // TESTIMONIOS
-            "La confianza de mis pacientes",
-            "Lo que dicen quienes nos visitan",
-            "Experiencias que avalan nuestro trabajo",
-            "Seguridad y satisfacción garantizada",
-            "Historias reales de cuidado facial"
-        ]
-    };
-
-    const generalPhrases = [
-        "¿Te gustaría agendar una cita?",
-        "Tu piel merece atención experta",
-        "Escríbeme para una valoración",
-        "Dermatología de alta gama",
-        "Agenda tu espacio exclusivo",
-        "¿Dudas sobre algún tratamiento?",
-        "Resultados naturales garantizados",
-        "Cuidamos cada detalle de tu piel",
-        "Expertos en rejuvenecimiento",
-        "La salud de tu piel es lo primero"
-    ];
+    // --- BASE DE DATOS DE MENSAJES (ESTADÍSTICAS CENTRALIZADAS) ---
+    const sectionMessages: Record<number, string[]> = fabContent.sectionMessages;
+    const generalPhrases = fabContent.generalPhrases;
 
     // Detect if positioned on left to adjust message side
     const isLeftAligned = className.includes("left-");
@@ -149,7 +88,7 @@ const FloatingAction: React.FC<FloatingActionProps> = ({ className = "" }) => {
         }, 2000);
 
         return () => clearTimeout(welcomeTimer);
-    }, [isMounted, hasInteracted, setHasInteracted]);
+    }, [isMounted, hasInteracted, setHasInteracted, sectionMessages]);
 
     // EFECTO: Ciclo de 20 segundos (Pool de 15 mensajes: 5 sección + 10 generales)
     useEffect(() => {
@@ -170,7 +109,7 @@ const FloatingAction: React.FC<FloatingActionProps> = ({ className = "" }) => {
         }, 20000); // 20 Segundos exactos
 
         return () => clearInterval(interval);
-    }, [isMounted, showMessage]);
+    }, [isMounted, showMessage, sectionMessages, generalPhrases]);
 
     // No mostrar nada hasta que estemos montados para evitar hidratación incorrecta con el localStorage
     if (!isMounted) return null;
@@ -213,7 +152,7 @@ const FloatingAction: React.FC<FloatingActionProps> = ({ className = "" }) => {
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                                 </span>
-                                <span className="whitespace-nowrap">{currentMessage || "Agendar con el Doctor"}</span>
+                                <span className="whitespace-nowrap">{currentMessage || fabContent.defaultMessage}</span>
                             </p>
                             {/* Conector Sutil */}
                             <div className={`absolute top-1/2 -translate-y-1/2 w-4 h-[1px] bg-black/5 ${isLeftAligned ? '-left-2' : '-right-2'}`}></div>
@@ -224,7 +163,7 @@ const FloatingAction: React.FC<FloatingActionProps> = ({ className = "" }) => {
 
             {/* FAB: Botón de Cristal con Flote Orgánico */}
             <motion.a
-                href={CONTACT_INFO.whatsappUrl}
+                href={contactInfo.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 animate={{

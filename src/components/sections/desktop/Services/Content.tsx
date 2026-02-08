@@ -1,35 +1,33 @@
 import React from 'react';
 
 import { EditorialCard } from '@/components/ui/EditorialCard';
-
-export const ServicesEditorialBlock = () => (
-    <EditorialCard
-        subtitle="Medicina & Estética"
-        titleLight="Estética &"
-        titleBold="Cuidado"
-        description="Protocolos diseñados para armonizar y potenciar su belleza natural."
-        footerTag="Estética Avanzada"
-    />
-);
-
 import { Obra } from '@/components/ui/Obra';
 
-// ... ServicesEditorialBlock remains the same ...
+export const ServicesEditorialBlock = ({ content }: { content: any }) => (
+    <EditorialCard
+        subtitle={content.editorial.subtitle}
+        titleLight={content.editorial.titleLight}
+        titleBold={content.editorial.titleBold}
+        description={content.editorial.description}
+        footerTag={content.editorial.footerTag}
+    />
+);
 
 interface ServiceCardContentProps {
     spec: { slug: string; label: string; description: string };
     imgSrc: string;
+    content: any;
 }
 
-export const ServiceCardContent: React.FC<ServiceCardContentProps> = ({ spec, imgSrc }) => (
+export const ServiceCardContent: React.FC<ServiceCardContentProps> = ({ spec, imgSrc, content }) => (
     <Obra
         href={`/servicio/${spec.slug}`}
         src={imgSrc}
         alt={spec.label}
-        category="Servicio Especializado"
+        category={content.cards.category}
         title={spec.label}
-        overlayTitle="Protocolos Médicos"
+        overlayTitle={content.cards.overlayTitle}
         overlayDescription={spec.description}
-        overlayTag="Ver Detalles"
+        overlayTag={content.cards.overlayTag}
     />
 );

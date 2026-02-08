@@ -1,13 +1,17 @@
 import HeroShell from './Shell';
 import { HeroBackground, HeroLogo, HeroText, HeroCTA } from './Content';
 
-const MobileHero = () => {
+interface MobileHeroProps {
+    content: any;
+}
+
+const MobileHero = ({ content }: MobileHeroProps) => {
     return (
         <HeroShell
             background={<HeroBackground />}
             logo={<HeroLogo />}
-            text={<HeroText />}
-            cta={<HeroCTA />}
+            text={<HeroText content={content} />}
+            cta={<HeroCTA content={content} />}
         />
     );
 };

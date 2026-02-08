@@ -16,9 +16,12 @@ export const useMobileScroll = () => useContext(MobileScrollContext);
 // --- Layout Component ---
 interface MobileLayoutProps {
     children: React.ReactNode;
+    navLinks: any[];
+    fabContent: any;
+    contactInfo: any;
 }
 
-const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
+const MobileLayout: React.FC<MobileLayoutProps> = ({ children, navLinks, fabContent, contactInfo }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -58,7 +61,11 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
     return (
         <MobileScrollContext.Provider value={{ activeIndex }}>
             <div className="relative h-[100dvh] bg-[#e6e3e8] overflow-hidden">
-                <MobileNavbar activeIndex={activeIndex} scrollToSection={scrollToSection} />
+                <MobileNavbar
+                    activeIndex={activeIndex}
+                    scrollToSection={scrollToSection}
+                    navLinks={navLinks}
+                />
 
                 <div
                     ref={containerRef}
@@ -69,7 +76,11 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
                 </div>
 
                 {/* FAB MOVIL */}
-                <FloatingAction className="right-6 bottom-6 scale-90" />
+                <FloatingAction
+                    className="right-6 bottom-6 scale-90"
+                    fabContent={fabContent}
+                    contactInfo={contactInfo}
+                />
             </div>
         </MobileScrollContext.Provider>
     );

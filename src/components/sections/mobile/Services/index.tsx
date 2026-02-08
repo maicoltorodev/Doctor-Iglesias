@@ -1,27 +1,24 @@
 import ServicesShell from './Shell';
 import { ServicesEditorial, ServiceCardContent } from './Content';
-import { SERVICES_LIST } from '@/constants/content';
 
-const MobileServices = () => {
-    // Images array logic duplicated from original for consistency
-    const images = [
-        "/imagen-ph-1.webp",
-        "/imagen-ph-2.webp",
-        "/imagen-ph-3.webp",
-        "/imagen-ph-4.webp"
-    ];
+interface MobileServicesProps {
+    content: any;
+    items: any[];
+}
 
-    const serviceItems = SERVICES_LIST.map((spec, i) => (
+const MobileServices = ({ content, items }: MobileServicesProps) => {
+    const serviceItems = items.map((spec) => (
         <ServiceCardContent
             key={spec.slug}
             spec={spec}
-            imgSrc={images[i % 4]}
+            imgSrc={spec.image}
+            category={content.cards.category}
         />
     ));
 
     return (
         <ServicesShell
-            editorial={<ServicesEditorial />}
+            editorial={<ServicesEditorial content={content} />}
             items={serviceItems}
         />
     );

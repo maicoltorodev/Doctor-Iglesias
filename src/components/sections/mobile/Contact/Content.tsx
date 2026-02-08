@@ -1,12 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
 import { EditorialCard } from '@/components/ui/EditorialCard';
-import { CONTACT_INFO } from '@/constants/content';
 
-export const ContactMapFrame = () => (
+export const ContactMapFrame = ({ info }: { info: any }) => (
     <div className="absolute inset-0 bg-gray-200 z-0">
         <iframe
-            src={CONTACT_INFO.mapEmbedUrl}
+            src={info.mapEmbedUrl}
             width="100%"
             height="100%"
             style={{ border: 0 }}
@@ -18,7 +17,7 @@ export const ContactMapFrame = () => (
     </div>
 );
 
-export const ContactClinicImage = () => (
+export const ContactClinicImage = ({ info }: { info: any }) => (
     <>
         <Image
             src="/clinica.webp"
@@ -30,11 +29,11 @@ export const ContactClinicImage = () => (
     </>
 );
 
-export const ContactSocialsGrid = () => {
+export const ContactSocialsGrid = ({ info }: { info: any }) => {
     const socials = [
         {
             name: "Instagram",
-            url: CONTACT_INFO.socials.find(s => s.name === "Instagram")?.url || "#",
+            url: info.socials.find((s: any) => s.name === "Instagram")?.url || "#",
             color: "hover:bg-[#E1306C]",
             textColor: "hover:text-white",
             icon: (
@@ -43,7 +42,7 @@ export const ContactSocialsGrid = () => {
         },
         {
             name: "Facebook",
-            url: CONTACT_INFO.socials.find(s => s.name === "Facebook")?.url || "#",
+            url: info.socials.find((s: any) => s.name === "Facebook")?.url || "#",
             color: "hover:bg-[#1877F2]",
             textColor: "hover:text-white",
             icon: (
@@ -52,7 +51,7 @@ export const ContactSocialsGrid = () => {
         },
         {
             name: "TikTok",
-            url: CONTACT_INFO.socials.find(s => s.name === "TikTok")?.url || "#",
+            url: info.socials.find((s: any) => s.name === "TikTok")?.url || "#",
             color: "hover:bg-black",
             textColor: "hover:text-white",
             icon: (
@@ -61,7 +60,7 @@ export const ContactSocialsGrid = () => {
         },
         {
             name: "WhatsApp",
-            url: CONTACT_INFO.whatsappUrl,
+            url: info.whatsappUrl,
             color: "hover:bg-[#25D366]",
             textColor: "hover:text-white",
             icon: (
@@ -89,14 +88,14 @@ export const ContactSocialsGrid = () => {
     );
 };
 
-export const ContactEditorialContent = () => (
+export const ContactEditorialContent = ({ content }: { content: any }) => (
     <>
         <EditorialCard
-            subtitle="Ubicación & Contacto"
-            titleLight="Contacto"
-            titleBold="& Ubicación"
-            description="Estamos aquí para atenderle y responder todas sus dudas."
-            footerTag="Atención Personalizada"
+            subtitle={content.editorial.subtitle}
+            titleLight={content.editorial.titleLight}
+            titleBold={content.editorial.titleBold}
+            description={content.editorial.description}
+            footerTag={content.editorial.footerTag}
         />
         <div className="flex items-center mt-12 animate-fade-in" style={{ animationDelay: '1s' }}>
             <div className="animate-guide-left transform">

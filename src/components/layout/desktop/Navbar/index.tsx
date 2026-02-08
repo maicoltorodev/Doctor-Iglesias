@@ -3,15 +3,16 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { NAV_LINKS } from '@/constants/content';
 
 interface DesktopNavbarProps {
     activeIndex: number;
     scrollToSection: (id: string) => void;
     isLogoHovered: boolean;
+    navLinks: any[];
+    heroContent: any;
 }
 
-const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSection, isLogoHovered }) => {
+const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSection, isLogoHovered, navLinks, heroContent }) => {
     return (
         <nav
             className={`fixed top-0 left-0 right-0 h-[100px] z-[100] transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isLogoHovered ? '-translate-y-full' : 'translate-y-0'
@@ -35,12 +36,12 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSect
                         transition={{ duration: 1.5, delay: 1 }}
                         className="absolute left-0 top-1/2 -translate-y-1/2 select-none"
                     >
-                        <span className="text-[9px] tracking-[0.5em] uppercase font-bold italic">← Legado</span>
+                        <span className="text-[9px] tracking-[0.5em] uppercase font-bold italic">← {heroContent.sideTexts.left}</span>
                     </motion.div>
 
                     {/* BLOQUE IZQUIERDO */}
                     <div className="flex-1 flex justify-end gap-12 xl:gap-20 pr-16">
-                        {NAV_LINKS.slice(0, 3).map((link) => (
+                        {navLinks.slice(0, 3).map((link) => (
                             <button
                                 key={link.id}
                                 onClick={() => scrollToSection(link.id)}
@@ -63,7 +64,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSect
 
                     {/* LOGO CENTRAL (EJE) */}
                     <div className="flex-shrink-0 px-6">
-                        {NAV_LINKS.filter(l => l.isLogo).map((link) => (
+                        {navLinks.filter(l => l.isLogo).map((link) => (
                             <motion.button
                                 key={link.id}
                                 onClick={() => scrollToSection(link.id)}
@@ -119,7 +120,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSect
 
                     {/* BLOQUE DERECHO */}
                     <div className="flex-1 flex justify-start gap-12 xl:gap-20 pl-16">
-                        {NAV_LINKS.slice(4).map((link) => (
+                        {navLinks.slice(4).map((link) => (
                             <button
                                 key={link.id}
                                 onClick={() => scrollToSection(link.id)}
@@ -146,7 +147,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSect
                         transition={{ duration: 1.5, delay: 1 }}
                         className="absolute right-0 top-1/2 -translate-y-1/2 select-none"
                     >
-                        <span className="text-[9px] tracking-[0.5em] uppercase font-bold italic">Ciencia →</span>
+                        <span className="text-[9px] tracking-[0.5em] uppercase font-bold italic">{heroContent.sideTexts.right} →</span>
                     </motion.div>
 
                 </div>

@@ -3,13 +3,15 @@
 import React, { useState } from 'react';
 import { useDesktopScroll } from '@/components/layout/DesktopLayout';
 import { SectionArrow } from '@/components/ui/SectionArrow';
-import { ContactMapCard, ContactClinicCard, ContactSocialsCard } from './Content';
 
 interface ContactShellProps {
     editorial: React.ReactNode;
+    mapCard: React.ReactNode;
+    clinicCard: React.ReactNode;
+    socialsCard: React.ReactNode;
 }
 
-const ContactShell: React.FC<ContactShellProps> = ({ editorial }) => {
+const ContactShell: React.FC<ContactShellProps> = ({ editorial, mapCard, clinicCard, socialsCard }) => {
     const { activeIndex, visibleSections } = useDesktopScroll();
     const isVisible = visibleSections.contacto;
     const [isHoveringMap, setIsHoveringMap] = useState(false);
@@ -35,7 +37,7 @@ const ContactShell: React.FC<ContactShellProps> = ({ editorial }) => {
                             }}
                         >
                             {/* NOTA: ContactMapCard ya usa <Obra> que impone w-[400px] */}
-                            <ContactMapCard />
+                            {mapCard}
                         </div>
                     </div>
 
@@ -49,7 +51,7 @@ const ContactShell: React.FC<ContactShellProps> = ({ editorial }) => {
                                 transitionDelay: '200ms'
                             }}
                         >
-                            <ContactClinicCard />
+                            {clinicCard}
                         </div>
                     </div>
 
@@ -63,7 +65,7 @@ const ContactShell: React.FC<ContactShellProps> = ({ editorial }) => {
                                 transitionDelay: '300ms'
                             }}
                         >
-                            <ContactSocialsCard />
+                            {socialsCard}
                         </div>
                     </div>
 

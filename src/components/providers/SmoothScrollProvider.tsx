@@ -5,10 +5,13 @@ import Lenis from 'lenis';
 
 export const SmoothScrollProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
+        // Solo inicializamos Lenis en escritorio para no interferir con el scroll nativo de móviles
+        if (window.innerWidth < 1024) return;
+
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo out
-            orientation: 'vertical', // Por defecto vertical para la estructura Next.js
+            orientation: 'vertical',
             gestureOrientation: 'vertical',
             smoothWheel: true,
             wheelMultiplier: 1,

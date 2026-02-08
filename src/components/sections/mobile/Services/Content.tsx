@@ -2,27 +2,27 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const ServicesEditorial = () => (
+export const ServicesEditorial = ({ content }: { content: any }) => (
     <div className="editorial-card transition-all duration-700 ease-in-out">
         <div className="editorial-card-inner">
             <div className="w-auto space-y-12">
                 <div className="space-y-6">
                     <div className="flex items-center space-x-6">
                         <span className="h-[1px] w-12 bg-black/10"></span>
-                        <p className="text-[10px] tracking-[0.6em] uppercase font-bold text-black/30 italic font-serif">Medicina & Estética</p>
+                        <p className="text-[10px] tracking-[0.6em] uppercase font-bold text-black/30 italic font-serif">{content.editorial.subtitle}</p>
                     </div>
                     <h3 className="text-4xl font-extralight tracking-tighter leading-none text-black whitespace-nowrap">
-                        Estética & <br />
-                        <span className="font-serif italic text-black/40 tracking-widest uppercase text-2xl">Cuidado</span>
+                        {content.editorial.titleLight} <br />
+                        <span className="font-serif italic text-black/40 tracking-widest uppercase text-2xl">{content.editorial.titleBold}</span>
                     </h3>
                 </div>
 
                 <div className="space-y-8 max-w-lg">
                     <p className="text-lg font-serif italic text-black/60 leading-tight">
-                        &quot;Protocolos diseñados para armonizar y potenciar su belleza natural.&quot;
+                        &quot;{content.editorial.description}&quot;
                     </p>
                     <div className="flex items-center space-x-6 pt-4">
-                        <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-black/20">Estética Avanzada</p>
+                        <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-black/20">{content.editorial.footerTag}</p>
                     </div>
                 </div>
             </div>
@@ -33,9 +33,10 @@ export const ServicesEditorial = () => (
 interface ServiceCardContentProps {
     spec: { slug: string; label: string };
     imgSrc: string;
+    category?: string;
 }
 
-export const ServiceCardContent: React.FC<ServiceCardContentProps> = ({ spec, imgSrc }) => (
+export const ServiceCardContent: React.FC<ServiceCardContentProps> = ({ spec, imgSrc, category = "Especialidad" }) => (
     <Link
         href={`/servicio/${spec.slug}`}
         className="flex-shrink-0 w-60 group relative block"
@@ -54,7 +55,7 @@ export const ServiceCardContent: React.FC<ServiceCardContentProps> = ({ spec, im
         </div>
 
         <div className="absolute top-[calc(100%+2rem)] left-0 right-0 space-y-3 text-center">
-            <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-black/20">Servicio Especializado</p>
+            <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-black/20">{category}</p>
             <p className="text-lg font-light text-black/80 leading-tight">{spec.label}</p>
         </div>
     </Link>

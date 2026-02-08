@@ -1,20 +1,19 @@
 import ResultsShell from './Shell';
 import { ResultsEditorial, ResultComparisonContent } from './Content';
 
-const MobileResults = () => {
-    const resultsData = [
-        { title: "Antiacné", id: "01", before: "/resultados/resultado-1.png", after: "/resultados/resultado-2.png" },
-        { title: "Perfilamiento", id: "02", before: "/resultados/resultado-1.png", after: "/resultados/resultado-2.png" },
-        { title: "Lipomax", id: "03", before: "/resultados/resultado-1.png", after: "/resultados/resultado-2.png" }
-    ];
+interface MobileResultsProps {
+    content: any;
+    items: any[];
+}
 
-    const resultItems = resultsData.map((item) => (
-        <ResultComparisonContent key={item.id} item={item} />
+const MobileResults = ({ content, items }: MobileResultsProps) => {
+    const resultItems = items.map((item) => (
+        <ResultComparisonContent key={item.id} item={item} content={content} />
     ));
 
     return (
         <ResultsShell
-            editorial={<ResultsEditorial />}
+            editorial={<ResultsEditorial content={content} />}
             items={resultItems}
         />
     );

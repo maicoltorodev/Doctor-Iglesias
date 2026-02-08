@@ -1,52 +1,38 @@
-
 import React from "react";
-import MobileLayout from "@/components/layout/MobileLayout";
 import DesktopLayout from "@/components/layout/DesktopLayout";
-
-// Mobile Sections (Server Components)
-import MobileHero from "@/components/sections/mobile/Hero";
-import MobileAbout from "@/components/sections/mobile/About";
-import MobileServices from "@/components/sections/mobile/Services";
-import MobileResults from "@/components/sections/mobile/Results";
-import MobileContact from "@/components/sections/mobile/Contact";
-
-// Desktop Sections (Server Components)
 import DesktopHero from "@/components/sections/desktop/Hero";
 import DesktopAbout from "@/components/sections/desktop/About";
 import DesktopServices from "@/components/sections/desktop/Services";
 import DesktopResults from "@/components/sections/desktop/Results";
 import DesktopContact from "@/components/sections/desktop/Contact";
-
-import { isMobileDevice } from "@/lib/device";
-
 import DesktopGallery from "@/components/sections/desktop/Gallery";
 import DesktopTestimonials from "@/components/sections/desktop/Testimonials";
 
-// This is a Server Component. It does not need 'use client'.
-export default async function Page() {
-    const isMobile = await isMobileDevice();
+import { getAllContent } from "@/services/contentService";
 
-    if (isMobile) {
-        return (
-            <MobileLayout>
-                <MobileContact />
-                <MobileAbout />
-                <MobileHero />
-                <MobileServices />
-                <MobileResults />
-            </MobileLayout>
-        );
-    }
+// PRODUCCIÓN: Renderizado estático para máximo rendimiento
+// La página se genera una vez y se sirve como HTML pre-renderizado
+// Solo se actualiza cuando el CMS dispara revalidateTag()
+export const dynamic = 'force-static';
+export const revalidate = false;
+
+export default async function DesktopPage() {
+    const content = await getAllContent();
 
     return (
-        <DesktopLayout>
-            <DesktopAbout />
-            <DesktopGallery />
-            <DesktopContact />
-            <DesktopHero />
-            <DesktopServices />
-            <DesktopResults />
-            <DesktopTestimonials />
+        <DesktopLayout
+            navLinks={content.NAV_LINKS}
+            heroContent={content.HERO_CONTENT}
+            fabContent={content.FAB_CONTENT}
+            contactInfo={content.CONTACT_INFO}
+        >
+            <DesktopAbout content={content.ABOUT_CONTENT} />
+            <DesktopGallery content={content.GALLERY_CONTENT} items={content.GALLERY_LIST} />
+            <DesktopContact editorial={content.CONTACT_CONTENT} info={content.CONTACT_INFO} />
+            <DesktopHero content={content.HERO_CONTENT} />
+            <DesktopServices content={content.SERVICES_CONTENT} items={content.SERVICES_LIST} />
+            <DesktopResults content={content.RESULTS_CONTENT} items={content.RESULTS_LIST} />
+            <DesktopTestimonials content={content.TESTIMONIALS_CONTENT} items={content.TESTIMONIALS_LIST} />
         </DesktopLayout>
     );
 }

@@ -1,13 +1,17 @@
 import AboutShell from './Shell';
 import { AboutPhilosophyCard, AboutExperienceCard, AboutDoctorBlock, AboutEditorialBlock } from './Content';
 
-const DesktopAbout = () => {
+interface DesktopAboutProps {
+    content: any;
+}
+
+const DesktopAbout = ({ content }: DesktopAboutProps) => {
     return (
         <AboutShell
-            philosophyCard={<AboutPhilosophyCard />}
-            experienceCard={<AboutExperienceCard />}
-            doctorBlock={<AboutDoctorBlock />}
-            editorialBlock={<AboutEditorialBlock />}
+            philosophyCard={<AboutPhilosophyCard content={content.philosophy} />}
+            experienceCard={<AboutExperienceCard content={content.experience} />}
+            doctorBlock={<AboutDoctorBlock content={content.doctor} />}
+            editorialBlock={<AboutEditorialBlock content={content.editorial} />}
         />
     );
 };
