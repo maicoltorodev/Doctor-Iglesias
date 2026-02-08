@@ -4,11 +4,11 @@ import { EditorialCard } from '@/components/ui/EditorialCard';
 
 export const ResultsEditorial = ({ content }: { content: any }) => (
     <EditorialCard
-        subtitle={content.editorial.subtitle}
-        titleLight={content.editorial.titleLight}
-        titleBold={content.editorial.titleBold}
-        description={content.editorial.description}
-        footerTag={content.editorial.footerTag}
+        subtitle={content?.editorial?.subtitle || "Resultados"}
+        titleLight={content?.editorial?.titleLight || "Nuestros"}
+        titleBold={content?.editorial?.titleBold || "Resultados"}
+        description={content?.editorial?.description || ""}
+        footerTag={content?.editorial?.footerTag || ""}
     />
 );
 

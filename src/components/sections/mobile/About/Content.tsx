@@ -6,11 +6,11 @@ export const AboutScreen1 = ({ content }: { content: any }) => (
     <div className="space-y-6">
         <div className="flex items-center space-x-6">
             <span className="h-[1px] w-12 bg-black/20"></span>
-            <p className="text-[10px] tracking-[0.6em] uppercase font-bold text-black/40 italic font-serif">{content.subtitle}</p>
+            <p className="text-[10px] tracking-[0.6em] uppercase font-bold text-black/40 italic font-serif">{content?.subtitle || "Nosotros"}</p>
         </div>
         <h2 className="text-4xl font-extralight tracking-tighter leading-[0.8] text-black">
-            {content.titleLight} <br />
-            <span className="font-serif italic text-black/40 tracking-widest uppercase text-2xl">& {content.titleBold}</span>
+            {content?.titleLight || "Sobre"} <br />
+            <span className="font-serif italic text-black/40 tracking-widest uppercase text-2xl">& {content?.titleBold || "Nosotros"}</span>
         </h2>
         <div className="space-y-8 max-w-lg mt-8">
             <p className="text-xl font-serif italic text-black/70 leading-[1.1]">

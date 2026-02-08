@@ -9,11 +9,11 @@ export const ServicesEditorial = ({ content }: { content: any }) => (
                 <div className="space-y-6">
                     <div className="flex items-center space-x-6">
                         <span className="h-[1px] w-12 bg-black/10"></span>
-                        <p className="text-[10px] tracking-[0.6em] uppercase font-bold text-black/30 italic font-serif">{content.editorial.subtitle}</p>
+                        <p className="text-[10px] tracking-[0.6em] uppercase font-bold text-black/30 italic font-serif">{content?.editorial?.subtitle || "Servicios"}</p>
                     </div>
                     <h3 className="text-4xl font-extralight tracking-tighter leading-none text-black whitespace-nowrap">
-                        {content.editorial.titleLight} <br />
-                        <span className="font-serif italic text-black/40 tracking-widest uppercase text-2xl">{content.editorial.titleBold}</span>
+                        {content?.editorial?.titleLight || "Nuestros"} <br />
+                        <span className="font-serif italic text-black/40 tracking-widest uppercase text-2xl">{content?.editorial?.titleBold || "Servicios"}</span>
                     </h3>
                 </div>
 

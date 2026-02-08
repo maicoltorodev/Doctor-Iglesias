@@ -91,11 +91,11 @@ export const ContactSocialsGrid = ({ info }: { info: any }) => {
 export const ContactEditorialContent = ({ content }: { content: any }) => (
     <>
         <EditorialCard
-            subtitle={content.editorial.subtitle}
-            titleLight={content.editorial.titleLight}
-            titleBold={content.editorial.titleBold}
-            description={content.editorial.description}
-            footerTag={content.editorial.footerTag}
+            subtitle={content?.editorial?.subtitle || "Contacto"}
+            titleLight={content?.editorial?.titleLight || "Contáctanos"}
+            titleBold={content?.editorial?.titleBold || "Hoy"}
+            description={content?.editorial?.description || ""}
+            footerTag={content?.editorial?.footerTag || ""}
         />
         <div className="flex items-center mt-12 animate-fade-in" style={{ animationDelay: '1s' }}>
             <div className="animate-guide-left transform">
