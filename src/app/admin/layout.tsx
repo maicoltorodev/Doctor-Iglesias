@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
@@ -15,8 +16,7 @@ import {
     LogOut,
     Menu,
     X,
-    ChevronRight,
-    Sparkles
+    ChevronRight
 } from 'lucide-react';
 import { Toaster } from './components/Toaster';
 import CustomCursor from '@/components/ui/CustomCursor';
@@ -75,23 +75,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={`${isSidebarOpen ? 'w-72' : 'w-20'
                     } fixed h-screen bg-marble-texture border-r border-black/20 transition-all duration-500 z-50 flex flex-col shadow-2xl`}
             >
-                {/* Logo & Toggle */}
-                <div className="p-8 flex items-center justify-between">
+                {/* Logo */}
+                <div className="p-8 flex items-center justify-center">
                     {isSidebarOpen ? (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="flex items-center gap-3"
+                            className="flex flex-col items-center gap-3"
                         >
-                            <div className="w-8 h-8 bg-black rounded-xl flex items-center justify-center shadow-lg">
-                                <Sparkles size={18} className="text-white" />
-                            </div>
-                            <span className="font-bold tracking-tighter text-xl">DR. IGLESIAS</span>
+                            <Image
+                                src="/logo.webp"
+                                alt="Dr. Jorge Iglesias"
+                                width={60}
+                                height={60}
+                                className="w-16 h-auto"
+                                priority
+                            />
+                            <span className="text-xl font-bold tracking-[0.3em] text-black">ADMIN</span>
                         </motion.div>
                     ) : (
-                        <div className="w-8 h-8 bg-black rounded-xl flex items-center justify-center mx-auto shadow-lg">
-                            <Sparkles size={18} className="text-white" />
-                        </div>
+                        <Image
+                            src="/logo.webp"
+                            alt="Dr. Jorge Iglesias"
+                            width={40}
+                            height={40}
+                            className="w-10 h-auto"
+                            priority
+                        />
                     )}
                 </div>
 
@@ -109,8 +119,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {/* Bottom Profile/Actions */}
                 <div className="p-6 border-t border-black/20">
                     <button
-                        className="flex items-center gap-4 px-6 py-4 w-full rounded-2xl text-black/50 hover:text-red-600 hover:bg-white/50 transition-all duration-300"
-                        onClick={() => {/* Logout logic */ }}
+                        className="flex items-center gap-4 px-6 py-4 w-full rounded-2xl text-red-600 hover:text-white hover:bg-red-600 transition-all duration-300 font-medium"
+                        onClick={() => {
+                            // Limpiar la sesión
+                            document.cookie = 'admin-session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                            // Redirigir al login
+                            window.location.href = '/admin/login';
+                        }}
                     >
                         <LogOut size={20} />
                         {isSidebarOpen && <span className="text-sm font-medium">Cerrar Sesión</span>}

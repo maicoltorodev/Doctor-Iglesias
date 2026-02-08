@@ -35,8 +35,8 @@ export default function SettingsPage() {
         <div className="space-y-10 pb-20">
             {/* Header */}
             <div className="space-y-3">
-                <h1 className="text-4xl font-light tracking-tight">Configuración</h1>
-                <p className="text-white/40 max-w-2xl leading-relaxed">
+                <h1 className="text-4xl font-light tracking-tight text-black">Configuración</h1>
+                <p className="text-black/50 max-w-2xl leading-relaxed">
                     Gestione la configuración general del sitio web y las opciones del panel de administración.
                 </p>
             </div>
@@ -45,18 +45,18 @@ export default function SettingsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
                 {/* Cache Management */}
-                <div className="bg-white/5 border border-white/5 rounded-[40px] p-10 space-y-6 hover:bg-white/[0.08] transition-all">
+                <div className="admin-card rounded-[40px] p-10 space-y-6 transition-all">
                     <div className="flex items-center gap-4">
-                        <div className="p-4 rounded-2xl bg-blue-500/10 text-blue-400">
+                        <div className="p-4 rounded-2xl bg-blue-500/10 text-blue-600">
                             <Database size={24} />
                         </div>
                         <div>
-                            <h3 className="text-xl font-medium">Gestión de Caché</h3>
-                            <p className="text-sm text-white/40">Control del sistema de caché estático</p>
+                            <h3 className="text-xl font-medium text-black">Gestión de Caché</h3>
+                            <p className="text-sm text-black/50">Control del sistema de caché estático</p>
                         </div>
                     </div>
 
-                    <p className="text-sm text-white/60 leading-relaxed">
+                    <p className="text-sm text-black/60 leading-relaxed">
                         Invalide la caché para forzar la regeneración de las páginas estáticas.
                         Útil después de realizar cambios importantes en el contenido.
                     </p>
@@ -64,7 +64,7 @@ export default function SettingsPage() {
                     <button
                         onClick={handleRevalidateCache}
                         disabled={isRevalidating}
-                        className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-blue-500/20 text-blue-400 rounded-2xl font-medium hover:bg-blue-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-blue-600 text-white rounded-2xl font-medium hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isRevalidating ? (
                             <>
@@ -81,14 +81,14 @@ export default function SettingsPage() {
                 </div>
 
                 {/* Site Information */}
-                <div className="bg-white/5 border border-white/5 rounded-[40px] p-10 space-y-6">
+                <div className="admin-card rounded-[40px] p-10 space-y-6">
                     <div className="flex items-center gap-4">
-                        <div className="p-4 rounded-2xl bg-purple-500/10 text-purple-400">
+                        <div className="p-4 rounded-2xl bg-purple-500/10 text-purple-600">
                             <Globe size={24} />
                         </div>
                         <div>
-                            <h3 className="text-xl font-medium">Información del Sitio</h3>
-                            <p className="text-sm text-white/40">Detalles generales</p>
+                            <h3 className="text-xl font-medium text-black">Información del Sitio</h3>
+                            <p className="text-sm text-black/50">Detalles generales</p>
                         </div>
                     </div>
 
