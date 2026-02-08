@@ -36,17 +36,17 @@ const SidebarItem = ({ href, icon: Icon, label, isActive }: SidebarItemProps) =>
             whileHover={{ x: 5 }}
             whileTap={{ scale: 0.98 }}
             className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 relative group ${isActive
-                ? 'text-black bg-black/5 shadow-lg'
-                : 'text-black/40 hover:text-black/80 hover:bg-black/5'
+                ? 'text-white bg-black shadow-lg'
+                : 'text-black/60 hover:text-black hover:bg-white/40'
                 }`}
         >
             {isActive && (
                 <motion.div
                     layoutId="active-nav"
-                    className="absolute left-0 w-1 h-8 bg-black rounded-r-full"
+                    className="absolute left-0 w-1 h-8 bg-white rounded-r-full"
                 />
             )}
-            <Icon size={20} className={isActive ? 'text-black' : 'group-hover:text-black/80'} />
+            <Icon size={20} className={isActive ? 'text-white' : 'group-hover:text-black/80'} />
             <span className="text-sm font-medium tracking-wide">{label}</span>
             {isActive && <ChevronRight size={14} className="ml-auto opacity-50" />}
         </motion.div>
@@ -73,7 +73,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Sidebar */}
             <aside
                 className={`${isSidebarOpen ? 'w-72' : 'w-20'
-                    } fixed h-screen bg-white border-r border-black/10 transition-all duration-500 z-50 flex flex-col shadow-xl`}
+                    } fixed h-screen bg-marble-texture border-r border-black/20 transition-all duration-500 z-50 flex flex-col shadow-2xl`}
             >
                 {/* Logo & Toggle */}
                 <div className="p-8 flex items-center justify-between">
@@ -83,13 +83,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             animate={{ opacity: 1 }}
                             className="flex items-center gap-3"
                         >
-                            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                            <div className="w-8 h-8 bg-black rounded-xl flex items-center justify-center shadow-lg">
                                 <Sparkles size={18} className="text-white" />
                             </div>
                             <span className="font-bold tracking-tighter text-xl">DR. IGLESIAS</span>
                         </motion.div>
                     ) : (
-                        <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center mx-auto">
+                        <div className="w-8 h-8 bg-black rounded-xl flex items-center justify-center mx-auto shadow-lg">
                             <Sparkles size={18} className="text-white" />
                         </div>
                     )}
@@ -107,9 +107,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </nav>
 
                 {/* Bottom Profile/Actions */}
-                <div className="p-6 border-t border-black/10">
+                <div className="p-6 border-t border-black/20">
                     <button
-                        className="flex items-center gap-4 px-6 py-4 w-full rounded-2xl text-black/40 hover:text-red-600 hover:bg-red-500/10 transition-all duration-300"
+                        className="flex items-center gap-4 px-6 py-4 w-full rounded-2xl text-black/50 hover:text-red-600 hover:bg-white/50 transition-all duration-300"
                         onClick={() => {/* Logout logic */ }}
                     >
                         <LogOut size={20} />
@@ -158,7 +158,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="fixed inset-0 pointer-events-none z-[-1] opacity-[0.15]">
                 <div className="absolute inset-0 bg-[url('/noise.png')] opacity-30 mix-blend-overlay"></div>
             </div>
-            <div className="fixed inset-0 pointer-events-none z-[-2] bg-gradient-to-br from-[#f5f3f7] via-[#f2f0f4] to-[#ebe9ed]"></div>
+            <div className="fixed inset-0 pointer-events-none z-[-2] bg-[#f2f0f4]"></div>
 
             {/* Custom Cursor */}
             <CustomCursor cursorState={cursorState} />
