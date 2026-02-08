@@ -10,11 +10,15 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 
 interface FloatingActionProps {
     className?: string;
-    fabContent: any;
-    contactInfo: any;
+    fabContent?: any;
+    contactInfo?: any;
 }
 
-const FloatingAction: React.FC<FloatingActionProps> = ({ className = "", fabContent, contactInfo }) => {
+const FloatingAction: React.FC<FloatingActionProps> = ({
+    className = "",
+    fabContent = { sectionMessages: {} },
+    contactInfo = {}
+}) => {
     const [showMessage, setShowMessage] = useState(false);
     const [currentMessage, setCurrentMessage] = useState("");
     const audioRef = useRef<HTMLAudioElement | null>(null);
