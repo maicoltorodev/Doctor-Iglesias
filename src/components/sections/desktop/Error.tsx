@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import CustomCursor from "@/components/ui/CustomCursor";
+import CustomCursor from "@/components/ui/desktop/CustomCursor";
 import { useCustomCursor } from "@/hooks/useCustomCursor";
 import { BackLink } from '@/components/ui/BackLink';
 import { ERROR_PAGES_CONTENT } from '@/constants/content';

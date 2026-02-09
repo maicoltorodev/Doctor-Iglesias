@@ -1,6 +1,6 @@
 "use client";
 
-import CustomCursor from "@/components/ui/CustomCursor";
+import CustomCursor from "@/components/ui/desktop/CustomCursor";
 import { useCustomCursor } from "@/hooks/useCustomCursor";
 import { BackLink } from '@/components/ui/BackLink';
 import { motion } from 'framer-motion';
