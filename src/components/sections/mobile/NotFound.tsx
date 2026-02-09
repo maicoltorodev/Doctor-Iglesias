@@ -3,7 +3,7 @@
 import { BackLink } from '@/components/ui/BackLink';
 import { motion } from 'framer-motion';
 import { ERROR_PAGES_CONTENT } from '@/constants/content';
-import FloatingAction from "@/components/ui/FloatingAction";
+import MobileFloatingAction from "@/components/ui/FloatingAction/Mobile";
 
 export default function MobileNotFound() {
     const { notFound: content } = ERROR_PAGES_CONTENT;
@@ -65,7 +65,7 @@ export default function MobileNotFound() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/[0.02] to-transparent"></div>
             </div>
 
-            <FloatingAction className="right-6 bottom-6 scale-90" />
+            <MobileFloatingAction className="right-6 bottom-6 scale-90" />
         </main>
     );
 }

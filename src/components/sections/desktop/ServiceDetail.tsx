@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { SERVICE_DETAIL_CONTENT, COMMON_CONTENT } from '@/constants/content';
 import { ServiceCursor } from "@/components/ui/ServiceCursor";
-import FloatingAction from "@/components/ui/FloatingAction";
+import DesktopFloatingAction from "@/components/ui/FloatingAction/Desktop";
 import { CtaButton } from '@/components/ui/CtaButton';
 import { Clock, Activity, Calendar, Sparkles } from 'lucide-react';
 import { Obra } from '@/components/ui/desktop/Obra';
@@ -223,7 +223,7 @@ export default function DesktopServiceDetail({ service, fabContent, contactInfo 
             <ServiceCursor />
 
             {/* FAB (Client component) */}
-            <FloatingAction
+            <DesktopFloatingAction
                 className="left-10"
                 fabContent={fabContent}
                 contactInfo={contactInfo}

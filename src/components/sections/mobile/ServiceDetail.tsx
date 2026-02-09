@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { SERVICE_DETAIL_CONTENT, COMMON_CONTENT } from '@/constants/content';
-import FloatingAction from "@/components/ui/FloatingAction";
+import MobileFloatingAction from "@/components/ui/FloatingAction/Mobile";
 import { CtaButton } from '@/components/ui/CtaButton';
 import { Clock, Activity, Calendar, Sparkles } from 'lucide-react';
 import { MobileServiceHeader } from '@/components/layout/mobile/ServiceHeader';
@@ -146,7 +146,7 @@ export default function MobileServiceDetail({ service, fabContent, contactInfo }
             </div>
 
             {/* Client Components that remain at the bottom/top of the tree */}
-            <FloatingAction
+            <MobileFloatingAction
                 className="right-6 bottom-6 scale-90"
                 fabContent={fabContent}
                 contactInfo={contactInfo}
