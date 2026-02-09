@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BackLink } from '@/components/ui/BackLink';
 import { ERROR_PAGES_CONTENT } from '@/constants/content';
-import FloatingAction from "@/components/ui/FloatingAction";
+import MobileFloatingAction from "@/components/ui/FloatingAction/Mobile";
 
 interface ErrorProps {
     error: Error & { digest?: string };
@@ -83,7 +83,7 @@ export default function MobileError({ error, reset }: ErrorProps) {
                 </motion.div>
             </div>
 
-            <FloatingAction className="right-6 bottom-6 scale-90" />
+            <MobileFloatingAction className="right-6 bottom-6 scale-90" />
         </main>
     );
 }
