@@ -47,20 +47,28 @@ export async function getAllContent() {
     const data = await getStaticData();
     const { editorial, services, gallery, results, testimonials } = data;
 
+    // Helper para obtener contenido con múltiples llaves posibles (Normalización)
+    const getSect = (keys: string[]) => {
+        for (const key of keys) {
+            if (editorial?.[key]) return editorial[key];
+        }
+        return {};
+    };
+
     return {
         NAV_LINKS: editorial?.nav_links || [],
         CONTACT_INFO: editorial?.contact_info || {},
         COMMON_CONTENT: editorial?.common_content || {},
-        HERO_CONTENT: editorial?.hero || {},
-        ABOUT_CONTENT: editorial?.about || {},
-        GALLERY_CONTENT: editorial?.gallery_editorial || {},
+        HERO_CONTENT: getSect(['hero', 'hero_content']),
+        ABOUT_CONTENT: getSect(['about', 'nosotros', 'about_content']),
+        GALLERY_CONTENT: getSect(['gallery_editorial', 'galeria', 'gallery']),
         GALLERY_LIST: gallery || [],
-        SERVICES_CONTENT: editorial?.services_editorial || {},
-        CONTACT_CONTENT: editorial?.contact_editorial || {},
+        SERVICES_CONTENT: getSect(['services_editorial', 'servicios', 'services']),
+        CONTACT_CONTENT: getSect(['contact_editorial', 'contacto', 'contact']),
         SERVICES_LIST: services || [],
-        RESULTS_CONTENT: editorial?.results_editorial || {},
+        RESULTS_CONTENT: getSect(['results_editorial', 'resultados', 'results']),
         RESULTS_LIST: results || [],
-        TESTIMONIALS_CONTENT: editorial?.testimonials_editorial || {},
+        TESTIMONIALS_CONTENT: getSect(['testimonials_editorial', 'testimonios', 'testimonials']),
         TESTIMONIALS_LIST: testimonials || [],
         FAB_CONTENT: editorial?.fab || { sectionMessages: {} }
     };

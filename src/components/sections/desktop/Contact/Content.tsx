@@ -111,12 +111,15 @@ export const ContactSocialsCard = ({ editorial, info }: { editorial: any; info: 
     );
 };
 
-export const ContactEditorialBlock = ({ content }: { content: any }) => (
-    <EditorialCard
-        subtitle={content?.subtitle}
-        titleLight={content?.titleLight}
-        titleBold={content?.titleBold}
-        description={content?.description}
-        footerTag={content?.footerTag}
-    />
-);
+export const ContactEditorialBlock = ({ content }: { content: any }) => {
+    const data = content?.editorial || content || {};
+    return (
+        <EditorialCard
+            subtitle={data.subtitle}
+            titleLight={data.titleLight}
+            titleBold={data.titleBold}
+            description={data.description}
+            footerTag={data.footerTag}
+        />
+    );
+};

@@ -1,30 +1,10 @@
-"use client";
-
-import React, { createContext, useContext } from "react";
+import React from "react";
 import DesktopNavbar from "@/components/layout/desktop/Navbar";
 import CustomCursor from "@/components/ui/CustomCursor";
 import FloatingAction from "@/components/ui/FloatingAction";
 import { useCustomCursor } from "@/hooks/useCustomCursor";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
-
-// --- Context Definition ---
-// We can expose values from useSmoothScroll/useCustomCursor via Context
-// so that Shell components can consume them.
-interface DesktopScrollContextType {
-    activeIndex: number;
-    visibleSections: Record<string, boolean>;
-    isLogoHovered: boolean;
-    setIsLogoHovered: (v: boolean) => void;
-}
-
-const DesktopScrollContext = createContext<DesktopScrollContextType>({
-    activeIndex: 0,
-    visibleSections: {},
-    isLogoHovered: false,
-    setIsLogoHovered: () => { }
-});
-
-export const useDesktopScroll = () => useContext(DesktopScrollContext);
+import { DesktopScrollProvider, useDesktopScroll } from "@/components/providers/DesktopScrollProvider";
 
 interface DesktopLayoutProps {
     children: React.ReactNode;
@@ -34,44 +14,53 @@ interface DesktopLayoutProps {
     contactInfo: any;
 }
 
-const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children, navLinks, heroContent, fabContent, contactInfo }) => {
-    const { scrollContainerRef, activeIndex, visibleSections, scrollToSection } = useSmoothScroll(navLinks);
-    const { cursorRef, cursorDotRef, isHovering, setIsHovering, isLogoHovered, setIsLogoHovered } = useCustomCursor();
+const LayoutContent: React.FC<Omit<DesktopLayoutProps, 'navLinks'>> = ({
+    children,
+    heroContent,
+    fabContent,
+    contactInfo
+}) => {
+    const { activeIndex, isLogoHovered, setIsLogoHovered, navLinks, scrollContainerRef } = useDesktopScroll();
+    const { scrollToSection } = useSmoothScroll();
+    const { cursorRef, cursorDotRef, isHovering, setIsHovering } = useCustomCursor();
 
     return (
-        <DesktopScrollContext.Provider value={{
-            activeIndex,
-            visibleSections,
-            isLogoHovered,
-            setIsLogoHovered
-        }}>
-            <div className="relative h-[100dvh] bg-[#e6e3e8] font-sans overflow-hidden select-none">
-                <DesktopNavbar
-                    activeIndex={activeIndex}
-                    scrollToSection={scrollToSection}
-                    isLogoHovered={isLogoHovered}
-                    navLinks={navLinks}
-                    heroContent={heroContent}
-                />
+        <div className="relative h-[100dvh] bg-[#e6e3e8] font-sans overflow-hidden select-none">
+            <DesktopNavbar
+                activeIndex={activeIndex}
+                scrollToSection={scrollToSection}
+                isLogoHovered={isLogoHovered}
+                navLinks={navLinks}
+                heroContent={heroContent}
+            />
 
-                <div
-                    ref={scrollContainerRef}
-                    className="relative z-20 h-full flex overflow-hidden box-border overscroll-none scrollbar-hide"
-                >
-                    {children}
-                </div>
-
-                {/* ELEMENTOS FLOTANTES UI */}
-                <CustomCursor cursorState={{ cursorRef, cursorDotRef, isHovering, setIsHovering, isLogoHovered, setIsLogoHovered }} />
-
-                {/* FAB */}
-                <FloatingAction
-                    fabContent={fabContent}
-                    contactInfo={contactInfo}
-                />
+            <div
+                ref={scrollContainerRef}
+                className="relative z-20 h-full flex overflow-hidden box-border overscroll-none scrollbar-hide"
+            >
+                {children}
             </div>
-        </DesktopScrollContext.Provider>
+
+            {/* ELEMENTOS FLOTANTES UI */}
+            <CustomCursor cursorState={{ cursorRef, cursorDotRef, isHovering, setIsHovering, isLogoHovered, setIsLogoHovered }} />
+
+            {/* FAB */}
+            <FloatingAction
+                fabContent={fabContent}
+                contactInfo={contactInfo}
+            />
+        </div>
+    );
+};
+
+const DesktopLayout: React.FC<DesktopLayoutProps> = (props) => {
+    return (
+        <DesktopScrollProvider navLinks={props.navLinks}>
+            <LayoutContent {...props} />
+        </DesktopScrollProvider>
     );
 };
 
 export default DesktopLayout;
+export { useDesktopScroll };
+

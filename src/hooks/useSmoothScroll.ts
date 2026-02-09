@@ -1,20 +1,19 @@
-import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useEffect, useRef, useCallback, useMemo } from "react";
 import Lenis from 'lenis';
+import { useDesktopScroll } from "@/components/providers/DesktopScrollProvider";
 
-interface NavLink {
-    id: string;
-    index: number;
-    label: string;
-    isLogo?: boolean;
-}
+export const useSmoothScroll = () => {
+    const {
+        navLinks,
+        scrollContainerRef,
+        setActiveIndex,
+        setVisibleSections,
+        activeIndex
+    } = useDesktopScroll();
 
-export const useSmoothScroll = (navLinks: NavLink[] = []) => {
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
     const lenisRef = useRef<Lenis | null>(null);
-    const [activeIndex, setActiveIndex] = useState(3); // Iniciamos en Hero (Index 3 por defecto)
-    const [visibleSections, setVisibleSections] = useState<Record<string, boolean>>({});
 
-    // Generar indexMap dinámicamente desde navLinks
+    // 1. Mapa de índices para búsqueda rápida
     const indexMap = useMemo(() => {
         const map: Record<string, number> = {};
         navLinks.forEach(link => {
@@ -23,37 +22,14 @@ export const useSmoothScroll = (navLinks: NavLink[] = []) => {
         return map;
     }, [navLinks]);
 
-    // 1. Intersection Observer para visibilidad
-    useEffect(() => {
-        const container = scrollContainerRef.current;
-        if (!container) return;
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting && entry.intersectionRatio > 0.05) {
-                        const id = entry.target.id;
-                        setVisibleSections((prev) => ({ ...prev, [id]: true }));
-                    }
-                });
-            },
-            {
-                threshold: 0.01,
-                root: container // IMPORTANTE: El root debe ser el contenedor de scroll horizontal
-            }
-        );
-
-        const sections = container.querySelectorAll("section[id]");
-        sections.forEach((section) => observer.observe(section));
-
-        return () => sections.forEach((section) => observer.unobserve(section));
-    }, []);
-
-    // Cache de posiciones de secciones para evitar lecturas constantes del DOM
+    // 2. Cache de posiciones (Root Cause Fix: Usamos cálculos reales en lugar de Observer)
     const sectionPositions = useRef<{ id: string, start: number, end: number }[]>([]);
 
     const updateSectionCache = useCallback(() => {
-        const sections = document.querySelectorAll("section[id]");
+        const container = scrollContainerRef.current;
+        if (!container) return;
+
+        const sections = container.querySelectorAll("section[id]");
         sectionPositions.current = Array.from(sections).map((section) => {
             const s = section as HTMLElement;
             return {
@@ -62,38 +38,57 @@ export const useSmoothScroll = (navLinks: NavLink[] = []) => {
                 end: s.offsetLeft + s.offsetWidth
             };
         });
-    }, []);
+    }, [scrollContainerRef]);
 
-    const updateActiveIndexLocal = useCallback((currentScroll: number) => {
-        const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1920;
+    // 3. Lógica de visibilidad manual (MUCHO más robusta para horizontal)
+    const updateVisibility = useCallback((currentScroll: number) => {
+        const viewportWidth = window.innerWidth;
+        const buffer = viewportWidth * 0.5; // Margen de carga anticipada
+
         let maxVisibleWidth = 0;
         let activeId = "";
+        const newVisible: Record<string, boolean> = {};
 
         sectionPositions.current.forEach((pos) => {
-            const visibleWidth = Math.max(
+            // Un componente es visible si está dentro del viewport + buffer de precarga
+            const isVisible = (
+                pos.start < currentScroll + viewportWidth + buffer &&
+                pos.end > currentScroll - buffer
+            );
+
+            if (isVisible) {
+                newVisible[pos.id] = true;
+            }
+
+            // Calcular cuál es la sección predominante (Active Index)
+            const overlap = Math.max(
                 0,
                 Math.min(pos.end, currentScroll + viewportWidth) -
                 Math.max(pos.start, currentScroll)
             );
 
-            if (visibleWidth > maxVisibleWidth) {
-                maxVisibleWidth = visibleWidth;
+            if (overlap > maxVisibleWidth) {
+                maxVisibleWidth = overlap;
                 activeId = pos.id;
             }
         });
 
+        // Actualizamos estados solo si cambiaron para evitar re-renders masivos
+        setVisibleSections(prev => {
+            const hasChanged = Object.keys(newVisible).some(key => !prev[key]);
+            return hasChanged ? { ...prev, ...newVisible } : prev;
+        });
+
         if (activeId && indexMap[activeId] !== undefined) {
             setActiveIndex(indexMap[activeId]);
-            setVisibleSections((prev) => ({ ...prev, [activeId]: true }));
         }
-    }, [indexMap]);
+    }, [indexMap, setActiveIndex, setVisibleSections]);
 
-    // 2. Inicialización de Lenis Horizontal (Lujo Absoluto)
+    // 4. Inicialización de Motor Lenis
     useEffect(() => {
         const container = scrollContainerRef.current;
         if (!container) return;
 
-        // Inicializar caché
         updateSectionCache();
         window.addEventListener('resize', updateSectionCache);
 
@@ -110,68 +105,51 @@ export const useSmoothScroll = (navLinks: NavLink[] = []) => {
 
         lenisRef.current = lenis;
 
-        // Escuchar scroll para actualizar índice (Mucho más eficiente que RAF constante)
         lenis.on('scroll', (e: { scroll: number }) => {
-            updateActiveIndexLocal(e.scroll);
+            updateVisibility(e.scroll);
         });
 
         function raf(time: number) {
             lenis.raf(time);
             requestAnimationFrame(raf);
         }
-
         requestAnimationFrame(raf);
 
-        // Posicionamiento Inicial en Hero
+        // Scroll inicial al Hero
         setTimeout(() => {
             const hero = document.getElementById('hero');
             if (hero) {
                 lenis.scrollTo(hero, { immediate: true });
-                updateActiveIndexLocal(hero.offsetLeft);
+                updateVisibility(hero.offsetLeft);
             }
-        }, 100);
+        }, 150);
 
         return () => {
             lenis.destroy();
             window.removeEventListener('resize', updateSectionCache);
         };
-    }, [updateActiveIndexLocal, updateSectionCache]);
+    }, [updateSectionCache, updateVisibility, scrollContainerRef]);
 
     const scrollToSection = (id: string) => {
         const targetElement = document.getElementById(id);
+        const index = indexMap[id] ?? 3;
 
-        // Buscamos el índice para saber si es lado izquierdo o derecho
-        const index = indexMap[id] !== undefined ? indexMap[id] : 3;
-
-        // Lógica simétrica del Doctor:
-        // - Lado Derecho (Servicios, Resultados...): -100 (Margen izquierdo)
-        // - Lado Izquierdo (Nosotros, Galería...): 100 (Margen opuesto)
-        // - Centro (Hero): 0
         let offset = 0;
         if (targetElement) {
-            if (index > 3) {
-                // Lado Derecho: Alinear con 500px de margen izquierdo
-                offset = -500;
-            } else if (index < 3) {
-                // Lado Izquierdo: Alinear con 500px de margen derecho
-                // Offset = AnchoElemento - AnchoPantalla + Margen(500)
+            if (index > 3) offset = -500; // Lado derecho
+            else if (index < 3) {
                 offset = (targetElement as HTMLElement).offsetWidth - window.innerWidth + 500;
             }
         }
 
         if (targetElement && lenisRef.current) {
             lenisRef.current.scrollTo(targetElement, {
-                offset: offset,
+                offset,
                 duration: 2,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
             });
         }
     };
 
-    return {
-        scrollContainerRef,
-        activeIndex,
-        visibleSections,
-        scrollToSection,
-    };
+    return { scrollToSection };
 };
