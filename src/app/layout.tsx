@@ -98,7 +98,7 @@ export default function RootLayout({
               zIndex: 20,
               width: '120px',
               height: '120px',
-              animation: 'fadeIn 1s ease-out'
+              animation: 'fadeIn 0.6s ease-out'
             }}>
               <img
                 src="/logo.webp"
@@ -112,25 +112,49 @@ export default function RootLayout({
               />
             </div>
 
-            {/* Animated Ring */}
-            <div style={{
-              position: 'absolute',
-              width: '200px',
-              height: '200px',
-              border: '1px solid rgba(0,0,0,0.1)',
-              borderRadius: '50%',
-              animation: 'spin 3s linear infinite'
-            }}></div>
+            {/* Anillo Exterior con gap */}
+            <svg
+              style={{
+                position: 'absolute',
+                width: '200px',
+                height: '200px',
+                animation: 'spin 3s linear infinite'
+              }}
+              viewBox="0 0 100 100"
+            >
+              <circle
+                cx="50"
+                cy="50"
+                r="48"
+                fill="none"
+                stroke="rgba(0,0,0,0.15)"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeDasharray="280, 22"
+              />
+            </svg>
 
-            {/* Pulsing Ring */}
-            <div style={{
-              position: 'absolute',
-              width: '160px',
-              height: '160px',
-              border: '1px solid rgba(0,0,0,0.05)',
-              borderRadius: '50%',
-              animation: 'pulse 2s ease-in-out infinite'
-            }}></div>
+            {/* Anillo Interior con gap (rotación inversa) */}
+            <svg
+              style={{
+                position: 'absolute',
+                width: '150px',
+                height: '150px',
+                animation: 'spinReverse 4s linear infinite'
+              }}
+              viewBox="0 0 100 100"
+            >
+              <circle
+                cx="50"
+                cy="50"
+                r="48"
+                fill="none"
+                stroke="rgba(0,0,0,0.2)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeDasharray="260, 42"
+              />
+            </svg>
           </div>
 
           {/* Inline CSS for animations */}
@@ -140,12 +164,12 @@ export default function RootLayout({
               from { transform: rotate(0deg); }
               to { transform: rotate(360deg); }
             }
-            @keyframes pulse {
-              0%, 100% { transform: scale(1); opacity: 0.1; }
-              50% { transform: scale(1.05); opacity: 0.2; }
+            @keyframes spinReverse {
+              from { transform: rotate(360deg); }
+              to { transform: rotate(0deg); }
             }
             @keyframes fadeIn {
-              from { opacity: 0; transform: scale(0.9); }
+              from { opacity: 0; transform: scale(0.95); }
               to { opacity: 1; transform: scale(1); }
             }
             
