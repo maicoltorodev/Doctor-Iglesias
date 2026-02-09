@@ -31,7 +31,9 @@ const FloatingAction: React.FC<FloatingActionProps> = ({
     const mobileContext = useMobileScroll();
 
     // Si isMobile es true, usamos mobileContext. Si es false (Desktop), desktopContext.
-    const activeIndex = isMobile ? mobileContext.activeIndex : desktopContext.activeIndex;
+    const activeIndex = isMobile
+        ? (mobileContext?.activeIndex ?? 0)
+        : (desktopContext?.activeIndex ?? 3);
 
     // Normalizar el índice según la versión (Móvil tiene orden diferente en el DOM)
     const getSectionKey = (idx: number) => {

@@ -38,7 +38,5 @@ export const DesktopScrollProvider = ({ children, navLinks }: { children: React.
 };
 
 export const useDesktopScroll = () => {
-    const context = useContext(DesktopScrollContext);
-    if (!context) throw new Error("useDesktopScroll must be used within a DesktopScrollProvider");
-    return context;
+    return useContext(DesktopScrollContext);
 };

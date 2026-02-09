@@ -18,7 +18,10 @@ export const EntranceReveal = ({
     className = "",
     direction = 'up'
 }: EntranceRevealProps) => {
-    const { visibleSections, activeIndex, navLinks } = useDesktopScroll();
+    const context = useDesktopScroll();
+    const visibleSections = context?.visibleSections ?? {};
+    const activeIndex = context?.activeIndex ?? 0;
+    const navLinks = context?.navLinks ?? [];
 
     // Seguridad: Si la sección es la activa según el índice, o si el observer la marcó, es visible.
     const sectionIndex = navLinks.find(l => l.id === sectionId)?.index;

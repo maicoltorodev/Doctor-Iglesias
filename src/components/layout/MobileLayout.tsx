@@ -11,7 +11,9 @@ interface MobileScrollContextType {
 
 const MobileScrollContext = createContext<MobileScrollContextType>({ activeIndex: 0 });
 
-export const useMobileScroll = () => useContext(MobileScrollContext);
+export const useMobileScroll = () => {
+    return useContext(MobileScrollContext);
+};
 
 // --- Layout Component ---
 interface MobileLayoutProps {
