@@ -122,6 +122,17 @@ export const useSwipeGestures = (
     }, debounceMs);
   }, [onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown, threshold, debounceMs]);
 
+  const handleTouchStartRef = useRef(handleTouchStart);
+  const handleTouchMoveRef = useRef(handleTouchMove);
+  const handleTouchEndRef = useRef(handleTouchEnd);
+
+  // Actualizar refs cuando las funciones cambian
+  useEffect(() => {
+    handleTouchStartRef.current = handleTouchStart;
+    handleTouchMoveRef.current = handleTouchMove;
+    handleTouchEndRef.current = handleTouchEnd;
+  }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
+
   useEffect(() => {
     const element = elementRef.current;
     if (!element) return;
@@ -132,14 +143,15 @@ export const useSwipeGestures = (
     element.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
-      element.removeEventListener('touchstart', handleTouchStart);
-      element.removeEventListener('touchmove', handleTouchMove);
-      element.removeEventListener('touchend', handleTouchEnd);
+      // Usar refs para eliminar exactamente los mismos listeners que se agregaron
+      element.removeEventListener('touchstart', handleTouchStartRef.current);
+      element.removeEventListener('touchmove', handleTouchMoveRef.current);
+      element.removeEventListener('touchend', handleTouchEndRef.current);
       
       // Limpiar debounce al desmontar
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
     };
-  }, [elementRef, handleTouchStart, handleTouchMove, handleTouchEnd, preventScroll]);
+  }, [elementRef, preventScroll]);
 };
