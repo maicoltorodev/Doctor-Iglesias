@@ -8,32 +8,51 @@ import { revalidateTag, revalidatePath } from "next/cache";
 // Helper function to revalidate all cache tags
 // Estos tags deben coincidir EXACTAMENTE con los tags en contentService.ts
 function revalidateAll() {
+    console.log('🔄 [CACHE] Starting full cache invalidation...');
+
     // Invalidar todos los tags del cache
     // En Next.js 16, revalidateTag requiere un segundo parámetro
     // Usamos 'max' para stale-while-revalidate (sirve contenido stale mientras recarga en background)
     const tags = ['content', 'services', 'gallery', 'results', 'testimonials'];
+
     tags.forEach(tag => {
-        revalidateTag(tag, 'max');
+        try {
+            revalidateTag(tag, 'max');
+            console.log(`  ✓ Tag invalidated: ${tag}`);
+        } catch (error) {
+            console.error(`  ✗ Failed to invalidate tag ${tag}:`, error);
+        }
     });
 
     // También revalidar las rutas para asegurar que Next.js recargue todo
-    revalidatePath('/', 'layout');
+    try {
+        revalidatePath('/', 'layout');
+        console.log(`  ✓ Path invalidated: / (layout)`);
+    } catch (error) {
+        console.error(`  ✗ Failed to invalidate path:`, error);
+    }
 
-    console.log('✅ Cache invalidated: All tags revalidated with profile "max"');
+    console.log('✅ [CACHE] Full cache invalidation completed!');
 }
 
 // 1. Update site_content (Editorial)
 export async function updateSiteContent(section: string, data: any) {
+    console.log(`🔄 [ACTIONS] Starting update for section: ${section}`);
+
     try {
         await db.update(siteContent)
             .set({ data, updatedAt: new Date() })
             .where(eq(siteContent.section, section));
 
+        console.log(`✅ [ACTIONS] Database updated successfully for: ${section}`);
+        console.log(`🔄 [ACTIONS] Now invalidating cache...`);
+
         revalidateAll();
-        console.log(`✅ Updated section: ${section}`);
+
+        console.log(`✅ [ACTIONS] Complete! Section ${section} updated and cache invalidated`);
         return { success: true };
     } catch (error) {
-        console.error("Error updating site content:", error);
+        console.error(`❌ [ACTIONS] Error updating site content for ${section}:`, error);
         return { success: false, error: "Failed to update content" };
     }
 }
