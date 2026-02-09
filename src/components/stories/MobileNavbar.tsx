@@ -32,12 +32,11 @@ export const MobileNavbar: React.FC<MobileNavbarProps> = ({
     >
       <div className="flex items-center justify-between px-4 py-3">
         
-        {/* LOGO IZQUIERDA - Autoridad médica */}
+        {/* LOGO IZQUIERDO - Autoridad médica */}
         <motion.div
           whileTap={{ scale: 0.95 }}
           className="relative w-20 h-8 flex items-center justify-center"
         >
-          <div className="absolute inset-0 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg"></div>
           <div className="relative z-10">
             <img 
               src="/logo.webp" 

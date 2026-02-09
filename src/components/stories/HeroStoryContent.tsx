@@ -52,32 +52,16 @@ export const HeroStoryContent: React.FC<HeroStoryContentProps> = ({ content }) =
           transition={{ delay: 0.3, duration: 0.8 }}
           className="flex flex-col items-center space-y-4 mt-8"
         >
-          {/* SELLO DE AUTORIDAD MÉDICA */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.6, type: "spring" }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl"></div>
-            <div className="relative px-4 py-2">
-              <p className="text-xs font-light tracking-widest text-white/90 uppercase">
-                Dr. Jorge Iglesias Márquez
-              </p>
-            </div>
-          </motion.div>
-
           {/* LOGO PREMIUM */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.8 }}
-            className="relative w-28 h-10 flex items-center justify-center"
+            className="relative w-32 h-12 flex items-center justify-center"
           >
-            <div className="absolute inset-0 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl"></div>
             <div className="relative z-10">
               <img 
-                src="/logo.webp" 
+                src="/logo-full.webp" 
                 alt="Dr. Jorge Iglesias Márquez"
                 className="w-full h-full object-contain filter drop-shadow-lg"
               />
