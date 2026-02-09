@@ -25,6 +25,9 @@ export const useSmoothScroll = (navLinks: NavLink[] = []) => {
 
     // 1. Intersection Observer para visibilidad
     useEffect(() => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -34,10 +37,13 @@ export const useSmoothScroll = (navLinks: NavLink[] = []) => {
                     }
                 });
             },
-            { threshold: 0.01, root: null }
+            {
+                threshold: 0.01,
+                root: container // IMPORTANTE: El root debe ser el contenedor de scroll horizontal
+            }
         );
 
-        const sections = document.querySelectorAll("section[id]");
+        const sections = container.querySelectorAll("section[id]");
         sections.forEach((section) => observer.observe(section));
 
         return () => sections.forEach((section) => observer.unobserve(section));

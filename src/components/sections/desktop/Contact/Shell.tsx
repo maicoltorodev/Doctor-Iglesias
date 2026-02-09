@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useDesktopScroll } from '@/components/layout/DesktopLayout';
+import { EntranceReveal } from '@/components/ui/EntranceReveal';
 import { SectionArrow } from '@/components/ui/SectionArrow';
 
 interface ContactShellProps {
@@ -80,10 +81,10 @@ const ContactShell: React.FC<ContactShellProps> = ({ editorial, mapCard, clinicC
                 </div>
 
                 {/* SCREEN 4: TÍTULO EDITORIAL SECCIÓN */}
-                <div className="w-auto h-auto block">
-                    <div id="contacto-title" className={`flex flex-row items-center flex-shrink-0 transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
+                <div id="contacto-title" className="w-auto h-auto block">
+                    <EntranceReveal sectionId="contacto" direction="up" className="translate-y-20">
                         {editorial}
-                    </div>
+                    </EntranceReveal>
                 </div>
 
                 {/* PIEZAS DE MÁRMOL ARQUITECTÓNICAS (TRIÁNGULOS) */}

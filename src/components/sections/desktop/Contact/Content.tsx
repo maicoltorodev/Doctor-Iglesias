@@ -113,10 +113,10 @@ export const ContactSocialsCard = ({ editorial, info }: { editorial: any; info: 
 
 export const ContactEditorialBlock = ({ content }: { content: any }) => (
     <EditorialCard
-        subtitle={content?.editorial?.subtitle}
-        titleLight={content?.editorial?.titleLight}
-        titleBold={content?.editorial?.titleBold}
-        description={content?.editorial?.description}
-        footerTag={content?.editorial?.footerTag}
+        subtitle={content?.subtitle}
+        titleLight={content?.titleLight}
+        titleBold={content?.titleBold}
+        description={content?.description}
+        footerTag={content?.footerTag}
     />
 );

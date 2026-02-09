@@ -3,15 +3,18 @@ import React from 'react';
 import { EditorialCard } from '@/components/ui/EditorialCard';
 import { Obra } from '@/components/ui/Obra';
 
-export const ServicesEditorialBlock = ({ content }: { content: any }) => (
-    <EditorialCard
-        subtitle={content.editorial.subtitle}
-        titleLight={content.editorial.titleLight}
-        titleBold={content.editorial.titleBold}
-        description={content.editorial.description}
-        footerTag={content.editorial.footerTag}
-    />
-);
+export const ServicesEditorialBlock = ({ content }: { content: any }) => {
+    const data = content?.editorial || content || {};
+    return (
+        <EditorialCard
+            subtitle={data.subtitle}
+            titleLight={data.titleLight}
+            titleBold={data.titleBold}
+            description={data.description}
+            footerTag={data.footerTag}
+        />
+    );
+};
 
 interface ServiceCardContentProps {
     spec: { slug: string; label: string; description: string };

@@ -3,20 +3,23 @@ import { EditorialCard } from '@/components/ui/EditorialCard';
 import { SectionArrow } from '@/components/ui/SectionArrow';
 import { Obra } from '@/components/ui/Obra';
 
-export const ResultsEditorialBlock = ({ content }: { content: any }) => (
-    <div className="flex flex-row items-center">
-        <EditorialCard
-            subtitle={content.editorial.subtitle}
-            titleLight={content.editorial.titleLight}
-            titleBold={content.editorial.titleBold}
-            description={content.editorial.description}
-            footerTag={content.editorial.footerTag}
-        />
+export const ResultsEditorialBlock = ({ content }: { content: any }) => {
+    const data = content?.editorial || content || {};
+    return (
+        <div className="flex flex-row items-center">
+            <EditorialCard
+                subtitle={data.subtitle}
+                titleLight={data.titleLight}
+                titleBold={data.titleBold}
+                description={data.description}
+                footerTag={data.footerTag}
+            />
 
-        {/* FLECHA ESCRITORIO (Al lado, Horizontal) */}
-        <SectionArrow direction="right" className="ml-48" />
-    </div>
-);
+            {/* FLECHA ESCRITORIO (Al lado, Horizontal) */}
+            <SectionArrow direction="right" className="ml-48" />
+        </div>
+    );
+};
 
 interface ResultComparisonContentProps {
     item: {

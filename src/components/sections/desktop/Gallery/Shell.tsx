@@ -47,13 +47,15 @@ const GalleryShell = ({ content, items }: GalleryShellProps) => {
                 {/* Título de Sección con Editorial Reveal */}
                 <div id="galeria-title" className="flex-shrink-0">
                     <EntranceReveal sectionId="galeria" direction="right" delay="400ms">
-                        <EditorialCard
-                            subtitle={content?.editorial?.subtitle}
-                            titleLight={content?.editorial?.titleLight}
-                            titleBold={content?.editorial?.titleBold}
-                            description={content?.editorial?.description}
-                            footerTag={content?.editorial?.footerTag}
-                        />
+                        {content && (
+                            <EditorialCard
+                                subtitle={content.editorial?.subtitle || content.subtitle}
+                                titleLight={content.editorial?.titleLight || content.titleLight}
+                                titleBold={content.editorial?.titleBold || content.titleBold}
+                                description={content.editorial?.description || content.description}
+                                footerTag={content.editorial?.footerTag || content.footerTag}
+                            />
+                        )}
                     </EntranceReveal>
                 </div>
 

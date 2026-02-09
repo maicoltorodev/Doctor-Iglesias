@@ -23,11 +23,11 @@ const TestimonialsShell = ({ content, items }: TestimonialsShellProps) => {
                     <div id="testimonios-title" className="flex flex-col lg:flex-row items-center flex-shrink-0">
                         <EntranceReveal sectionId="testimonios" direction="none">
                             <EditorialCard
-                                subtitle={content.editorial.subtitle}
-                                titleLight={content.editorial.titleLight}
-                                titleBold={content.editorial.titleBold}
-                                description={content.editorial.description}
-                                footerTag={content.editorial.footerTag}
+                                subtitle={content.editorial?.subtitle || content.subtitle}
+                                titleLight={content.editorial?.titleLight || content.titleLight}
+                                titleBold={content.editorial?.titleBold || content.titleBold}
+                                description={content.editorial?.description || content.description}
+                                footerTag={content.editorial?.footerTag || content.footerTag}
                             />
                         </EntranceReveal>
                         <EntranceReveal sectionId="testimonios" delay="200ms" direction="right">
