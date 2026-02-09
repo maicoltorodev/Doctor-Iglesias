@@ -1,14 +1,18 @@
 import React from "react";
 import MobileStoriesLayout from "@/components/layout/MobileStoriesLayout";
+import { getAllContent } from "@/services/contentService";
 
 // PRODUCCIÓN: Renderizado estático para máximo rendimiento
 export const dynamic = 'force-static';
 export const revalidate = false;
 
-export default function MobilePage() {
+export default async function MobilePage() {
+    // Cargar datos del CMS en el servidor
+    const content = await getAllContent();
+
     return (
-        <MobileStoriesLayout>
-            {/* MobileStoriesLayout carga los datos del CMS internamente */}
+        <MobileStoriesLayout content={content}>
+            {/* MobileStoriesLayout recibe datos pre-cargados */}
         </MobileStoriesLayout>
     );
 }

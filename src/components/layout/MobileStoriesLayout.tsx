@@ -16,20 +16,192 @@ import { getAllContent } from '@/services/contentService';
  */
 interface MobileStoriesLayoutProps {
   children?: React.ReactNode; // Mantener compatibilidad temporal
+  content?: any; // Datos pre-cargados del CMS
 }
 
-const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children }) => {
+const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, content }) => {
   // === DATOS DESDE CMS ===
   const [allSections, setAllSections] = React.useState<SectionStories[]>([]);
   const [loading, setLoading] = React.useState(true);
 
-  // Cargar datos del CMS
+  // Cargar datos del CMS (solo si no vienen como props)
   React.useEffect(() => {
     const loadStoriesData = async () => {
       try {
-        const content = await getAllContent();
-        
-        // === MAPEO DE SECCIONES A STORIES ===
+        // Si vienen datos pre-cargados, usarlos directamente
+        if (content) {
+          const sections: SectionStories[] = [
+            // HERO (Núcleo Central) - 1 story
+            {
+              sectionName: 'Inicio',
+              stories: [
+                {
+                  id: 'hero-1',
+                  type: 'hero',
+                  content: content.HERO_CONTENT,
+                  section: 'hero'
+                }
+              ]
+            },
+
+            // SERVICES (Derecha 1) - 1 + N stories dinámicos
+            {
+              sectionName: 'Servicios',
+              stories: [
+                {
+                  id: 'services-title',
+                  type: 'title',
+                  content: content.SERVICES_CONTENT,
+                  section: 'services'
+                },
+                ...content.SERVICES_LIST.map((service: any, index: number) => ({
+                  id: `service-${index}`,
+                  type: 'service' as const,
+                  content: service,
+                  section: 'services'
+                }))
+              ]
+            },
+
+            // RESULTS (Derecha 2) - 1 + N stories dinámicos
+            {
+              sectionName: 'Resultados',
+              stories: [
+                {
+                  id: 'results-title',
+                  type: 'title',
+                  content: content.RESULTS_CONTENT,
+                  section: 'results'
+                },
+                ...content.RESULTS_LIST.map((result: any, index: number) => ({
+                  id: `result-${index}`,
+                  type: 'content' as const,
+                  content: result,
+                  section: 'results'
+                }))
+              ]
+            },
+
+            // TESTIMONIALS (Derecha 3) - 1 + N stories dinámicos
+            {
+              sectionName: 'Testimonios',
+              stories: [
+                {
+                  id: 'testimonials-title',
+                  type: 'title',
+                  content: content.TESTIMONIALS_CONTENT,
+                  section: 'testimonials'
+                },
+                ...content.TESTIMONIALS_LIST.map((testimonial: any, index: number) => ({
+                  id: `testimonial-${index}`,
+                  type: 'testimonial' as const,
+                  content: testimonial,
+                  section: 'testimonials'
+                }))
+              ]
+            },
+
+            // CONTACT (Izquierda 1) - 5 stories fijos
+            {
+              sectionName: 'Contacto',
+              stories: [
+                {
+                  id: 'contact-title',
+                  type: 'title',
+                  content: content.CONTACT_CONTENT,
+                  section: 'contact'
+                },
+                {
+                  id: 'contact-map',
+                  type: 'content',
+                  content: content.CONTACT_INFO?.map || null,
+                  section: 'contact'
+                },
+                {
+                  id: 'contact-clinic',
+                  type: 'content',
+                  content: content.CONTACT_INFO?.clinic || null,
+                  section: 'contact'
+                },
+                {
+                  id: 'contact-info',
+                  type: 'content',
+                  content: content.CONTACT_INFO?.info || null,
+                  section: 'contact'
+                },
+                {
+                  id: 'contact-social',
+                  type: 'content',
+                  content: content.CONTACT_INFO?.social || null,
+                  section: 'contact'
+                }
+              ]
+            },
+
+            // GALLERY (Izquierda 2) - 1 + N stories dinámicos
+            {
+              sectionName: 'Galería',
+              stories: [
+                {
+                  id: 'gallery-title',
+                  type: 'title',
+                  content: content.GALLERY_CONTENT,
+                  section: 'gallery'
+                },
+                ...content.GALLERY_LIST.map((photo: any, index: number) => ({
+                  id: `photo-${index}`,
+                  type: 'photo' as const,
+                  content: photo,
+                  section: 'gallery'
+                }))
+              ]
+            },
+
+            // ABOUT (Izquierda 3) - 5 stories fijos
+            {
+              sectionName: 'Nosotros',
+              stories: [
+                {
+                  id: 'about-mission',
+                  type: 'content',
+                  content: content.ABOUT_CONTENT?.mission || null,
+                  section: 'about'
+                },
+                {
+                  id: 'about-history',
+                  type: 'content',
+                  content: content.ABOUT_CONTENT?.history || null,
+                  section: 'about'
+                },
+                {
+                  id: 'about-values',
+                  type: 'content',
+                  content: content.ABOUT_CONTENT?.values || null,
+                  section: 'about'
+                },
+                {
+                  id: 'about-marble',
+                  type: 'content',
+                  content: content.ABOUT_CONTENT?.marble || null,
+                  section: 'about'
+                },
+                {
+                  id: 'about-team',
+                  type: 'content',
+                  content: content.ABOUT_CONTENT?.team || null,
+                  section: 'about'
+                }
+              ]
+            }
+          ];
+
+          setAllSections(sections);
+          setLoading(false);
+          return;
+        }
+
+        // Sino, cargarlos del CMS (fallback para desarrollo)
+        const cmsContent = await getAllContent();
         const sections: SectionStories[] = [
           // HERO (Núcleo Central) - 1 story
           {
@@ -38,7 +210,7 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children }) =
               {
                 id: 'hero-1',
                 type: 'hero',
-                content: content.HERO_CONTENT,
+                content: cmsContent.HERO_CONTENT,
                 section: 'hero'
               }
             ]
@@ -51,10 +223,10 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children }) =
               {
                 id: 'services-title',
                 type: 'title',
-                content: content.SERVICES_CONTENT,
+                content: cmsContent.SERVICES_CONTENT,
                 section: 'services'
               },
-              ...content.SERVICES_LIST.map((service, index) => ({
+              ...cmsContent.SERVICES_LIST.map((service: any, index: number) => ({
                 id: `service-${index}`,
                 type: 'service' as const,
                 content: service,
@@ -63,17 +235,17 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children }) =
             ]
           },
 
-          // RESULTS (Derecha 2) - 5 stories fijos
+          // RESULTS (Derecha 2) - 1 + N stories dinámicos
           {
             sectionName: 'Resultados',
             stories: [
               {
                 id: 'results-title',
                 type: 'title',
-                content: content.RESULTS_CONTENT,
+                content: cmsContent.RESULTS_CONTENT,
                 section: 'results'
               },
-              ...content.RESULTS_LIST.map((result, index) => ({
+              ...cmsContent.RESULTS_LIST.map((result: any, index: number) => ({
                 id: `result-${index}`,
                 type: 'content' as const,
                 content: result,
@@ -89,10 +261,10 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children }) =
               {
                 id: 'testimonials-title',
                 type: 'title',
-                content: content.TESTIMONIALS_CONTENT,
+                content: cmsContent.TESTIMONIALS_CONTENT,
                 section: 'testimonials'
               },
-              ...content.TESTIMONIALS_LIST.map((testimonial, index) => ({
+              ...cmsContent.TESTIMONIALS_LIST.map((testimonial: any, index: number) => ({
                 id: `testimonial-${index}`,
                 type: 'testimonial' as const,
                 content: testimonial,
@@ -108,47 +280,31 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children }) =
               {
                 id: 'contact-title',
                 type: 'title',
-                content: content.CONTACT_CONTENT,
+                content: cmsContent.CONTACT_CONTENT,
                 section: 'contact'
               },
               {
                 id: 'contact-map',
-                type: 'content' as const,
-                content: {
-                  type: 'map',
-                  title: 'Ubicación',
-                  data: content.CONTACT_INFO
-                },
+                type: 'content',
+                content: cmsContent.CONTACT_INFO?.map || null,
                 section: 'contact'
               },
               {
                 id: 'contact-clinic',
-                type: 'content' as const,
-                content: {
-                  type: 'clinic',
-                  title: 'Clínica',
-                  data: content.CONTACT_INFO
-                },
+                type: 'content',
+                content: cmsContent.CONTACT_INFO?.clinic || null,
                 section: 'contact'
               },
               {
                 id: 'contact-info',
-                type: 'content' as const,
-                content: {
-                  type: 'info',
-                  title: 'Datos de Contacto',
-                  data: content.CONTACT_INFO
-                },
+                type: 'content',
+                content: cmsContent.CONTACT_INFO?.info || null,
                 section: 'contact'
               },
               {
                 id: 'contact-social',
-                type: 'content' as const,
-                content: {
-                  type: 'social',
-                  title: 'Redes Sociales',
-                  data: content.CONTACT_INFO
-                },
+                type: 'content',
+                content: cmsContent.CONTACT_INFO?.social || null,
                 section: 'contact'
               }
             ]
@@ -161,11 +317,11 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children }) =
               {
                 id: 'gallery-title',
                 type: 'title',
-                content: content.GALLERY_CONTENT,
+                content: cmsContent.GALLERY_CONTENT,
                 section: 'gallery'
               },
-              ...content.GALLERY_LIST.map((photo, index) => ({
-                id: `gallery-photo-${index}`,
+              ...cmsContent.GALLERY_LIST.map((photo: any, index: number) => ({
+                id: `photo-${index}`,
                 type: 'photo' as const,
                 content: photo,
                 section: 'gallery'
@@ -175,52 +331,36 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children }) =
 
           // ABOUT (Izquierda 3) - 5 stories fijos
           {
-            sectionName: 'Sobre Nosotros',
+            sectionName: 'Nosotros',
             stories: [
               {
-                id: 'about-title',
-                type: 'title',
-                content: content.ABOUT_CONTENT,
-                section: 'about'
-              },
-              {
                 id: 'about-mission',
-                type: 'content' as const,
-                content: {
-                  type: 'mission',
-                  title: 'Misión y Visión',
-                  data: content.ABOUT_CONTENT
-                },
+                type: 'content',
+                content: cmsContent.ABOUT_CONTENT?.mission || null,
                 section: 'about'
               },
               {
                 id: 'about-history',
-                type: 'content' as const,
-                content: {
-                  type: 'history',
-                  title: 'Historia',
-                  data: content.ABOUT_CONTENT
-                },
+                type: 'content',
+                content: cmsContent.ABOUT_CONTENT?.history || null,
                 section: 'about'
               },
               {
                 id: 'about-values',
-                type: 'content' as const,
-                content: {
-                  type: 'values',
-                  title: 'Valores',
-                  data: content.ABOUT_CONTENT
-                },
+                type: 'content',
+                content: cmsContent.ABOUT_CONTENT?.values || null,
                 section: 'about'
               },
               {
-                id: 'about-marbles',
-                type: 'content' as const,
-                content: {
-                  type: 'marbles',
-                  title: 'Piezas de Mármol',
-                  data: content.ABOUT_CONTENT
-                },
+                id: 'about-marble',
+                type: 'content',
+                content: cmsContent.ABOUT_CONTENT?.marble || null,
+                section: 'about'
+              },
+              {
+                id: 'about-team',
+                type: 'content',
+                content: cmsContent.ABOUT_CONTENT?.team || null,
                 section: 'about'
               }
             ]
@@ -229,6 +369,7 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children }) =
 
         setAllSections(sections);
         setLoading(false);
+        
       } catch (error) {
         console.error('Error loading stories data:', error);
         setLoading(false);
@@ -236,7 +377,7 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children }) =
     };
 
     loadStoriesData();
-  }, []);
+  }, [content]);
 
   // === NAVEGACIÓN DE STORIES ===
   const navigation = useStoriesNavigation(allSections);
