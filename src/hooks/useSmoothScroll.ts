@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useCallback, useMemo } from "react";
 import Lenis from 'lenis';
 import { useDesktopScroll } from "@/components/providers/DesktopScrollProvider";

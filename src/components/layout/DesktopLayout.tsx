@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import DesktopNavbar from "@/components/layout/desktop/Navbar";
 import CustomCursor from "@/components/ui/CustomCursor";
