@@ -36,7 +36,13 @@ export default function DesktopLoading() {
                         animate={{ rotate: 360 }}
                         transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                         className="absolute"
-                        style={{ width: '240px', height: '240px' }}
+                        style={{
+                            width: '240px',
+                            height: '240px',
+                            left: '50%',
+                            top: '50%',
+                            transform: 'translate(-50%, -50%)'
+                        }}
                     >
                         <svg className="w-full h-full" viewBox="0 0 100 100">
                             <circle
@@ -58,7 +64,13 @@ export default function DesktopLoading() {
                         animate={{ rotate: -360 }}
                         transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
                         className="absolute"
-                        style={{ width: '180px', height: '180px' }}
+                        style={{
+                            width: '180px',
+                            height: '180px',
+                            left: '50%',
+                            top: '50%',
+                            transform: 'translate(-50%, -50%)'
+                        }}
                     >
                         <svg className="w-full h-full" viewBox="0 0 100 100">
                             <circle

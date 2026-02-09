@@ -118,6 +118,9 @@ export default function RootLayout({
                 position: 'absolute',
                 width: '200px',
                 height: '200px',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
                 animation: 'spin 0.8s linear infinite'
               }}
               viewBox="0 0 100 100"
@@ -140,6 +143,9 @@ export default function RootLayout({
                 position: 'absolute',
                 width: '150px',
                 height: '150px',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
                 animation: 'spinReverse 1.2s linear infinite'
               }}
               viewBox="0 0 100 100"
