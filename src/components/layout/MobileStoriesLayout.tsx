@@ -3,7 +3,6 @@
 import React from 'react';
 import { StoriesContainer, Story } from '../stories/StoriesContainer';
 import { useStoriesNavigation, SectionStories } from '../../hooks/useStoriesNavigation';
-import { getAllContent } from '@/services/contentService';
 
 /**
  * MOBILE STORIES LAYOUT - Layout principal para navegación tipo Instagram
@@ -201,174 +200,11 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
         }
 
         // Sino, cargarlos del CMS (fallback para desarrollo)
-        const cmsContent = await getAllContent();
-        const sections: SectionStories[] = [
-          // HERO (Núcleo Central) - 1 story
-          {
-            sectionName: 'Inicio',
-            stories: [
-              {
-                id: 'hero-1',
-                type: 'hero',
-                content: cmsContent.HERO_CONTENT,
-                section: 'hero'
-              }
-            ]
-          },
-
-          // SERVICES (Derecha 1) - 1 + N stories dinámicos
-          {
-            sectionName: 'Servicios',
-            stories: [
-              {
-                id: 'services-title',
-                type: 'title',
-                content: cmsContent.SERVICES_CONTENT,
-                section: 'services'
-              },
-              ...cmsContent.SERVICES_LIST.map((service: any, index: number) => ({
-                id: `service-${index}`,
-                type: 'service' as const,
-                content: service,
-                section: 'services'
-              }))
-            ]
-          },
-
-          // RESULTS (Derecha 2) - 1 + N stories dinámicos
-          {
-            sectionName: 'Resultados',
-            stories: [
-              {
-                id: 'results-title',
-                type: 'title',
-                content: cmsContent.RESULTS_CONTENT,
-                section: 'results'
-              },
-              ...cmsContent.RESULTS_LIST.map((result: any, index: number) => ({
-                id: `result-${index}`,
-                type: 'content' as const,
-                content: result,
-                section: 'results'
-              }))
-            ]
-          },
-
-          // TESTIMONIALS (Derecha 3) - 1 + N stories dinámicos
-          {
-            sectionName: 'Testimonios',
-            stories: [
-              {
-                id: 'testimonials-title',
-                type: 'title',
-                content: cmsContent.TESTIMONIALS_CONTENT,
-                section: 'testimonials'
-              },
-              ...cmsContent.TESTIMONIALS_LIST.map((testimonial: any, index: number) => ({
-                id: `testimonial-${index}`,
-                type: 'testimonial' as const,
-                content: testimonial,
-                section: 'testimonials'
-              }))
-            ]
-          },
-
-          // CONTACT (Izquierda 1) - 5 stories fijos
-          {
-            sectionName: 'Contacto',
-            stories: [
-              {
-                id: 'contact-title',
-                type: 'title',
-                content: cmsContent.CONTACT_CONTENT,
-                section: 'contact'
-              },
-              {
-                id: 'contact-map',
-                type: 'content',
-                content: cmsContent.CONTACT_INFO?.map || null,
-                section: 'contact'
-              },
-              {
-                id: 'contact-clinic',
-                type: 'content',
-                content: cmsContent.CONTACT_INFO?.clinic || null,
-                section: 'contact'
-              },
-              {
-                id: 'contact-info',
-                type: 'content',
-                content: cmsContent.CONTACT_INFO?.info || null,
-                section: 'contact'
-              },
-              {
-                id: 'contact-social',
-                type: 'content',
-                content: cmsContent.CONTACT_INFO?.social || null,
-                section: 'contact'
-              }
-            ]
-          },
-
-          // GALLERY (Izquierda 2) - 1 + N stories dinámicos
-          {
-            sectionName: 'Galería',
-            stories: [
-              {
-                id: 'gallery-title',
-                type: 'title',
-                content: cmsContent.GALLERY_CONTENT,
-                section: 'gallery'
-              },
-              ...cmsContent.GALLERY_LIST.map((photo: any, index: number) => ({
-                id: `photo-${index}`,
-                type: 'photo' as const,
-                content: photo,
-                section: 'gallery'
-              }))
-            ]
-          },
-
-          // ABOUT (Izquierda 3) - 5 stories fijos
-          {
-            sectionName: 'Nosotros',
-            stories: [
-              {
-                id: 'about-mission',
-                type: 'content',
-                content: cmsContent.ABOUT_CONTENT?.mission || null,
-                section: 'about'
-              },
-              {
-                id: 'about-history',
-                type: 'content',
-                content: cmsContent.ABOUT_CONTENT?.history || null,
-                section: 'about'
-              },
-              {
-                id: 'about-values',
-                type: 'content',
-                content: cmsContent.ABOUT_CONTENT?.values || null,
-                section: 'about'
-              },
-              {
-                id: 'about-marble',
-                type: 'content',
-                content: cmsContent.ABOUT_CONTENT?.marble || null,
-                section: 'about'
-              },
-              {
-                id: 'about-team',
-                type: 'content',
-                content: cmsContent.ABOUT_CONTENT?.team || null,
-                section: 'about'
-              }
-            ]
-          }
-        ];
-
-        setAllSections(sections);
+        // NOTA: Este código no debería ejecutarse en producción
+        // Los datos siempre vienen desde Server Component
+        console.error('MobileStoriesLayout: No content provided - fallback not implemented');
         setLoading(false);
+        return;
         
       } catch (error) {
         console.error('Error loading stories data:', error);
