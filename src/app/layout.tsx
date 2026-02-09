@@ -77,9 +77,105 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${instrumentSerif.variable} antialiased`}
       >
+        {/* Inline Loading Screen - Shows before React hydration */}
+        <div
+          id="initial-loader"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: '#f2f0f4',
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'opacity 0.5s ease-out',
+          }}
+        >
+          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {/* Logo */}
+            <div style={{
+              position: 'relative',
+              zIndex: 20,
+              width: '120px',
+              height: '120px',
+              animation: 'fadeIn 1s ease-out'
+            }}>
+              <img
+                src="/logo.webp"
+                alt="Loading..."
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 2px 15px rgba(0,0,0,0.08))'
+                }}
+              />
+            </div>
+
+            {/* Animated Ring */}
+            <div style={{
+              position: 'absolute',
+              width: '200px',
+              height: '200px',
+              border: '1px solid rgba(0,0,0,0.1)',
+              borderRadius: '50%',
+              animation: 'spin 3s linear infinite'
+            }}></div>
+
+            {/* Pulsing Ring */}
+            <div style={{
+              position: 'absolute',
+              width: '160px',
+              height: '160px',
+              border: '1px solid rgba(0,0,0,0.05)',
+              borderRadius: '50%',
+              animation: 'pulse 2s ease-in-out infinite'
+            }}></div>
+          </div>
+
+          {/* Inline CSS for animations */}
+          <style dangerouslySetInnerHTML={{
+            __html: `
+            @keyframes spin {
+              from { transform: rotate(0deg); }
+              to { transform: rotate(360deg); }
+            }
+            @keyframes pulse {
+              0%, 100% { transform: scale(1); opacity: 0.1; }
+              50% { transform: scale(1.05); opacity: 0.2; }
+            }
+            @keyframes fadeIn {
+              from { opacity: 0; transform: scale(0.9); }
+              to { opacity: 1; transform: scale(1); }
+            }
+            
+            /* Auto-hide when React loads */
+            body:has(#__next) #initial-loader,
+            body:not(:empty) #initial-loader {
+              pointer-events: none;
+            }
+          `}} />
+        </div>
+
         <SmoothScrollProvider>
           {children}
         </SmoothScrollProvider>
+
+        {/* Script to hide loader after React hydration */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+          window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+              var loader = document.getElementById('initial-loader');
+              if (loader) {
+                loader.style.opacity = '0';
+                setTimeout(function() {
+                  loader.style.display = 'none';
+                }, 500);
+              }
+            }, 800);
+          });
+        `}} />
       </body>
     </html>
   );
