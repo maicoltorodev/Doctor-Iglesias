@@ -22,7 +22,14 @@ const LayoutContent: React.FC<Omit<DesktopLayoutProps, 'navLinks'>> = ({
     fabContent,
     contactInfo
 }) => {
-    const { activeIndex, isLogoHovered, setIsLogoHovered, navLinks, scrollContainerRef } = useDesktopScroll();
+    const context = useDesktopScroll();
+    const { activeIndex, isLogoHovered, setIsLogoHovered, navLinks, scrollContainerRef } = context || {
+        activeIndex: 3,
+        isLogoHovered: false,
+        setIsLogoHovered: () => { },
+        navLinks: [],
+        scrollContainerRef: { current: null }
+    };
     const { scrollToSection } = useSmoothScroll();
     const { cursorRef, cursorDotRef, isHovering, setIsHovering } = useCustomCursor();
 
