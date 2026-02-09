@@ -2,15 +2,25 @@
 
 import React, { useState } from 'react';
 import { updateSiteContent } from '../actions';
-import { Save, ChevronLeft, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import {
+    Save,
+    ChevronLeft,
+    Loader2,
+    AlertCircle,
+    CheckCircle2,
+    Type,
+    AlignLeft,
+    Layers,
+    Info,
+    ArrowRight
+} from 'lucide-react';
 import Link from 'next/link';
+import { useToast } from '@/hooks/useToast';
 
 interface EditorialFormProps {
     section: string;
     initialData: any;
 }
-
-import { useToast } from '@/hooks/useToast';
 
 export default function EditorialForm({ section, initialData }: EditorialFormProps) {
     const [data, setData] = useState(initialData);
@@ -18,7 +28,7 @@ export default function EditorialForm({ section, initialData }: EditorialFormPro
     const { addToast } = useToast();
 
     const handleChange = (path: string[], value: string) => {
-        const newData = { ...data };
+        const newData = JSON.parse(JSON.stringify(data)); // Deep clone to avoid mutation
         let current = newData;
         for (let i = 0; i < path.length - 1; i++) {
             current = current[path[i]];
@@ -37,35 +47,49 @@ export default function EditorialForm({ section, initialData }: EditorialFormPro
         } else {
             setStatus('error');
             addToast('Error al actualizar el contenido', 'error');
+            setTimeout(() => setStatus('idle'), 3000);
         }
     };
 
-    // Renderizador recursivo de campos
+    // Renderizador recursivo de campos estilizado
     const renderFields = (obj: any, path: string[] = []) => {
         return Object.entries(obj).map(([key, value]) => {
             const currentPath = [...path, key];
             const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
 
+            // Agrupador de campos (Objetos)
             if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
                 return (
-                    <div key={currentPath.join('.')} className="space-y-6 pt-6 first:pt-0">
-                        <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-white/20 border-b border-white/5 pb-2">
-                            {label}
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pl-4 border-l border-white/5">
+                    <div key={currentPath.join('.')} className="space-y-8 pt-8 first:pt-0">
+                        <div className="flex items-center gap-4 border-b-2 border-black/5 pb-4">
+                            <div className="w-8 h-8 rounded-lg bg-black/5 flex items-center justify-center text-black/40">
+                                <Layers size={16} />
+                            </div>
+                            <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-black/40">
+                                {label}
+                            </h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 pl-8 border-l-2 border-black/5 ml-4">
                             {renderFields(value, currentPath)}
                         </div>
                     </div>
                 );
             }
 
+            // Listas (Arrays)
             if (Array.isArray(value)) {
                 return (
-                    <div key={currentPath.join('.')} className="col-span-full space-y-4">
-                        <label className="text-[10px] font-bold tracking-widest uppercase text-white/40">{label} (Lista)</label>
+                    <div key={currentPath.join('.')} className="col-span-full space-y-6 bg-black/[0.02] p-8 rounded-[2rem] border-2 border-black/5 shadow-inner">
+                        <div className="flex items-center gap-3">
+                            <AlignLeft size={14} className="text-black/40" />
+                            <label className="text-[10px] font-bold tracking-[0.3em] uppercase text-black/40">{label} (Colección)</label>
+                        </div>
                         <div className="space-y-4">
                             {value.map((item, idx) => (
-                                <div key={idx} className="flex gap-4">
+                                <div key={idx} className="relative group">
+                                    <span className="absolute -left-12 top-1/2 -translate-y-1/2 text-[10px] font-serif italic text-black/20 group-hover:text-black/60 transition-colors">
+                                        {(idx + 1).toString().padStart(2, '0')}
+                                    </span>
                                     <input
                                         type="text"
                                         value={item}
@@ -74,7 +98,7 @@ export default function EditorialForm({ section, initialData }: EditorialFormPro
                                             newList[idx] = e.target.value;
                                             handleChange(currentPath, newList as any);
                                         }}
-                                        className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white/30 transition-all"
+                                        className="w-full bg-white border-2 border-black/10 rounded-2xl px-6 py-4 text-sm font-medium focus:outline-none focus:border-black transition-all shadow-sm group-hover:shadow-md"
                                     />
                                 </div>
                             ))}
@@ -83,22 +107,26 @@ export default function EditorialForm({ section, initialData }: EditorialFormPro
                 );
             }
 
+            // Campos de Texto Simples
             return (
-                <div key={currentPath.join('.')} className="space-y-2">
-                    <label className="text-[10px] font-bold tracking-widest uppercase text-white/40">{label}</label>
+                <div key={currentPath.join('.')} className="space-y-3 group/field">
+                    <div className="flex items-center gap-2">
+                        <Type size={12} className="text-black/20 group-hover/field:text-black/60 transition-colors" />
+                        <label className="text-[10px] font-bold tracking-[0.2em] uppercase text-black/40 group-hover/field:text-black transition-colors">{label}</label>
+                    </div>
                     {value && value.toString().length > 100 ? (
                         <textarea
                             value={value as string}
                             onChange={(e) => handleChange(currentPath, e.target.value)}
-                            rows={4}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-light leading-relaxed focus:outline-none focus:border-white/30 transition-all resize-none"
+                            rows={6}
+                            className="w-full bg-white border-2 border-black/10 rounded-[2rem] px-8 py-6 text-base font-light leading-relaxed text-black focus:outline-none focus:border-black transition-all resize-none shadow-sm hover:shadow-lg hover:shadow-black/5"
                         />
                     ) : (
                         <input
                             type="text"
                             value={value as string}
                             onChange={(e) => handleChange(currentPath, e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-light focus:outline-none focus:border-white/30 transition-all"
+                            className="w-full bg-white border-2 border-black/10 rounded-2xl px-8 py-5 text-base font-light text-black focus:outline-none focus:border-black transition-all shadow-sm hover:shadow-lg hover:shadow-black/5"
                         />
                     )}
                 </div>
@@ -108,61 +136,60 @@ export default function EditorialForm({ section, initialData }: EditorialFormPro
 
     return (
         <div className="space-y-12 pb-32">
-            {/* Action Bar */}
-            <div className="sticky top-0 z-20 -mx-8 px-8 py-4 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between">
-                <Link
-                    href="/admin/content"
-                    className="flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm font-medium"
-                >
-                    <ChevronLeft size={18} /> Volver
-                </Link>
-
-                <div className="flex items-center gap-4">
+            {/* Sticky Action Bar Master */}
+            <div className="sticky top-4 z-40 bg-white/90 backdrop-blur-2xl border-2 border-black/10 rounded-[2.5rem] px-10 py-5 flex items-center justify-between shadow-2xl shadow-black/10 animate-in slide-in-from-top-4 duration-700">
+                <div className="flex items-center gap-8">
+                    <div className="hidden sm:flex items-center gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-black"></div>
+                        <span className="text-[10px] font-bold tracking-widest text-black/40 uppercase">Modo Edición</span>
+                    </div>
                     {status === 'success' && (
-                        <span className="flex items-center gap-2 text-emerald-400 text-xs font-bold animate-in fade-in zoom-in slide-in-from-right-2">
-                            <CheckCircle2 size={16} /> Guardado con éxito
-                        </span>
+                        <div className="flex items-center gap-2 text-emerald-600 font-bold text-[10px] uppercase tracking-widest animate-in fade-in zoom-in">
+                            <CheckCircle2 size={14} /> Contenido Sincronizado
+                        </div>
                     )}
                     {status === 'error' && (
-                        <span className="flex items-center gap-2 text-red-400 text-xs font-bold">
-                            <AlertCircle size={16} /> Error al guardar
-                        </span>
+                        <div className="flex items-center gap-2 text-red-600 font-bold text-[10px] uppercase tracking-widest">
+                            <AlertCircle size={14} /> Error en Sincronización
+                        </div>
                     )}
+                </div>
 
+                <div className="flex items-center gap-4">
                     <button
                         onClick={handleSave}
                         disabled={status === 'saving'}
-                        className="flex items-center gap-3 px-8 py-3 bg-white text-black rounded-full font-bold text-xs tracking-widest uppercase hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all duration-300"
+                        className="flex items-center gap-4 px-10 py-4 bg-black text-white rounded-full font-bold text-xs tracking-[0.2em] uppercase hover:bg-black/90 active:scale-95 disabled:opacity-50 transition-all shadow-xl hover:shadow-black/20"
                     >
                         {status === 'saving' ? (
                             <Loader2 size={16} className="animate-spin" />
                         ) : (
                             <Save size={16} />
                         )}
-                        {status === 'saving' ? 'Guardando...' : 'Guardar Cambios'}
+                        {status === 'saving' ? 'Sincronizando...' : 'Sincronizar Cambios'}
                     </button>
                 </div>
             </div>
 
             {/* Form Content */}
-            <div className="bg-white/5 border border-white/5 rounded-[40px] p-12 space-y-12">
-                <div className="space-y-10">
+            <div className="bg-white border-2 border-black/10 rounded-[3rem] p-12 lg:p-16 shadow-2xl shadow-black/[0.02] space-y-16">
+                <div className="space-y-16">
                     {renderFields(data)}
                 </div>
             </div>
 
-            {/* Hint */}
-            <div className="p-8 border border-dashed border-white/10 rounded-3xl flex items-start gap-4">
-                <div className="p-2 rounded-lg bg-white/5 text-white/40">
-                    <AlertCircle size={20} />
-                </div>
-                <div className="space-y-1">
-                    <p className="text-sm font-medium">Información sobre la edición</p>
-                    <p className="text-xs text-white/30 leading-relaxed">
-                        Los cambios se guardan directamente en la base de datos de producción.
-                        El sistema revalida automáticamente el contenido para que se vea reflejado en la web inmediatamente.
-                        Tenga cuidado con el formato de los textos largos.
-                    </p>
+            {/* Information Card */}
+            <div className="bg-marble-texture border-2 border-black/10 rounded-[2.5rem] p-4 shadow-xl overflow-hidden relative">
+                <div className="bg-white/90 backdrop-blur-md p-10 rounded-[2rem] flex flex-col md:flex-row items-start gap-8 relative z-10">
+                    <div className="p-4 bg-black rounded-2xl text-white shadow-lg shrink-0">
+                        <Info size={24} />
+                    </div>
+                    <div className="space-y-4">
+                        <h4 className="text-2xl font-light text-black">Anotaciones del Sistema</h4>
+                        <p className="text-lg text-black/50 leading-relaxed font-medium italic">
+                            Los cambios se aplican directamente al núcleo de contenido del sitio. Al sincronizar, el motor de revalidación distribuirá las actualizaciones a nivel global de forma inmediata. Sea meticuloso con la ortografía y el tono editorial de su marca.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

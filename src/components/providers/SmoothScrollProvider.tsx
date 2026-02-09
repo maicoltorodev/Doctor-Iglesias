@@ -9,11 +9,9 @@ export const SmoothScrollProvider = ({ children }: { children: React.ReactNode }
     const isAdminRoute = pathname?.startsWith('/admin');
 
     useEffect(() => {
-        // No inicializar Lenis en rutas de admin
-        if (isAdminRoute) return;
-
-        // Solo inicializamos Lenis en escritorio para no interferir con el scroll nativo de móviles
-        if (window.innerWidth < 1024) return;
+        // DESHABILITADO: El proyecto usa scroll horizontal nativo con Lenis en DesktopLayout
+        // No inicializar Lenis vertical para evitar conflictos
+        return;
 
         const lenis = new Lenis({
             duration: 1.2,

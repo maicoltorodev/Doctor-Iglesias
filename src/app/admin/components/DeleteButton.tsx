@@ -51,13 +51,13 @@ export const DeleteButton = ({
         <button
             onClick={handleDelete}
             disabled={isDeleting}
-            className={`p-3 rounded-xl transition-all disabled:opacity-50 ${canDelete
-                    ? 'bg-white/5 text-white/40 hover:text-red-400 hover:bg-red-500/10'
-                    : 'bg-white/5 text-white/20 cursor-not-allowed'
+            className={`p-4 rounded-2xl transition-all disabled:opacity-50 shadow-sm ${canDelete
+                ? 'bg-red-50 text-red-600 hover:text-white hover:bg-red-600 border border-red-200 hover:border-red-600'
+                : 'bg-black/5 text-black/20 cursor-not-allowed border border-black/5'
                 }`}
             title={canDelete ? 'Eliminar' : disabledMessage}
         >
-            {isDeleting ? <Loader2 size={18} className="animate-spin" /> : <Trash2 size={18} />}
+            {isDeleting ? <Loader2 size={20} strokeWidth={2.5} className="animate-spin" /> : <Trash2 size={20} strokeWidth={2.5} />}
         </button>
     );
 };

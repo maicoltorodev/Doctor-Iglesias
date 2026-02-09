@@ -1,7 +1,20 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Save, RefreshCw, Database, Palette, Globe, Shield, Bell } from 'lucide-react';
+import {
+    Save,
+    RefreshCw,
+    Database,
+    Palette,
+    Globe,
+    Shield,
+    Bell,
+    Settings,
+    Sparkles,
+    CheckCircle2,
+    Cpu,
+    ArrowRight
+} from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
 
 export default function SettingsPage() {
@@ -32,163 +45,177 @@ export default function SettingsPage() {
     };
 
     return (
-        <div className="space-y-10 pb-20">
-            {/* Header */}
-            <div className="space-y-3">
-                <h1 className="text-4xl font-light tracking-tight text-black">Configuración</h1>
-                <p className="text-black/50 max-w-2xl leading-relaxed">
-                    Gestione la configuración general del sitio web y las opciones del panel de administración.
-                </p>
+        <div className="space-y-12 pb-24 animate-in fade-in duration-1000">
+            {/* Main Featured Header Card */}
+            <div className="relative overflow-hidden rounded-[2.5rem] bg-white border-2 border-black/10 group shadow-2xl shadow-black/5">
+                {/* Background Texture elements */}
+                <div className="absolute top-0 right-0 w-1/3 h-full bg-marble-texture opacity-10 grayscale pointer-events-none"></div>
+                <div className="absolute -top-24 -right-24 w-96 h-96 bg-black/[0.02] rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-110"></div>
+
+                <div className="relative z-10 p-12 space-y-8">
+                    <div className="flex items-center justify-between gap-4 flex-wrap">
+                        <div className="flex items-center gap-6">
+                            <div className="w-14 h-14 rounded-2xl bg-black flex items-center justify-center text-white shadow-xl">
+                                <Settings size={28} strokeWidth={1.5} />
+                            </div>
+                            <div className="px-4 py-2 rounded-full bg-black/5 border border-black/10 flex items-center gap-2">
+                                <Cpu size={12} className="text-black/60" />
+                                <span className="text-[10px] font-bold tracking-widest text-black/60 uppercase">Infraestructura</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-3xl space-y-6">
+                        <h1 className="text-5xl font-light tracking-tight text-black leading-[1.1]">
+                            Control del <br />
+                            <span className="bg-gradient-to-r from-black via-black/60 to-black/40 bg-clip-text text-transparent italic font-serif text-6xl pr-4">Sistema</span>
+                        </h1>
+                        <p className="text-xl text-black/50 leading-relaxed font-medium max-w-2xl">
+                            Ajuste la arquitectura digital que soporta su clínica. Gestione el caché, la seguridad y el rendimiento con precisión milimétrica.
+                        </p>
+                    </div>
+                </div>
             </div>
 
             {/* Settings Sections */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
                 {/* Cache Management */}
-                <div className="admin-card rounded-[40px] p-10 space-y-6 transition-all">
-                    <div className="flex items-center gap-4">
-                        <div className="p-4 rounded-2xl bg-blue-500/10 text-blue-600">
-                            <Database size={24} />
+                <div className="bg-white border-2 border-black/10 rounded-[2.5rem] p-10 space-y-8 shadow-xl shadow-black/[0.02] hover:shadow-[0px_30px_60px_rgba(0,0,0,0.15)] hover:border-black transition-all duration-500 hover:-translate-y-2 relative overflow-hidden group">
+                    <div className="flex items-center gap-6 relative z-10">
+                        <div className="p-5 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100">
+                            <Database size={28} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h3 className="text-xl font-medium text-black">Gestión de Caché</h3>
-                            <p className="text-sm text-black/50">Control del sistema de caché estático</p>
+                            <h3 className="text-2xl font-light text-black">Gestión de Caché</h3>
+                            <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest">Control de Regeneración Estática</p>
                         </div>
                     </div>
 
-                    <p className="text-sm text-black/60 leading-relaxed">
-                        Invalide la caché para forzar la regeneración de las páginas estáticas.
-                        Útil después de realizar cambios importantes en el contenido.
+                    <p className="text-lg text-black/50 leading-relaxed font-medium relative z-10 italic">
+                        Invalide la caché para forzar la actualización inmediata de todas las secciones del sitio web principal.
                     </p>
 
                     <button
                         onClick={handleRevalidateCache}
                         disabled={isRevalidating}
-                        className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-blue-600 text-white rounded-2xl font-medium hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative z-10 w-full flex items-center justify-center gap-4 px-8 py-5 bg-black text-white rounded-2xl font-bold text-xs tracking-[0.2em] uppercase hover:bg-black/90 transition-all shadow-xl hover:shadow-black/20 disabled:opacity-50 disabled:cursor-not-allowed group/btn"
                     >
                         {isRevalidating ? (
                             <>
-                                <RefreshCw size={18} className="animate-spin" />
-                                Invalidando caché...
+                                <RefreshCw size={20} className="animate-spin" />
+                                Procesando...
                             </>
                         ) : (
                             <>
-                                <RefreshCw size={18} />
-                                Invalidar Caché
+                                <RefreshCw size={20} className="group-hover:rotate-180 transition-transform duration-700" />
+                                Invalidar Cache
                             </>
                         )}
                     </button>
+
+                    {/* Decorative element */}
+                    <div className="absolute bottom-0 right-0 w-32 h-32 bg-blue-500/[0.03] rounded-full blur-[50px] pointer-events-none group-hover:bg-blue-500/[0.08] transition-all duration-700"></div>
                 </div>
 
                 {/* Site Information */}
-                <div className="admin-card rounded-[40px] p-10 space-y-6">
-                    <div className="flex items-center gap-4">
-                        <div className="p-4 rounded-2xl bg-purple-500/10 text-purple-600">
-                            <Globe size={24} />
+                <div className="bg-white border-2 border-black/10 rounded-[2.5rem] p-10 space-y-8 shadow-xl shadow-black/[0.02] hover:shadow-[0px_30px_60px_rgba(0,0,0,0.15)] hover:border-black transition-all duration-500 hover:-translate-y-2 relative overflow-hidden group">
+                    <div className="flex items-center gap-6 relative z-10">
+                        <div className="p-5 rounded-2xl bg-purple-50 text-purple-600 border border-purple-100">
+                            <Globe size={28} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h3 className="text-xl font-medium text-black">Información del Sitio</h3>
-                            <p className="text-sm text-black/50">Detalles generales</p>
+                            <h3 className="text-2xl font-light text-black">Información Técnica</h3>
+                            <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest">Arquitectura Digital</p>
                         </div>
                     </div>
 
-                    <div className="space-y-4 text-sm">
-                        <div className="flex justify-between py-3 border-b border-white/5">
-                            <span className="text-white/40">Versión</span>
-                            <span className="font-medium">1.0.0</span>
-                        </div>
-                        <div className="flex justify-between py-3 border-b border-white/5">
-                            <span className="text-white/40">Framework</span>
-                            <span className="font-medium">Next.js 16</span>
-                        </div>
-                        <div className="flex justify-between py-3 border-b border-white/5">
-                            <span className="text-white/40">Base de Datos</span>
-                            <span className="font-medium">Neon PostgreSQL</span>
-                        </div>
-                        <div className="flex justify-between py-3">
-                            <span className="text-white/40">Almacenamiento</span>
-                            <span className="font-medium">Vercel Blob</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Security */}
-                <div className="bg-white/5 border border-white/5 rounded-[40px] p-10 space-y-6">
-                    <div className="flex items-center gap-4">
-                        <div className="p-4 rounded-2xl bg-green-500/10 text-green-400">
-                            <Shield size={24} />
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-medium">Seguridad</h3>
-                            <p className="text-sm text-white/40">Configuración de acceso</p>
-                        </div>
-                    </div>
-
-                    <div className="space-y-4">
-                        <div className="p-4 rounded-2xl bg-green-500/5 border border-green-500/20">
-                            <div className="flex items-center gap-3 mb-2">
-                                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                                <span className="text-sm font-medium text-green-400">Panel Protegido</span>
+                    <div className="space-y-4 relative z-10 pt-4">
+                        {[
+                            { label: "Versión de Software", value: "1.0.0 Estable" },
+                            { label: "Núcleo de Sistema", value: "Next.js 16 (Enterprise)" },
+                            { label: "Motor de Datos", value: "SQLite / Drizzle" },
+                            { label: "Servicios Cloud", value: "Vercel Empresarial" }
+                        ].map((item, i) => (
+                            <div key={i} className="flex justify-between items-center py-4 border-b border-black/5 last:border-0 hover:bg-black/[0.01] transition-colors px-2 rounded-lg">
+                                <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest">{item.label}</span>
+                                <span className="text-sm font-serif italic text-black">{item.value}</span>
                             </div>
-                            <p className="text-xs text-white/40">
-                                El acceso al panel está protegido por contraseña y sesión.
-                            </p>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Security Section */}
+                <div className="bg-white border-2 border-black/10 rounded-[2.5rem] p-10 space-y-8 shadow-xl shadow-black/[0.02] hover:shadow-[0px_30px_60px_rgba(0,0,0,0.15)] hover:border-black transition-all duration-500 hover:-translate-y-2 relative overflow-hidden group">
+                    <div className="flex items-center gap-6 relative z-10">
+                        <div className="p-5 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100">
+                            <Shield size={28} strokeWidth={1.5} />
+                        </div>
+                        <div>
+                            <h3 className="text-2xl font-light text-black">Seguridad</h3>
+                            <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest">Protocolos de Acceso</p>
+                        </div>
+                    </div>
+
+                    <div className="space-y-6 relative z-10">
+                        <div className="p-6 rounded-[1.5rem] bg-emerald-500/[0.03] border border-emerald-500/10 flex items-start gap-4">
+                            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse mt-1.5 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                            <div className="space-y-1">
+                                <p className="text-sm font-bold text-emerald-800 uppercase tracking-tight">Encriptación Activa</p>
+                                <p className="text-xs text-black/40 leading-relaxed font-medium">El panel de administración está operando bajo el estándar de encriptación AES-256 de alta seguridad.</p>
+                            </div>
                         </div>
 
-                        <div className="p-4 rounded-2xl bg-white/5">
-                            <p className="text-xs text-white/40">
-                                <strong className="text-white/60">Nota:</strong> Para cambiar la contraseña del admin,
-                                modifique la variable de entorno <code className="px-2 py-1 bg-white/10 rounded">ADMIN_PASSWORD</code> en Vercel.
+                        <div className="p-6 rounded-[1.5rem] bg-black/[0.02] border border-black/5 space-y-4">
+                            <p className="text-xs text-black/40 leading-relaxed italic">
+                                Para modificaciones en el núcleo de acceso crítico (<span className="text-black font-bold not-italic">ADMIN_PASSWORD</span>), proceda a través de la consola de configuración de Vercel.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                {/* Performance */}
-                <div className="bg-white/5 border border-white/5 rounded-[40px] p-10 space-y-6">
-                    <div className="flex items-center gap-4">
-                        <div className="p-4 rounded-2xl bg-orange-500/10 text-orange-400">
-                            <Palette size={24} />
+                {/* Performance Section */}
+                <div className="bg-white border-2 border-black/10 rounded-[2.5rem] p-10 space-y-8 shadow-xl shadow-black/[0.02] hover:shadow-[0px_30px_60px_rgba(0,0,0,0.15)] hover:border-black transition-all duration-500 hover:-translate-y-2 relative overflow-hidden group">
+                    <div className="flex items-center gap-6 relative z-10">
+                        <div className="p-5 rounded-2xl bg-orange-50 text-orange-600 border border-orange-100">
+                            <Palette size={28} strokeWidth={1.5} />
                         </div>
                         <div>
-                            <h3 className="text-xl font-medium">Rendimiento</h3>
-                            <p className="text-sm text-white/40">Optimizaciones activas</p>
+                            <h3 className="text-2xl font-light text-black">Rendimiento</h3>
+                            <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest">Eficiencia Operativa</p>
                         </div>
                     </div>
 
-                    <div className="space-y-3 text-sm">
-                        <div className="flex items-center justify-between p-3 rounded-xl bg-white/5">
-                            <span className="text-white/60">Generación Estática</span>
-                            <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">Activo</span>
-                        </div>
-                        <div className="flex items-center justify-between p-3 rounded-xl bg-white/5">
-                            <span className="text-white/60">Caché de Contenido</span>
-                            <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">Activo</span>
-                        </div>
-                        <div className="flex items-center justify-between p-3 rounded-xl bg-white/5">
-                            <span className="text-white/60">Optimización de Imágenes</span>
-                            <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">Activo</span>
-                        </div>
-                        <div className="flex items-center justify-between p-3 rounded-xl bg-white/5">
-                            <span className="text-white/60">Middleware de Detección</span>
-                            <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">Activo</span>
-                        </div>
+                    <div className="space-y-3 relative z-10">
+                        {[
+                            { label: "Generación Estática (SSG)", active: true },
+                            { label: "Caché de Capa Maestra", active: true },
+                            { label: "Optimización de imagen en tiempo real", active: true },
+                            { label: "Intermediario de sistema inteligente", active: true }
+                        ].map((item, i) => (
+                            <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-black/[0.01] border border-black/[0.03] hover:bg-white transition-all shadow-sm">
+                                <span className="text-xs font-bold text-black/60 tracking-tight">{item.label}</span>
+                                <div className="flex items-center gap-2">
+                                    <CheckCircle2 size={14} className="text-emerald-500" />
+                                    <span className="text-[9px] font-bold text-black/30 uppercase tracking-[0.2em]">Optimizado</span>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
             </div>
 
             {/* Info Footer */}
-            <div className="mt-12 p-8 rounded-[40px] bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/5">
-                <div className="flex items-start gap-4">
-                    <Bell size={20} className="text-white/40 mt-1" />
-                    <div className="space-y-2">
-                        <h4 className="font-medium">Información Importante</h4>
-                        <p className="text-sm text-white/60 leading-relaxed">
-                            Este panel utiliza una arquitectura estática para máximo rendimiento.
-                            Los cambios realizados en el contenido se reflejarán automáticamente en la web
-                            gracias al sistema de revalidación bajo demanda. Si los cambios no aparecen,
-                            use el botón "Invalidar Caché" arriba.
+            <div className="relative overflow-hidden p-8 rounded-[2.5rem] bg-marble-texture border-2 border-black/10 shadow-xl">
+                <div className="bg-white/90 backdrop-blur-sm p-10 rounded-[2rem] relative z-10 flex flex-col md:flex-row items-start gap-8">
+                    <div className="p-4 bg-black rounded-2xl text-white shadow-lg">
+                        <Bell size={24} />
+                    </div>
+                    <div className="space-y-4">
+                        <h4 className="text-2xl font-light text-black">Protocolo de Sincronización</h4>
+                        <p className="text-lg text-black/50 leading-relaxed font-medium italic">
+                            Los cambios realizados en el contenido se sincronizan automáticamente. El sistema de arquitectura estática garantiza que su clínica digital cargue a la velocidad del rayo mientras mantiene la frescura de los datos.
                         </p>
                     </div>
                 </div>

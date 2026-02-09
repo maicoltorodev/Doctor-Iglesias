@@ -27,10 +27,15 @@ export default async function DesktopPage() {
             fabContent={content.FAB_CONTENT}
             contactInfo={content.CONTACT_INFO}
         >
+            {/* LADO IZQUIERDO (Espejo) */}
             <DesktopAbout content={content.ABOUT_CONTENT} />
             <DesktopGallery content={content.GALLERY_CONTENT} items={content.GALLERY_LIST} />
             <DesktopContact editorial={content.CONTACT_CONTENT} info={content.CONTACT_INFO} />
+
+            {/* NÚCLEO CENTRAL */}
             <DesktopHero content={content.HERO_CONTENT} />
+
+            {/* LADO DERECHO */}
             <DesktopServices content={content.SERVICES_CONTENT} items={content.SERVICES_LIST} />
             <DesktopResults content={content.RESULTS_CONTENT} items={content.RESULTS_LIST} />
             <DesktopTestimonials content={content.TESTIMONIALS_CONTENT} items={content.TESTIMONIALS_LIST} />

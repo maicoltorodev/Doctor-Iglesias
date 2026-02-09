@@ -18,35 +18,63 @@ export default function DesktopLoading() {
 
                 {/* Logo Central con entrada cinemática */}
                 <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                    className="relative z-10 w-40 h-40"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1.5, ease: [0.23, 1, 0.32, 1] }}
+                    className="relative z-10 w-44 h-44 flex items-center justify-center"
                 >
                     <Image
                         src="/logo.webp"
                         alt="Dr. Jorge Iglesias"
-                        fill
-                        className="object-contain p-4"
+                        width={120}
+                        height={120}
+                        className="object-contain"
                         priority
                     />
                 </motion.div>
 
-                {/* Indicador de carga estructural (Anillo) */}
-                <div className="absolute inset-0 -m-4">
-                    <svg className="w-full h-full animate-spin" viewBox="0 0 100 100" style={{ animationDuration: '1.5s' }}>
-                        <circle
-                            cx="50"
-                            cy="50"
-                            r="48"
-                            fill="none"
-                            stroke="black"
-                            strokeWidth="0.5"
-                            strokeLinecap="round"
-                            strokeDasharray="1, 15"
-                            className="origin-center opacity-20"
-                        />
-                    </svg>
+                {/* Indicador de carga estructural (Anillos Concéntricos) */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                    {/* Anillo Exterior */}
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                        className="absolute w-[280px] h-[280px] border-[0.5px] border-black/5 rounded-full"
+                    />
+
+                    {/* Anillo de Carga Principal */}
+                    <div className="absolute w-[240px] h-[240px]">
+                        <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="48"
+                                fill="none"
+                                stroke="black"
+                                strokeWidth="0.5"
+                                strokeLinecap="round"
+                                strokeDasharray="1, 20"
+                                className="opacity-20"
+                            />
+                        </svg>
+                    </div>
+
+                    {/* Anillo de Carga Secundario (Sentido opuesto) */}
+                    <div className="absolute w-[200px] h-[200px]">
+                        <svg className="w-full h-full animate-spin-reverse-slow" viewBox="0 0 100 100">
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="48"
+                                fill="none"
+                                stroke="black"
+                                strokeWidth="0.3"
+                                strokeLinecap="round"
+                                strokeDasharray="2, 30"
+                                className="opacity-10"
+                            />
+                        </svg>
+                    </div>
                 </div>
 
                 <motion.div
