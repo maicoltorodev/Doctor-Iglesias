@@ -3,12 +3,23 @@
 import { db } from "@/db";
 import { siteContent, services, galleryItems, results, testimonials } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidateTag, revalidatePath } from "next/cache";
 
-// Helper function to revalidate all pages
+// Helper function to revalidate all cache tags
+// Estos tags deben coincidir EXACTAMENTE con los tags en contentService.ts
 function revalidateAll() {
+    // Invalidar todos los tags del cache
+    // En Next.js 16, revalidateTag requiere un segundo parámetro
+    // Usamos 'max' para stale-while-revalidate (sirve contenido stale mientras recarga en background)
+    const tags = ['content', 'services', 'gallery', 'results', 'testimonials'];
+    tags.forEach(tag => {
+        revalidateTag(tag, 'max');
+    });
+
+    // También revalidar las rutas para asegurar que Next.js recargue todo
     revalidatePath('/', 'layout');
-    revalidatePath('/mobile', 'page');
+
+    console.log('✅ Cache invalidated: All tags revalidated with profile "max"');
 }
 
 // 1. Update site_content (Editorial)
@@ -19,6 +30,7 @@ export async function updateSiteContent(section: string, data: any) {
             .where(eq(siteContent.section, section));
 
         revalidateAll();
+        console.log(`✅ Updated section: ${section}`);
         return { success: true };
     } catch (error) {
         console.error("Error updating site content:", error);
