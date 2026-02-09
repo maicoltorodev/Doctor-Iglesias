@@ -1,8 +1,8 @@
 import React from 'react';
-import { EditorialCard } from '@/components/ui/EditorialCard';
-import { Obra } from '@/components/ui/Obra';
-import { SectionArrow } from '@/components/ui/SectionArrow';
-import { EntranceReveal } from '@/components/ui/EntranceReveal';
+import { EditorialCard } from '@/components/ui/desktop/EditorialCard';
+import { Obra } from '@/components/ui/desktop/Obra';
+import { SectionArrow } from '@/components/ui/desktop/SectionArrow';
+import { EntranceReveal } from '@/components/ui/desktop/EntranceReveal';
 import { GalleryMarbles } from './Marbles';
 
 interface GalleryShellProps {

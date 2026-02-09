@@ -1,5 +1,5 @@
 import React from 'react';
-import { EntranceReveal } from '@/components/ui/EntranceReveal';
+import { EntranceReveal } from '@/components/ui/desktop/EntranceReveal';
 import { ResultsMarbles } from './Marbles';
 
 interface ResultsShellProps {

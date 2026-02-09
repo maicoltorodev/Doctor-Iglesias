@@ -1,5 +1,5 @@
 import React from 'react';
-import { MobileEntranceReveal } from '@/components/ui/MobileEntranceReveal';
+import { EntranceReveal } from '@/components/ui/mobile/EntranceReveal';
 import { ResultsMarbles } from './Marbles';
 
 interface ResultsShellProps {
@@ -17,7 +17,7 @@ const ResultsShell: React.FC<ResultsShellProps> = ({ editorial, items }) => {
 
                 {/* SCREEN 1: CABECERA DE GALERÍA */}
                 <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                    <MobileEntranceReveal index={SECTION_INDEX} className="flex flex-col items-center flex-shrink-0 group/title">
+                    <EntranceReveal index={SECTION_INDEX} className="flex flex-col items-center flex-shrink-0 group/title">
                         {editorial}
 
                         {/* FLECHA MÓVIL (Debajo, Vertical) */}
@@ -28,20 +28,20 @@ const ResultsShell: React.FC<ResultsShellProps> = ({ editorial, items }) => {
                                 </svg>
                             </div>
                         </div>
-                    </MobileEntranceReveal>
+                    </EntranceReveal>
                 </div>
 
                 {/* 2. FILA DE COMPARATIVAS (SCREENS) */}
                 <div className="flex gap-0">
                     {items.map((item, i) => (
                         <div key={i} className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                            <MobileEntranceReveal
+                            <EntranceReveal
                                 index={SECTION_INDEX}
                                 delay={`${i * 200 + 400}ms`}
                                 className="relative flex-shrink-0"
                             >
                                 {item}
-                            </MobileEntranceReveal>
+                            </EntranceReveal>
                         </div>
                     ))}
                 </div>

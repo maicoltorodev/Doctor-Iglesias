@@ -1,7 +1,7 @@
 import React from 'react';
-import { EditorialCard } from '@/components/ui/EditorialCard';
-import { SectionArrow } from '@/components/ui/SectionArrow';
-import { Obra } from '@/components/ui/Obra';
+import { EditorialCard } from '@/components/ui/desktop/EditorialCard';
+import { SectionArrow } from '@/components/ui/desktop/SectionArrow';
+import { Obra } from '@/components/ui/desktop/Obra';
 
 export const ResultsEditorialBlock = ({ content }: { content: any }) => {
     const data = content?.editorial || content || {};

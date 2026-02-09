@@ -5,7 +5,7 @@ import { ServiceCursor } from "@/components/ui/ServiceCursor";
 import FloatingAction from "@/components/ui/FloatingAction";
 import { CtaButton } from '@/components/ui/CtaButton';
 import { Clock, Activity, Calendar, Sparkles } from 'lucide-react';
-import { Obra } from '@/components/ui/Obra';
+import { Obra } from '@/components/ui/desktop/Obra';
 import { BackLink } from '@/components/ui/BackLink';
 import { MarbleBackground } from '@/components/layout/desktop/MarbleBackground';
 import { Accordion } from '@/components/ui/Accordion';

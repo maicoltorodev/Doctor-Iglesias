@@ -1,5 +1,5 @@
 import React from 'react';
-import { MobileEntranceReveal } from '@/components/ui/MobileEntranceReveal';
+import { EntranceReveal } from '@/components/ui/mobile/EntranceReveal';
 import { AboutMarbles } from './Marbles';
 
 interface AboutShellProps {
@@ -16,23 +16,23 @@ const AboutShell: React.FC<AboutShellProps> = ({ screen1, screen2, screen3 }) =>
 
                     {/* SCREEN 1 */}
                     <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                        <MobileEntranceReveal index={1} delay="400ms" className="w-[85vw] space-y-8">
+                        <EntranceReveal index={1} delay="400ms" className="w-[85vw] space-y-8">
                             {screen1}
-                        </MobileEntranceReveal>
+                        </EntranceReveal>
                     </div>
 
                     {/* SCREEN 2 */}
                     <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                        <MobileEntranceReveal index={1} delay="600ms" className="w-60">
+                        <EntranceReveal index={1} delay="600ms" className="w-60">
                             {screen2}
-                        </MobileEntranceReveal>
+                        </EntranceReveal>
                     </div>
 
                     {/* SCREEN 3 */}
                     <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                        <MobileEntranceReveal index={1} delay="800ms" className="w-[85vw]">
+                        <EntranceReveal index={1} delay="800ms" className="w-[85vw]">
                             {screen3}
-                        </MobileEntranceReveal>
+                        </EntranceReveal>
                     </div>
 
                 </div>

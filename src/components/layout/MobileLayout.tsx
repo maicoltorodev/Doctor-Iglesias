@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect, createContext, useContext } from "react";
 import MobileNavbar from "@/components/layout/mobile/Navbar";
-import FloatingAction from "@/components/ui/FloatingAction";
+import MobileFloatingAction from "@/components/ui/FloatingAction/Mobile";
 
 // --- Context Definition ---
 interface MobileScrollContextType {
@@ -12,7 +12,9 @@ interface MobileScrollContextType {
 const MobileScrollContext = createContext<MobileScrollContextType>({ activeIndex: 0 });
 
 export const useMobileScroll = () => {
-    return useContext(MobileScrollContext);
+    const context = useContext(MobileScrollContext);
+    if (!context) throw new Error("useMobileScroll must be used within a MobileScrollProvider");
+    return context;
 };
 
 // --- Layout Component ---
@@ -78,11 +80,12 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({ children, navLinks, fabCont
                 </div>
 
                 {/* FAB MOVIL */}
-                <FloatingAction
+                <MobileFloatingAction
                     className="right-6 bottom-6 scale-90"
                     fabContent={fabContent}
                     contactInfo={contactInfo}
                 />
+
             </div>
         </MobileScrollContext.Provider>
     );

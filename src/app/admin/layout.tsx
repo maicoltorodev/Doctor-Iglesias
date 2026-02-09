@@ -19,7 +19,7 @@ import {
     ChevronRight
 } from 'lucide-react';
 import { Toaster } from './components/Toaster';
-import CustomCursor from '@/components/ui/CustomCursor';
+import CustomCursor from '@/components/ui/desktop/CustomCursor';
 import { useCustomCursor } from '@/hooks/useCustomCursor';
 import './admin.css';
 

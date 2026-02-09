@@ -1,6 +1,6 @@
 import React from 'react';
-import { EntranceReveal } from '@/components/ui/EntranceReveal';
-import { SectionArrow } from '@/components/ui/SectionArrow';
+import { EntranceReveal } from '@/components/ui/desktop/EntranceReveal';
+import { SectionArrow } from '@/components/ui/desktop/SectionArrow';
 import { ContactMarbles } from './Marbles';
 
 interface ContactShellProps {

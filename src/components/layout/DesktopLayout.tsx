@@ -2,8 +2,8 @@
 
 import React from "react";
 import DesktopNavbar from "@/components/layout/desktop/Navbar";
-import CustomCursor from "@/components/ui/CustomCursor";
-import FloatingAction from "@/components/ui/FloatingAction";
+import CustomCursor from "@/components/ui/desktop/CustomCursor";
+import DesktopFloatingAction from "@/components/ui/FloatingAction/Desktop";
 import { useCustomCursor } from "@/hooks/useCustomCursor";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { DesktopScrollProvider, useDesktopScroll } from "@/components/providers/DesktopScrollProvider";
@@ -54,10 +54,11 @@ const LayoutContent: React.FC<Omit<DesktopLayoutProps, 'navLinks'>> = ({
             <CustomCursor cursorState={{ cursorRef, cursorDotRef, isHovering, setIsHovering, isLogoHovered, setIsLogoHovered }} />
 
             {/* FAB */}
-            <FloatingAction
+            <DesktopFloatingAction
                 fabContent={fabContent}
                 contactInfo={contactInfo}
             />
+
         </div>
     );
 };

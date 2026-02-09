@@ -1,5 +1,5 @@
 import React from 'react';
-import { MobileEntranceReveal } from '@/components/ui/MobileEntranceReveal';
+import { EntranceReveal } from '@/components/ui/mobile/EntranceReveal';
 import { ServicesMarbles } from './Marbles';
 
 interface ServicesShellProps {
@@ -17,7 +17,7 @@ const ServicesShell: React.FC<ServicesShellProps> = ({ editorial, items }) => {
 
                 {/* SCREEN 1: INTRODUCCIÓN EDITORIAL */}
                 <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                    <MobileEntranceReveal index={SECTION_INDEX} className="flex flex-col items-center flex-shrink-0 group/editorial-services">
+                    <EntranceReveal index={SECTION_INDEX} className="flex flex-col items-center flex-shrink-0 group/editorial-services">
                         {editorial}
 
                         {/* FLECHA MÓVIL (Debajo) */}
@@ -28,20 +28,20 @@ const ServicesShell: React.FC<ServicesShellProps> = ({ editorial, items }) => {
                                 </svg>
                             </div>
                         </div>
-                    </MobileEntranceReveal>
+                    </EntranceReveal>
                 </div>
 
                 {/* 2. GALERÍA DE TARJETAS (SCREENS) */}
                 <div className="flex gap-0">
                     {items.map((item, i) => (
                         <div key={i} className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                            <MobileEntranceReveal
+                            <EntranceReveal
                                 index={SECTION_INDEX}
                                 delay={`${i * 100 + 400}ms`}
                                 className="group relative block"
                             >
                                 {item}
-                            </MobileEntranceReveal>
+                            </EntranceReveal>
                         </div>
                     ))}
                 </div>

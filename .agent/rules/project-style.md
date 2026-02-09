@@ -5,7 +5,7 @@ trigger: always_on
 Este no es un proyecto de web normal, siempre tener en cuenta los siguientes puntos;
 
 1. Separación Total de Plataformas (Desktop vs Mobile)
-Código Segregado: Separamos físicamente el código de Desktop del de Mobile. No solo es un cambio de CSS; son componentes y layouts independientes que se sirven según el dispositivo.
+Código Segregado: Separamos TOTALMENTE el código de Desktop del de Mobile. No solo es un cambio de CSS; son componentes y layouts independientes que se sirven según el dispositivo.
 Optimización vía Middleware: El Middleware es el corazón de esta lógica; intercepta la solicitud y decide qué versión de la página entregar, asegurando que el dispositivo solo descargue e hidrate el código que realmente va a usar.
 Experiencias Diferenciadas: En Escritorio manejamos el concepto de galería con scroll horizontal y Lenis. En Móvil, el sistema se adapta a una lógica táctil y vertical, cargando solo los assets necesarios para una red móvil.
 

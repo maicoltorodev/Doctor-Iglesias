@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { EditorialCard } from '@/components/ui/EditorialCard';
+import { EditorialCard } from '@/components/ui/mobile/EditorialCard';
 
 export const ResultsEditorial = ({ content }: { content: any }) => (
     <EditorialCard

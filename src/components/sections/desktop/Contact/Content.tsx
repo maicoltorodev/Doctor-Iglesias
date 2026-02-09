@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Obra } from '@/components/ui/Obra';
-import { EditorialCard } from '@/components/ui/EditorialCard';
+import { Obra } from '@/components/ui/desktop/Obra';
+import { EditorialCard } from '@/components/ui/desktop/EditorialCard';
 
 export const ContactMapFrame = ({ info }: { info: any }) => (
     <div className="absolute inset-0 bg-gray-200 z-0">

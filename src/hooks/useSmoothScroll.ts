@@ -5,13 +5,20 @@ import Lenis from 'lenis';
 import { useDesktopScroll } from "@/components/providers/DesktopScrollProvider";
 
 export const useSmoothScroll = () => {
+    const context = useDesktopScroll();
     const {
         navLinks,
         scrollContainerRef,
         setActiveIndex,
         setVisibleSections,
         activeIndex
-    } = useDesktopScroll();
+    } = context || {
+        navLinks: [],
+        scrollContainerRef: { current: null },
+        setActiveIndex: () => { },
+        setVisibleSections: () => { },
+        activeIndex: 3
+    };
 
     const lenisRef = useRef<Lenis | null>(null);
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useDesktopScroll } from '@/components/layout/DesktopLayout';
-import { MarbleTriangle } from '@/components/ui/MarbleTriangle';
+import { MarbleTriangle } from '@/components/ui/desktop/MarbleTriangle';
 
 interface AboutMarblesProps {
     sectionId: string;

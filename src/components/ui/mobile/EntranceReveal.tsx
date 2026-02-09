@@ -10,12 +10,7 @@ interface MobileEntranceRevealProps {
     className?: string;
 }
 
-export const MobileEntranceReveal = ({
-    children,
-    index,
-    delay = "0ms",
-    className = ""
-}: MobileEntranceRevealProps) => {
+export const EntranceReveal = ({ children, index, delay = "", className = "" }: MobileEntranceRevealProps) => {
     const { activeIndex } = useMobileScroll();
     const isVisible = activeIndex === index;
 

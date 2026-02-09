@@ -1,6 +1,6 @@
 import React from 'react';
 import { CONTACT_INFO } from '@/constants/content';
-import { MobileEntranceReveal } from '@/components/ui/MobileEntranceReveal';
+import { EntranceReveal } from '@/components/ui/mobile/EntranceReveal';
 import { ContactMarbles } from './Marbles';
 
 interface ContactShellProps {
@@ -23,7 +23,7 @@ const ContactShell: React.FC<ContactShellProps> = ({ mapFrame, clinicImage, soci
 
                     {/* SCREEN 1: MAPA GOOGLE */}
                     <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                        <MobileEntranceReveal
+                        <EntranceReveal
                             index={SECTION_INDEX}
                             delay="400ms"
                             className="w-60 group"
@@ -36,12 +36,12 @@ const ContactShell: React.FC<ContactShellProps> = ({ mapFrame, clinicImage, soci
                                 <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-black/20">Ubicación</p>
                                 <p className="text-lg font-light text-black/80 leading-tight">Mapa Google</p>
                             </div>
-                        </MobileEntranceReveal>
+                        </EntranceReveal>
                     </div>
 
                     {/* SCREEN 2: LA CLÍNICA */}
                     <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                        <MobileEntranceReveal
+                        <EntranceReveal
                             index={SECTION_INDEX}
                             delay="600ms"
                             className="w-60 group"
@@ -54,12 +54,12 @@ const ContactShell: React.FC<ContactShellProps> = ({ mapFrame, clinicImage, soci
                                 <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-black/20">Sede Principal</p>
                                 <p className="text-lg font-light text-black/80 leading-tight">{CONTACT_INFO.address}</p>
                             </div>
-                        </MobileEntranceReveal>
+                        </EntranceReveal>
                     </div>
 
                     {/* SCREEN 3: CANALES DIRECTOS */}
                     <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                        <MobileEntranceReveal
+                        <EntranceReveal
                             index={SECTION_INDEX}
                             delay="800ms"
                             className="w-60 group"
@@ -72,19 +72,19 @@ const ContactShell: React.FC<ContactShellProps> = ({ mapFrame, clinicImage, soci
                                 <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-black/20">Atención</p>
                                 <p className="text-lg font-light text-black/80 leading-tight">Canales Directos</p>
                             </div>
-                        </MobileEntranceReveal>
+                        </EntranceReveal>
                     </div>
 
                 </div>
 
                 {/* SCREEN 4: TÍTULO EDITORIAL SECCIÓN */}
                 <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                    <MobileEntranceReveal
+                    <EntranceReveal
                         index={SECTION_INDEX}
                         className="flex flex-col items-center flex-shrink-0"
                     >
                         {editorial}
-                    </MobileEntranceReveal>
+                    </EntranceReveal>
                 </div>
 
                 {/* PIEZAS DE MÁRMOL (Client Island) */}

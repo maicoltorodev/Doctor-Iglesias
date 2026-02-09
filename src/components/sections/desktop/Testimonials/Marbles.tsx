@@ -2,10 +2,12 @@
 
 import React from 'react';
 import { useDesktopScroll } from '@/components/layout/DesktopLayout';
-import { MarbleTriangle } from '@/components/ui/MarbleTriangle';
+import { MarbleTriangle } from '@/components/ui/desktop/MarbleTriangle';
 
 export const TestimonialsMarbles = () => {
-    const { activeIndex, visibleSections } = useDesktopScroll();
+    const context = useDesktopScroll();
+    const activeIndex = context?.activeIndex ?? 0;
+    const visibleSections = context?.visibleSections ?? {};
     const isVisible = visibleSections.testimonios;
 
     return (

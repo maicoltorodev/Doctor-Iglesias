@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { EditorialCard } from '@/components/ui/EditorialCard';
-import { Obra } from '@/components/ui/Obra';
+import { EditorialCard } from '@/components/ui/desktop/EditorialCard';
+import { Obra } from '@/components/ui/desktop/Obra';
 
 export const ServicesEditorialBlock = ({ content }: { content: any }) => {
     const data = content?.editorial || content || {};

@@ -2,14 +2,16 @@
 
 import React from 'react';
 import { useDesktopScroll } from '@/components/layout/DesktopLayout';
-import { MarbleTriangle } from '@/components/ui/MarbleTriangle';
+import { MarbleTriangle } from '@/components/ui/desktop/MarbleTriangle';
 
 interface ServicesMarblesProps {
     sectionId: string;
 }
 
 export const ServicesMarbles = ({ sectionId }: ServicesMarblesProps) => {
-    const { activeIndex, visibleSections } = useDesktopScroll();
+    const context = useDesktopScroll();
+    const activeIndex = context?.activeIndex ?? 0;
+    const visibleSections = context?.visibleSections ?? {};
     const isVisible = visibleSections[sectionId];
 
     return (

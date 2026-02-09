@@ -12,7 +12,8 @@ interface HeroInteractiveContentProps {
 }
 
 export const HeroInteractiveContent = ({ logo, text, cta }: HeroInteractiveContentProps) => {
-    const { setIsLogoHovered } = useDesktopScroll();
+    const context = useDesktopScroll();
+    const setIsLogoHovered = context?.setIsLogoHovered ?? (() => { });
     const router = useRouter();
     const [clickCount, setClickCount] = useState(0);
     const timerRef = useRef<NodeJS.Timeout | null>(null);

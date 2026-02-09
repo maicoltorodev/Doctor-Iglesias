@@ -4,7 +4,9 @@ import React from 'react';
 import { useDesktopScroll } from '@/components/providers/DesktopScrollProvider';
 
 export const ContactMarbles = () => {
-    const { activeIndex, visibleSections } = useDesktopScroll();
+    const context = useDesktopScroll();
+    const activeIndex = context?.activeIndex ?? 0;
+    const visibleSections = context?.visibleSections ?? {};
     const isVisible = visibleSections.contacto;
 
     return (
