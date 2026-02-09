@@ -105,7 +105,7 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
       />
 
       <div className="relative w-full h-full flex items-center justify-center">
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           <motion.div
             key={currentStory?.id}
             initial={{ 
