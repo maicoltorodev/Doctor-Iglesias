@@ -28,14 +28,15 @@ export default function MobileLoading() {
                     />
                 </motion.div>
 
-                {/* Sistema de Anillos Minimalista */}
+                {/* Sistema de Anillos Minimalista - Centrados con el Logo */}
                 <div className="absolute inset-0 flex items-center justify-center">
 
-                    {/* Anillo Exterior - Giratorio con gap */}
+                    {/* Anillo Exterior - Giratorio rápido con gap */}
                     <motion.div
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-                        className="absolute w-[160px] h-[160px]"
+                        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                        className="absolute"
+                        style={{ width: '160px', height: '160px' }}
                     >
                         <svg className="w-full h-full" viewBox="0 0 100 100">
                             <circle
@@ -47,16 +48,17 @@ export default function MobileLoading() {
                                 strokeWidth="1.5"
                                 strokeLinecap="round"
                                 strokeDasharray="260, 42"
-                                opacity="0.2"
+                                opacity="0.9"
                             />
                         </svg>
                     </motion.div>
 
-                    {/* Anillo Interior - Giratorio inverso con gap */}
+                    {/* Anillo Interior - Giratorio rápido inverso con gap */}
                     <motion.div
                         animate={{ rotate: -360 }}
-                        transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
-                        className="absolute w-[120px] h-[120px]"
+                        transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+                        className="absolute"
+                        style={{ width: '120px', height: '120px' }}
                     >
                         <svg className="w-full h-full" viewBox="0 0 100 100">
                             <circle
@@ -68,7 +70,7 @@ export default function MobileLoading() {
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeDasharray="240, 62"
-                                opacity="0.25"
+                                opacity="1"
                             />
                         </svg>
                     </motion.div>

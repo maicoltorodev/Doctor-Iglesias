@@ -112,13 +112,13 @@ export default function RootLayout({
               />
             </div>
 
-            {/* Anillo Exterior con gap */}
+            {/* Anillo Exterior con gap - Rápido */}
             <svg
               style={{
                 position: 'absolute',
                 width: '200px',
                 height: '200px',
-                animation: 'spin 3s linear infinite'
+                animation: 'spin 0.8s linear infinite'
               }}
               viewBox="0 0 100 100"
             >
@@ -127,20 +127,20 @@ export default function RootLayout({
                 cy="50"
                 r="48"
                 fill="none"
-                stroke="rgba(0,0,0,0.15)"
+                stroke="rgba(0,0,0,0.9)"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeDasharray="280, 22"
               />
             </svg>
 
-            {/* Anillo Interior con gap (rotación inversa) */}
+            {/* Anillo Interior con gap - Rápido (rotación inversa) */}
             <svg
               style={{
                 position: 'absolute',
                 width: '150px',
                 height: '150px',
-                animation: 'spinReverse 4s linear infinite'
+                animation: 'spinReverse 1.2s linear infinite'
               }}
               viewBox="0 0 100 100"
             >
@@ -149,7 +149,7 @@ export default function RootLayout({
                 cy="50"
                 r="48"
                 fill="none"
-                stroke="rgba(0,0,0,0.2)"
+                stroke="rgba(0,0,0,1)"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeDasharray="260, 42"

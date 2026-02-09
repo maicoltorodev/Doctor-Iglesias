@@ -28,14 +28,15 @@ export default function DesktopLoading() {
                     />
                 </motion.div>
 
-                {/* Sistema de Anillos Minimalista */}
+                {/* Sistema de Anillos Minimalista - Centrados con el Logo */}
                 <div className="absolute inset-0 flex items-center justify-center">
 
-                    {/* Anillo Exterior - Giratorio con gap */}
+                    {/* Anillo Exterior - Giratorio rápido con gap */}
                     <motion.div
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                        className="absolute w-[240px] h-[240px]"
+                        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                        className="absolute"
+                        style={{ width: '240px', height: '240px' }}
                     >
                         <svg className="w-full h-full" viewBox="0 0 100 100">
                             <circle
@@ -47,16 +48,17 @@ export default function DesktopLoading() {
                                 strokeWidth="1.5"
                                 strokeLinecap="round"
                                 strokeDasharray="280, 22"
-                                opacity="0.2"
+                                opacity="0.9"
                             />
                         </svg>
                     </motion.div>
 
-                    {/* Anillo Interior - Giratorio inverso con gap */}
+                    {/* Anillo Interior - Giratorio rápido inverso con gap */}
                     <motion.div
                         animate={{ rotate: -360 }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                        className="absolute w-[180px] h-[180px]"
+                        transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+                        className="absolute"
+                        style={{ width: '180px', height: '180px' }}
                     >
                         <svg className="w-full h-full" viewBox="0 0 100 100">
                             <circle
@@ -68,7 +70,7 @@ export default function DesktopLoading() {
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeDasharray="260, 42"
-                                opacity="0.3"
+                                opacity="1"
                             />
                         </svg>
                     </motion.div>
