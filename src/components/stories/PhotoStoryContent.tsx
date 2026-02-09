@@ -57,3 +57,5 @@ export const PhotoStoryContent: React.FC<PhotoStoryContentProps> = ({ content })
     </motion.div>
   );
 };
+
+export default PhotoStoryContent;

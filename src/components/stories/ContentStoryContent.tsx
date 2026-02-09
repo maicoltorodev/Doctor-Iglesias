@@ -124,3 +124,5 @@ export const ContentStoryContent: React.FC<ContentStoryContentProps> = ({ conten
     </motion.div>
   );
 };
+
+export default ContentStoryContent;

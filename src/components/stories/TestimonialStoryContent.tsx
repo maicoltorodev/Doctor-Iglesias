@@ -91,3 +91,5 @@ export const TestimonialStoryContent: React.FC<TestimonialStoryContentProps> = (
     </motion.div>
   );
 };
+
+export default TestimonialStoryContent;

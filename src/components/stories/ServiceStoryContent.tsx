@@ -39,3 +39,5 @@ export const ServiceStoryContent: React.FC<ServiceStoryContentProps> = ({ conten
     </motion.div>
   );
 };
+
+export default ServiceStoryContent;

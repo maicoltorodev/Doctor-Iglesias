@@ -82,3 +82,5 @@ export const HeroStoryContent: React.FC<HeroStoryContentProps> = ({ content }) =
     </motion.div>
   );
 };
+
+export default HeroStoryContent;

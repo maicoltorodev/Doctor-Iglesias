@@ -63,3 +63,5 @@ export const TitleStoryContent: React.FC<TitleStoryContentProps> = ({ content })
     </motion.div>
   );
 };
+
+export default TitleStoryContent;
