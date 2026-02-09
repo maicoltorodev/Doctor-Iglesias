@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useCustomCursor } from '@/hooks/useCustomCursor';
-import CustomCursor from './CustomCursor';
+import CustomCursor from './desktop/CustomCursor';
 
 export const ServiceCursor = () => {
     const cursorState = useCustomCursor();
