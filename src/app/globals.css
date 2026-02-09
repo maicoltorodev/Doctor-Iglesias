@@ -31,6 +31,8 @@
             opacity: 0;
         }
     }
+
+    --background-image-gradient-radial: radial-gradient(circle, var(--tw-gradient-stops));
 }
 
 :root {
