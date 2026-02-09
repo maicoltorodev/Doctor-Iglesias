@@ -9,7 +9,7 @@ interface HeroShellProps {
 
 const HeroShell: React.FC<HeroShellProps> = ({ background, logo, text, cta }) => {
     return (
-        <section id="hero" className="w-screen h-full flex-shrink-0 relative overflow-hidden bg-[#e6e3e8] section-contain snap-center">
+        <section id="hero" className="w-full min-h-screen relative overflow-hidden bg-[#e6e3e8] section-contain">
             {background}
 
             {/* PIEZAS DE MÁRMOL ARQUITECTÓNICAS (TRIÁNGULOS) */}

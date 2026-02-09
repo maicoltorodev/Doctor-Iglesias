@@ -65,8 +65,6 @@ export const viewport = {
   userScalable: false,
 };
 
-import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
-
 export default function RootLayout({
   children,
 }: Readonly<{

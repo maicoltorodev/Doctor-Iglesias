@@ -10,27 +10,27 @@ interface AboutShellProps {
 
 const AboutShell: React.FC<AboutShellProps> = ({ screen1, screen2, screen3 }) => {
     return (
-        <section id="nosotros" className="w-fit h-full flex-shrink-0 relative bg-[#e6e3e8] text-black flex items-center overflow-hidden section-contain">
-            <div className="relative z-20 flex items-center h-full">
-                <div className="flex flex-row gap-0 items-center">
+        <section id="nosotros" className="w-full min-h-screen relative bg-[#e6e3e8] text-black section-contain py-20">
+            <div className="relative z-20 container mx-auto px-6">
+                <div className="flex flex-col space-y-16">
 
                     {/* SCREEN 1 */}
-                    <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                        <EntranceReveal index={1} delay="400ms" className="w-[85vw] space-y-8">
+                    <div className="flex items-center justify-center">
+                        <EntranceReveal index={1} delay="400ms" className="w-full max-w-4xl space-y-8">
                             {screen1}
                         </EntranceReveal>
                     </div>
 
                     {/* SCREEN 2 */}
-                    <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                        <EntranceReveal index={1} delay="600ms" className="w-60">
+                    <div className="flex items-center justify-center">
+                        <EntranceReveal index={1} delay="600ms" className="w-full max-w-md">
                             {screen2}
                         </EntranceReveal>
                     </div>
 
                     {/* SCREEN 3 */}
-                    <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                        <EntranceReveal index={1} delay="800ms" className="w-[85vw]">
+                    <div className="flex items-center justify-center">
+                        <EntranceReveal index={1} delay="800ms" className="w-full max-w-4xl">
                             {screen3}
                         </EntranceReveal>
                     </div>

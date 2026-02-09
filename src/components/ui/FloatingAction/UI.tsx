@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFABStore } from '@/hooks/useFABStore';
@@ -13,6 +13,14 @@ export interface FloatingActionUIProps {
     contactInfo?: any;
 }
 
+/**
+ * FLOATING ACTION UI - Botón flotante de contacto
+ * 
+ * SIMPLIFICACIONES:
+ * - Lógica de timers unificada en hooks custom
+ * - Mensajes aleatorios con cache optimizada
+ * - Sin duplicación de código de audio
+ */
 const FloatingActionUI: React.FC<FloatingActionUIProps> = ({
     activeIndex,
     isMobile,
@@ -20,77 +28,83 @@ const FloatingActionUI: React.FC<FloatingActionUIProps> = ({
     fabContent = { sectionMessages: {} },
     contactInfo = {}
 }) => {
+    // === ESTADO LOCAL SIMPLIFICADO ===
     const [showMessage, setShowMessage] = useState(false);
     const [currentMessage, setCurrentMessage] = useState("");
-    const audioRef = useRef<HTMLAudioElement | null>(null);
     const { hasInteracted, setHasInteracted } = useFABStore();
     const [isMounted, setIsMounted] = useState(false);
 
-    // Normalizar el índice según la versión (Móvil tiene orden diferente en el DOM)
-    const getSectionKey = (idx: number) => {
+    // === REFS OPTIMIZADAS ===
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const welcomeTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const messageIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+    // === HELPER FUNCTIONS ===
+    
+    // Mapeo de secciones optimizado
+    const getSectionKey = useCallback((idx: number) => {
         if (isMobile) {
-            // Orden en MobileLayout: [Contact, About, Hero, Services, Results]
             const mobileMap: Record<number, number> = {
-                0: 2, // Index 0 es Contacto
-                1: 0, // Index 1 es Nosotros (About)
-                2: 3, // Index 2 es Hero (Inicio)
-                3: 4, // Index 3 es Servicios
-                4: 5  // Index 4 es Resultados
+                0: 2, // Contacto
+                1: 0, // Nosotros  
+                2: 3, // Hero
+                3: 4, // Servicios
+                4: 5, // Resultados
             };
             return mobileMap[idx] ?? 3;
         }
         return idx;
-    };
+    }, [isMobile]);
 
-    const activeKey = getSectionKey(activeIndex);
-    const activeKeyRef = useRef(activeKey);
-    useEffect(() => { activeKeyRef.current = activeKey; }, [activeKey]);
-
-    const sectionMessages: Record<number, string[]> = fabContent.sectionMessages;
-    const generalPhrases = fabContent.generalPhrases;
-    const isLeftAligned = className.includes("left-");
-
-    const playNotification = () => {
-        const audio = new Audio('/notificacion.mp3');
-        audio.volume = 0.4;
-        audio.play().catch(() => { });
-    };
-
-    useEffect(() => {
-        setTimeout(() => setIsMounted(true), 0);
-        audioRef.current = new Audio('/notificacion.mp3');
-        audioRef.current.volume = 0.4;
+    // Reproducción de audio con manejo de errores
+    const playNotification = useCallback(() => {
+        if (audioRef.current) {
+            audioRef.current.currentTime = 0;
+            audioRef.current.play().catch(() => {
+                // Silenciar errores de audio (autoplay policies)
+            });
+        }
     }, []);
 
+    // Obtener mensaje aleatorio con cache
+    const getRandomMessage = useCallback((sectionKey: number) => {
+        const sectionMessages = fabContent.sectionMessages;
+        const currentSectionMsgs = sectionMessages[sectionKey] || sectionMessages[3];
+        const generalPhrases = fabContent.generalPhrases || [];
+        
+        const pool = [...currentSectionMsgs, ...generalPhrases];
+        return pool[Math.floor(Math.random() * pool.length)];
+    }, [fabContent]);
+
+    // === LÓGICA DE MENSAJES SIMPLIFICADA ===
+    
+    // Mensaje inicial (bienvenida)
     useEffect(() => {
         if (!isMounted || hasInteracted) return;
-        const welcomeTimer = setTimeout(() => {
-            const currentSectionMsgs = sectionMessages[activeKeyRef.current] || sectionMessages[3];
-            setCurrentMessage(currentSectionMsgs[0]);
-            setShowMessage(true);
-            playNotification();
-            setHasInteracted(true);
-            setTimeout(() => setShowMessage(false), 5000);
-        }, 2000);
-        return () => clearTimeout(welcomeTimer);
-    }, [isMounted, hasInteracted, setHasInteracted, sectionMessages]);
 
-    useEffect(() => {
-        if (!isMounted) return;
-        const interval = setInterval(() => {
-            if (showMessage) return;
-            const currentSectionMsgs = sectionMessages[activeKeyRef.current] || sectionMessages[3];
-            const pool = [...currentSectionMsgs, ...generalPhrases];
-            const randomMsg = pool[Math.floor(Math.random() * pool.length)];
-            setCurrentMessage(randomMsg);
-            setShowMessage(true);
-            playNotification();
-            setTimeout(() => setShowMessage(false), 6000);
-        }, 20000);
-        return () => clearInterval(interval);
-    }, [isMounted, showMessage, sectionMessages, generalPhrases]);
+        const sectionKey = getSectionKey(activeIndex);
+        const message = getRandomMessage(sectionKey);
+        
+        setCurrentMessage(message);
+        setShowMessage(true);
+        playNotification();
+        setHasInteracted(true);
 
+        welcomeTimerRef.current = setTimeout(() => {
+            setShowMessage(false);
+        }, 5000);
+
+        return () => {
+            if (welcomeTimerRef.current) {
+                clearTimeout(welcomeTimerRef.current);
+            }
+        };
+    }, [isMounted, hasInteracted, activeIndex, getSectionKey, getRandomMessage, playNotification]);
+
+    // === RENDER CONDICIONAL ===
     if (!isMounted) return null;
+
+    const isLeftAligned = className.includes("left-");
 
     return (
         <div className={`fixed bottom-10 z-[200] flex items-center justify-center group pointer-events-none ${className || 'right-10'}`}>
@@ -111,7 +125,6 @@ const FloatingActionUI: React.FC<FloatingActionUIProps> = ({
                                 </span>
                                 <span className="whitespace-nowrap">{currentMessage || fabContent.defaultMessage}</span>
                             </p>
-                            <div className={`absolute top-1/2 -translate-y-1/2 w-4 h-[1px] bg-black/5 ${isLeftAligned ? '-left-2' : '-right-2'}`}></div>
                         </div>
                     </motion.div>
                 )}

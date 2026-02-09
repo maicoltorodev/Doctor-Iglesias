@@ -13,9 +13,6 @@ interface DesktopNavbarProps {
 }
 
 const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSection, isLogoHovered, navLinks, heroContent }) => {
-    // DEBUG: Ver qué activeIndex está llegando
-    console.log('🔍 Navbar activeIndex:', activeIndex, 'navLinks:', navLinks.map(l => ({ id: l.id, index: l.index })));
-
     return (
         <nav
             suppressHydrationWarning

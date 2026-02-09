@@ -12,43 +12,36 @@ const ServicesShell: React.FC<ServicesShellProps> = ({ editorial, items }) => {
     const SECTION_INDEX = 3;
 
     return (
-        <section id="servicios" className="w-fit h-full flex-shrink-0 relative bg-[#e6e3e8] text-black flex items-center overflow-hidden section-contain">
-            <div className="relative z-20 flex items-center h-full">
+        <section id="servicios" className="w-full min-h-screen relative bg-[#e6e3e8] text-black section-contain py-20">
+            <div className="relative z-20 container mx-auto px-6">
+                <div className="flex flex-col space-y-20">
 
-                {/* SCREEN 1: INTRODUCCIÓN EDITORIAL */}
-                <div className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                    <EntranceReveal index={SECTION_INDEX} className="flex flex-col items-center flex-shrink-0 group/editorial-services">
-                        {editorial}
+                    {/* SCREEN 1: INTRODUCCIÓN EDITORIAL */}
+                    <div className="flex items-center justify-center">
+                        <EntranceReveal index={SECTION_INDEX} className="flex flex-col items-center group/editorial-services">
+                            {editorial}
+                        </EntranceReveal>
+                    </div>
 
-                        {/* FLECHA MÓVIL (Debajo) */}
-                        <div className="flex items-center mt-12 animate-fade-in" style={{ animationDelay: '1.5s' }}>
-                            <div className="animate-guide-right transform">
-                                <svg width="100" height="80" viewBox="0 0 50 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-black/50 overflow-visible">
-                                    <path d="M2 20L48 20M48 20L30 4M48 20L30 36" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
+                    {/* 2. GALERÍA DE TARJETAS (VERTICAL) */}
+                    <div className="flex flex-col space-y-8">
+                        {items.map((item, i) => (
+                            <div key={i} className="flex items-center justify-center">
+                                <EntranceReveal
+                                    index={SECTION_INDEX}
+                                    delay={`${i * 100 + 400}ms`}
+                                    className="group relative block w-full max-w-md"
+                                >
+                                    {item}
+                                </EntranceReveal>
                             </div>
-                        </div>
-                    </EntranceReveal>
+                        ))}
+                    </div>
+
+                    {/* PIEZAS DE MÁRMOL (Client Island) */}
+                    <ServicesMarbles index={SECTION_INDEX} />
+
                 </div>
-
-                {/* 2. GALERÍA DE TARJETAS (SCREENS) */}
-                <div className="flex gap-0">
-                    {items.map((item, i) => (
-                        <div key={i} className="w-screen h-full flex items-center justify-center flex-shrink-0 snap-center">
-                            <EntranceReveal
-                                index={SECTION_INDEX}
-                                delay={`${i * 100 + 400}ms`}
-                                className="group relative block"
-                            >
-                                {item}
-                            </EntranceReveal>
-                        </div>
-                    ))}
-                </div>
-
-                {/* PIEZAS DE MÁRMOL (Client Island) */}
-                <ServicesMarbles index={SECTION_INDEX} />
-
             </div>
         </section>
     );

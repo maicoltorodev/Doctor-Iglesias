@@ -1,40 +1,20 @@
 "use client";
 
-import React, { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
-import Lenis from 'lenis';
+import React from 'react';
 
+/**
+ * SMOOTH SCROLL PROVIDER - DESHABILITADO
+ * 
+ * ESTADO: DESCONTINUADO - El proyecto usa scroll horizontal nativo directamente en DesktopLayout
+ * 
+ * MOTIVO DE ELIMINACIÓN: 
+ * - Lenis ya no se usa (comentado en useEffect línea 11-14)
+ * - Este archivo solo agrega bundle size sin beneficio funcional
+ * - DesktopLayout maneja el scroll directamente con CSS snap
+ * 
+ * ALTERNATIVA: Si se necesita scroll suave en el futuro,
+ * implementar directamente en DesktopLayout sin provider separado
+ */
 export const SmoothScrollProvider = ({ children }: { children: React.ReactNode }) => {
-    const pathname = usePathname();
-    const isAdminRoute = pathname?.startsWith('/admin');
-
-    useEffect(() => {
-        // DESHABILITADO: El proyecto usa scroll horizontal nativo con Lenis en DesktopLayout
-        // No inicializar Lenis vertical para evitar conflictos
-        return;
-
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo out
-            orientation: 'vertical',
-            gestureOrientation: 'vertical',
-            smoothWheel: true,
-            wheelMultiplier: 1,
-            touchMultiplier: 2,
-            infinite: false,
-        });
-
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
-
-        return () => {
-            lenis.destroy();
-        };
-    }, [isAdminRoute]);
-
     return <>{children}</>;
 };
