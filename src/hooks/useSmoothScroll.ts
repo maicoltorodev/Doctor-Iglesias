@@ -26,7 +26,18 @@ export const useSmoothScroll = () => {
     const indexMap = useMemo(() => {
         const map: Record<string, number> = {};
         navLinks.forEach(link => {
+            // Agregamos el ID original (ej: "servicios-title", "hero")
             map[link.id] = link.index;
+
+            // También agregamos versiones sin sufijo para las secciones
+            // ej: "servicios-title" -> también mapear "servicios"
+            if (link.id.endsWith('-title')) {
+                const baseId = link.id.replace('-title', '');
+                map[baseId] = link.index;
+            }
+
+            // Para "nosotros-title", también mapear "nosotros"
+            // Para "servicios-title", también mapear "servicios", etc.
         });
         return map;
     }, [navLinks]);

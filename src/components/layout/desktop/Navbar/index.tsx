@@ -13,8 +13,12 @@ interface DesktopNavbarProps {
 }
 
 const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSection, isLogoHovered, navLinks, heroContent }) => {
+    // DEBUG: Ver qué activeIndex está llegando
+    console.log('🔍 Navbar activeIndex:', activeIndex, 'navLinks:', navLinks.map(l => ({ id: l.id, index: l.index })));
+
     return (
         <nav
+            suppressHydrationWarning
             className={`fixed top-0 left-0 right-0 h-[100px] z-[100] transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isLogoHovered ? '-translate-y-full' : 'translate-y-0'
                 }`}
         >
@@ -41,25 +45,53 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSect
 
                     {/* BLOQUE IZQUIERDO */}
                     <div className="flex-1 flex justify-end gap-12 xl:gap-20 pr-16">
-                        {navLinks.slice(0, 3).map((link) => (
-                            <button
-                                key={link.id}
-                                onClick={() => scrollToSection(link.id)}
-                                className="relative text-[11px] xl:text-[13px] tracking-[0.35em] uppercase font-extrabold text-black/60 hover:text-black transition-all duration-500 py-3 group"
-                            >
-                                <span className="relative z-10 transition-transform duration-500 block group-hover:-translate-y-0.5">{link.label}</span>
+                        {navLinks.slice(0, 3).map((link) => {
+                            const isActive = activeIndex === link.index;
 
-                                {/* Indicador Activo: Liquid Motion con Framer */}
-                                {activeIndex === link.index && (
+                            return (
+                                <button
+                                    key={link.id}
+                                    onClick={() => scrollToSection(link.id)}
+                                    className="relative px-4 py-3 group transition-colors duration-500"
+                                >
+                                    {/* 2. EL RESALTADO: Una cápsula sutil que "vuela" entre botones */}
+                                    <AnimatePresence>
+                                        {isActive && (
+                                            <motion.span
+                                                layoutId="nav-active-bg-left" // ID único para el bloque izquierdo
+                                                className="absolute inset-0 bg-black/[0.12] rounded-xl z-0"
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 380,
+                                                    damping: 30
+                                                }}
+                                            />
+                                        )}
+                                    </AnimatePresence>
+
+                                    {/* 3. EL TEXTO: Cambia de peso o color al estar activo */}
+                                    <span className={`
+                relative z-10 text-[11px] xl:text-[13px] uppercase font-extrabold 
+                transition-all duration-500 tracking-[0.35em]
+                ${isActive ? 'text-black scale-110' : 'text-black/40 group-hover:text-black/70'}
+            `}>
+                                        {link.label}
+                                    </span>
+
+                                    {/* 4. LA LÍNEA: Ahora solo aparece si está activo O en hover */}
                                     <motion.span
-                                        layoutId="nav-line"
-                                        className="absolute bottom-1 left-0 right-0 h-[3px] bg-black rounded-full"
-                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                        className={`
+                    absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] bg-black rounded-full
+                    transition-all duration-500
+                    ${isActive ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-1/2 group-hover:opacity-30'}
+                `}
                                     />
-                                )}
-                                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-[3px] bg-black/20 group-hover:w-full transition-all duration-500 rounded-full" />
-                            </button>
-                        ))}
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* LOGO CENTRAL (EJE) */}
@@ -120,24 +152,54 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSect
 
                     {/* BLOQUE DERECHO */}
                     <div className="flex-1 flex justify-start gap-12 xl:gap-20 pl-16">
-                        {navLinks.slice(4).map((link) => (
-                            <button
-                                key={link.id}
-                                onClick={() => scrollToSection(link.id)}
-                                className="relative text-[11px] xl:text-[13px] tracking-[0.35em] uppercase font-extrabold text-black/60 hover:text-black transition-all duration-500 py-3 group"
-                            >
-                                <span className="relative z-10 transition-transform duration-500 block group-hover:-translate-y-0.5">{link.label}</span>
+                        {navLinks.slice(4).map((link) => {
+                            // 1. Detectamos si este link es el que debe estar resaltado
+                            const isActive = activeIndex === link.index;
 
-                                {activeIndex === link.index && (
+                            return (
+                                <button
+                                    key={link.id}
+                                    onClick={() => scrollToSection(link.id)}
+                                    className="relative px-4 py-3 group transition-colors duration-500"
+                                >
+                                    {/* 2. EL RESALTADO: Una cápsula sutil que "vuela" entre botones */}
+                                    <AnimatePresence>
+                                        {isActive && (
+                                            <motion.span
+                                                layoutId="nav-active-bg-right" // ID único para el bloque derecho
+                                                className="absolute inset-0 bg-black/[0.12] rounded-xl z-0"
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 380,
+                                                    damping: 30
+                                                }}
+                                            />
+                                        )}
+                                    </AnimatePresence>
+
+                                    {/* 3. EL TEXTO: Cambia de peso o color al estar activo */}
+                                    <span className={`
+                relative z-10 text-[11px] xl:text-[13px] uppercase font-extrabold 
+                transition-all duration-500 tracking-[0.35em]
+                ${isActive ? 'text-black scale-110' : 'text-black/40 group-hover:text-black/70'}
+            `}>
+                                        {link.label}
+                                    </span>
+
+                                    {/* 4. LA LÍNEA: Ahora solo aparece si está activo O en hover */}
                                     <motion.span
-                                        layoutId="nav-line"
-                                        className="absolute bottom-1 left-0 right-0 h-[3px] bg-black rounded-full"
-                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                        className={`
+                    absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] bg-black rounded-full
+                    transition-all duration-500
+                    ${isActive ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-1/2 group-hover:opacity-30'}
+                `}
                                     />
-                                )}
-                                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-[3px] bg-black/20 group-hover:w-full transition-all duration-500 rounded-full" />
-                            </button>
-                        ))}
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* GUÍA DE NAVEGACIÓN DERECHA */}

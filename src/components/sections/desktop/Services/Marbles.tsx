@@ -20,13 +20,13 @@ export const ServicesMarbles = ({ sectionId }: ServicesMarblesProps) => {
             <MarbleTriangle
                 side="left"
                 position="bottom"
-                isVisible={isVisible && activeIndex === 4}
+                isVisible={isVisible}
             />
             {/* Esquina Inferior Derecha */}
             <MarbleTriangle
                 side="right"
                 position="bottom"
-                isVisible={isVisible && activeIndex === 4}
+                isVisible={isVisible}
             />
         </div>
     );

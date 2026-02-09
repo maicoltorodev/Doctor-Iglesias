@@ -16,13 +16,13 @@ export const TestimonialsMarbles = () => {
             <MarbleTriangle
                 side="left"
                 position="bottom"
-                isVisible={isVisible && activeIndex === 6}
+                isVisible={isVisible}
             />
             {/* Esquina Inferior Derecha */}
             <MarbleTriangle
                 side="right"
                 position="bottom"
-                isVisible={isVisible && activeIndex === 6}
+                isVisible={isVisible}
             />
         </div>
     );

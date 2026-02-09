@@ -4,7 +4,6 @@ import React from 'react';
 import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
 import { CONTACT_INFO } from '@/constants/content';
-import { ArrowRight } from 'lucide-react';
 
 interface CtaButtonProps {
     href?: string;
@@ -63,8 +62,6 @@ export const CtaButton: React.FC<CtaButtonProps> = ({
                 </span>
             </div>
 
-            {/* 4. Glow perimetral en hover */}
-            <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 ring-1 ring-white/40 z-20 shadow-[0_0_20px_rgba(255,255,255,0.1)]"></div>
         </>
     );
 

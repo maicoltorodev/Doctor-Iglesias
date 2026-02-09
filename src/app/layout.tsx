@@ -74,138 +74,119 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="scroll-smooth">
-      <body
-        className={`${inter.variable} ${instrumentSerif.variable} antialiased`}
-      >
-        {/* Inline Loading Screen - Shows before React hydration */}
-        <div
-          id="initial-loader"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: '#f2f0f4',
-            zIndex: 9999,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'opacity 0.5s ease-out',
-          }}
-        >
-          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            {/* Logo */}
-            <div style={{
-              position: 'relative',
-              zIndex: 20,
-              width: '120px',
-              height: '120px',
-              animation: 'fadeIn 0.6s ease-out'
-            }}>
-              <img
-                src="/logo.webp"
-                alt="Loading..."
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 2px 15px rgba(0,0,0,0.08))'
-                }}
-              />
+      <body className={`${inter.variable} ${instrumentSerif.variable} antialiased`}>
+
+        <div id="initial-loader">
+          <div className="loader-content">
+            <div className="ring-wrapper">
+              {/* Añadimos 3 anillos para un efecto más sofisticado */}
+              <div className="ring ring-1"></div>
+              <div className="ring ring-2"></div>
+              <div className="ring ring-3"></div>
             </div>
 
-            {/* Anillo Exterior con gap - Rápido */}
-            <svg
-              style={{
-                position: 'absolute',
-                width: '200px',
-                height: '200px',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-                animation: 'spin 0.8s linear infinite'
-              }}
-              viewBox="0 0 100 100"
-            >
-              <circle
-                cx="50"
-                cy="50"
-                r="48"
-                fill="none"
-                stroke="rgba(0,0,0,0.9)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeDasharray="280, 22"
+            <div className="loader-logo">
+              <img
+                src="/logo.webp"
+                alt="Dr. Jorge Iglesias"
+                width={100}
+                height={100}
+                style={{ display: 'block', objectFit: 'contain' }}
               />
-            </svg>
-
-            {/* Anillo Interior con gap - Rápido (rotación inversa) */}
-            <svg
-              style={{
-                position: 'absolute',
-                width: '150px',
-                height: '150px',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-                animation: 'spinReverse 1.2s linear infinite'
-              }}
-              viewBox="0 0 100 100"
-            >
-              <circle
-                cx="50"
-                cy="50"
-                r="48"
-                fill="none"
-                stroke="rgba(0,0,0,1)"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeDasharray="260, 42"
-              />
-            </svg>
+            </div>
           </div>
 
-          {/* Inline CSS for animations */}
           <style dangerouslySetInnerHTML={{
             __html: `
-            @keyframes spin {
-              from { transform: rotate(0deg); }
-              to { transform: rotate(360deg); }
-            }
-            @keyframes spinReverse {
-              from { transform: rotate(360deg); }
-              to { transform: rotate(0deg); }
-            }
-            @keyframes fadeIn {
-              from { opacity: 0; transform: scale(0.95); }
-              to { opacity: 1; transform: scale(1); }
-            }
-            
-            /* Auto-hide when React loads */
-            body:has(#__next) #initial-loader,
-            body:not(:empty) #initial-loader {
-              pointer-events: none;
-            }
-          `}} />
+      #initial-loader {
+        position: fixed;
+        inset: 0;
+        background: #f2f0f4;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.6s ease-in-out;
+      }
+      
+      .loader-content {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .ring-wrapper {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .ring {
+        position: absolute;
+        border-radius: 50%;
+        border: 2px solid transparent; /* El "hueco" */
+        will-change: transform;
+      }
+
+      /* Anillo Exterior */
+      .ring-1 { 
+        width: 180px; 
+        height: 180px; 
+        border-top-color: #000000; /* Color del trazo */
+        animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      }
+
+      /* Anillo Medio */
+      .ring-2 { 
+        width: 150px; 
+        height: 150px; 
+        border-right-color: rgba(0,0,0,0.4); 
+        animation: spin 2s linear infinite reverse; /* Gira al revés */
+      }
+
+      /* Anillo Interior */
+      .ring-3 { 
+        width: 120px; 
+        height: 120px; 
+        border-bottom-color: rgba(0,0,0,0.2); 
+        animation: spin 1.5s ease-in-out infinite;
+      }
+
+      .loader-logo {
+        position: relative;
+        z-index: 10;
+        animation: logoFade 1s ease-out forwards;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @keyframes logoFade {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+      }
+
+      body:not(.loaded) { overflow: hidden; }
+      body.loaded #initial-loader { opacity: 0; pointer-events: none; }
+    `}} />
         </div>
 
-        <SmoothScrollProvider>
-          {children}
-        </SmoothScrollProvider>
+        {children}
 
-        {/* Script to hide loader after React hydration */}
         <script dangerouslySetInnerHTML={{
           __html: `
-          window.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-              var loader = document.getElementById('initial-loader');
-              if (loader) {
-                loader.style.opacity = '0';
+            (function() {
+              window.addEventListener('load', function() {
                 setTimeout(function() {
-                  loader.style.display = 'none';
-                }, 500);
-              }
-            }, 800);
-          });
-        `}} />
+                  document.body.classList.add('loaded');
+                }, 400);
+              });
+            })();
+          `}} />
       </body>
     </html>
   );
