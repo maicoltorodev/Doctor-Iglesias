@@ -43,14 +43,14 @@ export const HeroStoryContent: React.FC<HeroStoryContentProps> = ({ content }) =
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative w-full h-full flex flex-col justify-between p-6 pt-12 pb-8"
+        className="relative w-full h-full flex flex-col justify-between p-6 pt-20 pb-8"
       >
         {/* ENCABEZADO PROFESIONAL */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="flex flex-col items-center space-y-4"
+          className="flex flex-col items-center space-y-4 mt-8"
         >
           {/* SELLO DE AUTORIDAD MÉDICA */}
           <motion.div

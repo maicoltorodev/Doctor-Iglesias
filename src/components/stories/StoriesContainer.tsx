@@ -10,6 +10,7 @@ import { ServiceStoryContent } from './ServiceStoryContent';
 import { PhotoStoryContent } from './PhotoStoryContent';
 import { TestimonialStoryContent } from './TestimonialStoryContent';
 import { ContentStoryContent } from './ContentStoryContent';
+import { MobileNavbar } from './MobileNavbar';
 
 export interface Story {
   id: string;
@@ -91,12 +92,30 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
   const currentStory = stories[currentStoryIndex];
   const progress = ((currentStoryIndex + 1) / stories.length) * 100;
 
+  // Handlers para navbar
+  const handleMenuClick = () => {
+    // TODO: Implementar menú lateral
+    console.log('Menu clicked');
+  };
+
+  const handleBookingClick = () => {
+    // TODO: Implementar modal de agendamiento
+    console.log('Booking clicked');
+  };
+
   return (
     <div 
       ref={containerRef}
       className={`relative w-full h-screen overflow-hidden bg-[#e6e3e8] ${className}`}
       style={{ touchAction: 'pan-y' }}
     >
+      {/* NAVBAR PERSISTENTE */}
+      <MobileNavbar
+        sectionName={sectionName}
+        onMenuClick={handleMenuClick}
+        onBookingClick={handleBookingClick}
+      />
+
       <StoryProgress
         current={currentStoryIndex + 1}
         total={stories.length}
@@ -104,7 +123,7 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
         sectionName={sectionName}
       />
 
-      <div className="relative w-full h-full flex items-center justify-center">
+      <div className="relative w-full h-full flex items-center justify-center pt-20">
         <AnimatePresence>
           <motion.div
             key={currentStory?.id}
@@ -140,15 +159,51 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
         </AnimatePresence>
       </div>
 
-      {stories.length > 1 && (
-        <div className="absolute bottom-8 left-0 right-0 flex justify-center pointer-events-none">
-          <div className="flex items-center space-x-2 text-black/40 text-xs">
+      {/* BOTONES DE NAVEGACIÓN INFERIORES */}
+      <div className="absolute bottom-8 left-0 right-0 flex justify-between items-center px-8 pointer-events-none">
+        {/* BOTÓN IZQUIERDO - Story Anterior */}
+        {currentStoryIndex > 0 && (
+          <motion.button
+            whileHover={{ scale: 1.1, x: -5 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={handleSwipeRight}
+            className="pointer-events-auto relative group"
+          >
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-md rounded-full blur-lg group-hover:bg-white/20 transition-all duration-300"></div>
+            <div className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-full w-14 h-14 flex items-center justify-center">
+              <svg className="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </div>
+          </motion.button>
+        )}
+
+        {/* CONTADOR CENTRAL */}
+        {stories.length > 1 && (
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center space-x-2 text-white/40 text-xs bg-black/20 backdrop-blur-md px-3 py-1 rounded-full">
             <span>{currentStoryIndex + 1}</span>
             <span>/</span>
             <span>{stories.length}</span>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* BOTÓN DERECHO - Story Siguiente */}
+        {currentStoryIndex < stories.length - 1 && (
+          <motion.button
+            whileHover={{ scale: 1.1, x: 5 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={handleSwipeLeft}
+            className="pointer-events-auto relative group ml-auto"
+          >
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-md rounded-full blur-lg group-hover:bg-white/20 transition-all duration-300"></div>
+            <div className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-full w-14 h-14 flex items-center justify-center">
+              <svg className="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </motion.button>
+        )}
+      </div>
     </div>
   );
 };
