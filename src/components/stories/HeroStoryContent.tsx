@@ -40,18 +40,18 @@ export const HeroStoryContent: React.FC<HeroStoryContentProps> = ({ content }) =
           transition={{ duration: 1.5, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="relative"
         >
-          {/* Card glassmorphism premium */}
+          {/* Card glassmorphism premium - ajustada al logo */}
           <div className="absolute inset-0 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl"></div>
           
           {/* Sheen arquitectónico */}
           <div className="marble-architectural-sheen rounded-3xl"></div>
           
-          {/* Logo-full container */}
-          <div className="relative z-10 p-8">
+          {/* Logo-full container - más grande */}
+          <div className="relative z-10 p-12">
             <img 
               src="/logo-full.webp" 
               alt="Dr. Jorge Iglesias Márquez"
-              className="w-48 h-16 object-contain filter drop-shadow-2xl"
+              className="w-64 h-20 object-contain filter drop-shadow-2xl"
             />
           </div>
         </motion.div>

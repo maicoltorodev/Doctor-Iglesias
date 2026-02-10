@@ -71,8 +71,8 @@ export const MobileNavbar: React.FC<MobileNavbarProps> = ({
             </div>
           </motion.div>
 
-          {/* ZONA CENTRAL - CTA Button Premium (igual que desktop) */}
-          <div className="relative">
+          {/* ZONA CENTRAL - CTA Button Premium (full centrado) */}
+          <div className="flex-1 flex items-center justify-center">
             <CtaButton 
               onClick={onBookingClick}
               className="px-6 py-2.5 text-[10px] tracking-[0.25em]"
@@ -115,25 +115,6 @@ export const MobileNavbar: React.FC<MobileNavbarProps> = ({
           </motion.button>
 
         </div>
-
-        {/* INDICADOR DE SECCIÓN - Typography premium */}
-        <motion.div
-          key={sectionName}
-          initial={{ opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="mt-3 text-center"
-        >
-          <div className="relative inline-block">
-            {/* Subtle underline */}
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-            
-            {/* Texto */}
-            <p className="text-white/50 text-[10px] font-light tracking-[0.3em] uppercase leading-none">
-              {sectionName}
-            </p>
-          </div>
-        </motion.div>
       </div>
     </motion.div>
   );
