@@ -19,40 +19,57 @@ interface PhotoStoryContentProps {
  */
 export const PhotoStoryContent: React.FC<PhotoStoryContentProps> = ({ content }) => {
   return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="w-full h-full flex items-center justify-center p-6"
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="w-full h-full flex flex-col items-center justify-center"
     >
-      <div className="relative w-full max-w-md aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
-        <Image
-          src={content?.src || '/placeholder-photo.jpg'}
-          alt={content?.alt || content?.title || 'Foto de galería'}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, 400px"
-          priority={false}
-        />
-        
-        {/* Overlay opcional con información */}
-        {(content?.title || content?.description) && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          >
-            <div className="absolute bottom-0 left-0 right-0 p-4">
-              {content?.title && (
-                <p className="text-white text-sm font-medium">{content.title}</p>
-              )}
-              {content?.description && (
-                <p className="text-white/80 text-xs mt-1">{content.description}</p>
-              )}
+      <div className="relative w-full h-full flex flex-col bg-white/40 backdrop-blur-xl border border-white/60 rounded-[40px] p-3 shadow-2xl overflow-hidden group">
+
+        {/* IMAGE CONTAINER */}
+        <div className="relative w-full flex-1 rounded-[32px] overflow-hidden">
+          <Image
+            src={content?.src || '/placeholder-photo.jpg'}
+            alt={content?.alt || content?.title || 'Foto de galería'}
+            fill
+            className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+            sizes="(max-width: 768px) 90vw, 400px"
+            priority={false}
+          />
+
+          {/* Overlay opcional con información */}
+          {(content?.title || content?.description) && (
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 text-white">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                {content?.title && (
+                  <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-white/50 mb-2">
+                    {content.category || "Galería"}
+                  </p>
+                )}
+                {content?.title && (
+                  <h3 className="text-xl font-serif italic text-white mb-2 leading-tight">
+                    {content.title}
+                  </h3>
+                )}
+                {content?.description && (
+                  <p className="text-[10px] uppercase tracking-wider text-white/70 font-light leading-relaxed max-w-[200px]">
+                    {content.description}
+                  </p>
+                )}
+              </motion.div>
             </div>
-          </motion.div>
-        )}
+          )}
+        </div>
+
+        {/* BOTTOM DECORATIVE TAG (SMALL) */}
+        <div className="h-10 flex items-center justify-center">
+          <span className="text-[8px] uppercase tracking-[0.5em] font-bold text-black/20">Desliza para ver más</span>
+        </div>
       </div>
     </motion.div>
   );

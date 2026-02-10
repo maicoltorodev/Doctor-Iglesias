@@ -10,13 +10,15 @@ interface CtaButtonProps {
     label?: string;
     className?: string;
     onClick?: () => void;
+    isAutoShimmer?: boolean;
 }
 
 export const CtaButton: React.FC<CtaButtonProps> = ({
     href = CONTACT_INFO.whatsappUrl,
     label = "Agendar Cita",
     className = "",
-    onClick
+    onClick,
+    isAutoShimmer = false
 }) => {
     // Definimos el ADN de lujo con Framer Motion para control absoluto del movimiento
     const buttonVariants: Variants = {
@@ -32,7 +34,7 @@ export const CtaButton: React.FC<CtaButtonProps> = ({
     };
 
     const shimmerVariants: Variants = {
-        initial: { x: "-100%", skewX: -45 },
+        initial: { x: "-150%", skewX: -45 },
         hover: {
             x: "150%",
             transition: {
@@ -41,15 +43,26 @@ export const CtaButton: React.FC<CtaButtonProps> = ({
                 repeat: Infinity,
                 repeatDelay: 0.5
             }
+        },
+        animate: {
+            x: "150%",
+            transition: {
+                duration: 1.8,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatDelay: 3
+            }
         }
     };
 
     const content = (
         <>
-            {/* 1. Shimmer dinámico con Framer Motion (Efecto barrido infinito en hover) */}
+            {/* 1. Shimmer dinámico con Framer Motion (Efecto barrido infinito) */}
             <motion.div
                 variants={shimmerVariants}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent z-20 pointer-events-none"
+                initial="initial"
+                animate={isAutoShimmer ? "animate" : undefined}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent z-20 pointer-events-none"
             />
 
             {/* 2. Overlay de gradiente estático para profundidad */}
@@ -58,7 +71,7 @@ export const CtaButton: React.FC<CtaButtonProps> = ({
             {/* 3. Contenedor de Texto */}
             <div className="relative z-30 flex items-center justify-center">
                 <span className="text-[11px] lg:text-[13px] font-extrabold uppercase tracking-[0.3em] lg:tracking-[0.4em] group-hover:tracking-[0.55em] transition-all duration-700 text-center w-full">
-                    AGENDAR CITA
+                    {label}
                 </span>
             </div>
 

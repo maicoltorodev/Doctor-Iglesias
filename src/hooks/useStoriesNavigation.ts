@@ -23,10 +23,17 @@ export interface SectionStories {
  * - Historial de navegación
  * - Accesibilidad y atajos de teclado
  */
-export const useStoriesNavigation = (allSections: SectionStories[]) => {
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
-  const navigationHistory = useRef<Array<{ section: number; story: number }>>([]);
+export const useStoriesNavigation = (
+  allSections: SectionStories[],
+  initialSectionIndex: number = 0,
+  initialStoryIndex: number = 0
+) => {
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(initialSectionIndex);
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(initialStoryIndex);
+  const navigationHistory = useRef<Array<{ section: number; story: number }>>([{
+    section: initialSectionIndex,
+    story: initialStoryIndex
+  }]);
 
   const currentSection = allSections[currentSectionIndex];
   const currentStories = currentSection?.stories || [];
@@ -38,21 +45,21 @@ export const useStoriesNavigation = (allSections: SectionStories[]) => {
       // Siguiente story en la misma sección
       const newIndex = currentStoryIndex + 1;
       setCurrentStoryIndex(newIndex);
-      
+
       // Guardar en historial
-      navigationHistory.current.push({ 
-        section: currentSectionIndex, 
-        story: newIndex 
+      navigationHistory.current.push({
+        section: currentSectionIndex,
+        story: newIndex
       });
     } else if (currentSectionIndex < totalSections - 1) {
       // Pasar a siguiente sección
       const nextSectionIndex = currentSectionIndex + 1;
       setCurrentSectionIndex(nextSectionIndex);
       setCurrentStoryIndex(0);
-      
-      navigationHistory.current.push({ 
-        section: nextSectionIndex, 
-        story: 0 
+
+      navigationHistory.current.push({
+        section: nextSectionIndex,
+        story: 0
       });
     }
   }, [currentStoryIndex, currentStories.length, currentSectionIndex, totalSections]);
@@ -62,23 +69,23 @@ export const useStoriesNavigation = (allSections: SectionStories[]) => {
       // Story anterior en la misma sección
       const newIndex = currentStoryIndex - 1;
       setCurrentStoryIndex(newIndex);
-      
-      navigationHistory.current.push({ 
-        section: currentSectionIndex, 
-        story: newIndex 
+
+      navigationHistory.current.push({
+        section: currentSectionIndex,
+        story: newIndex
       });
     } else if (currentSectionIndex > 0) {
       // Volver a sección anterior
       const prevSectionIndex = currentSectionIndex - 1;
       const prevSection = allSections[prevSectionIndex];
       const lastStoryIndex = prevSection?.stories.length - 1 || 0;
-      
+
       setCurrentSectionIndex(prevSectionIndex);
       setCurrentStoryIndex(lastStoryIndex);
-      
-      navigationHistory.current.push({ 
-        section: prevSectionIndex, 
-        story: lastStoryIndex 
+
+      navigationHistory.current.push({
+        section: prevSectionIndex,
+        story: lastStoryIndex
       });
     }
   }, [currentStoryIndex, currentSectionIndex, allSections]);
@@ -90,10 +97,10 @@ export const useStoriesNavigation = (allSections: SectionStories[]) => {
       if (section && storyIndex >= 0 && storyIndex < section.stories.length) {
         setCurrentSectionIndex(sectionIndex);
         setCurrentStoryIndex(storyIndex);
-        
-        navigationHistory.current.push({ 
-          section: sectionIndex, 
-          story: storyIndex 
+
+        navigationHistory.current.push({
+          section: sectionIndex,
+          story: storyIndex
         });
       }
     }
@@ -103,10 +110,10 @@ export const useStoriesNavigation = (allSections: SectionStories[]) => {
     if (sectionIndex >= 0 && sectionIndex < totalSections) {
       setCurrentSectionIndex(sectionIndex);
       setCurrentStoryIndex(0);
-      
-      navigationHistory.current.push({ 
-        section: sectionIndex, 
-        story: 0 
+
+      navigationHistory.current.push({
+        section: sectionIndex,
+        story: 0
       });
     }
   }, [totalSections]);
@@ -119,18 +126,18 @@ export const useStoriesNavigation = (allSections: SectionStories[]) => {
   const getProgress = useCallback(() => {
     const sectionProgress = ((currentSectionIndex + 1) / totalSections) * 100;
     const storyProgress = ((currentStoryIndex + 1) / currentStories.length) * 100;
-    
+
     return {
       section: sectionProgress,
       story: storyProgress,
-      total: ((currentSectionIndex * currentStories.length) + currentStoryIndex + 1) / 
-              getTotalStories(allSections) * 100
+      total: ((currentSectionIndex * currentStories.length) + currentStoryIndex + 1) /
+        getTotalStories(allSections) * 100
     };
   }, [currentSectionIndex, currentStoryIndex, currentStories.length, totalSections, allSections]);
 
   const canGoNext = useCallback(() => {
-    return currentStoryIndex < currentStories.length - 1 || 
-           currentSectionIndex < totalSections - 1;
+    return currentStoryIndex < currentStories.length - 1 ||
+      currentSectionIndex < totalSections - 1;
   }, [currentStoryIndex, currentStories.length, currentSectionIndex, totalSections]);
 
   const canGoPrevious = useCallback(() => {
@@ -187,18 +194,18 @@ export const useStoriesNavigation = (allSections: SectionStories[]) => {
     currentSection,
     currentStories,
     currentStory: getCurrentStory(),
-    
+
     // Navegación
     nextStory,
     previousStory,
     goToStory,
     goToSection,
-    
+
     // Utilidades
     getProgress,
     canGoNext,
     canGoPrevious,
-    
+
     // Historial
     navigationHistory: navigationHistory.current,
     totalStories: getTotalStories(allSections)

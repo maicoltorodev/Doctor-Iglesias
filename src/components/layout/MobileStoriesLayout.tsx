@@ -30,7 +30,122 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
         // Si vienen datos pre-cargados, usarlos directamente
         if (content) {
           const sections: SectionStories[] = [
-            // HERO (Núcleo Central) - 1 story
+            // ABOUT (Extremo Izquierda)
+            {
+              sectionName: 'Nosotros',
+              stories: [
+                {
+                  id: 'about-doctor',
+                  type: 'service', // Usamos service para el doctor por su diseño de card
+                  content: content.ABOUT_CONTENT?.doctor || null,
+                  section: 'about'
+                },
+                {
+                  id: 'about-experience',
+                  type: 'content',
+                  content: content.ABOUT_CONTENT?.experience || null,
+                  section: 'about'
+                },
+                {
+                  id: 'about-philosophy',
+                  type: 'content',
+                  content: content.ABOUT_CONTENT?.philosophy || null,
+                  section: 'about'
+                },
+                {
+                  id: 'about-title',
+                  type: 'title',
+                  content: content.ABOUT_CONTENT?.editorial || null,
+                  section: 'about'
+                }
+              ]
+            },
+
+            // GALLERY (Izquierda)
+            {
+              sectionName: 'Galería',
+              stories: [
+                ...[...content.GALLERY_LIST].reverse().map((photo: any, index: number) => ({
+                  id: `photo-${index}`,
+                  type: 'photo' as const,
+                  content: photo,
+                  section: 'gallery'
+                })),
+                {
+                  id: 'gallery-title',
+                  type: 'title',
+                  content: content.GALLERY_CONTENT,
+                  section: 'gallery'
+                }
+              ]
+            },
+
+            // CONTACT (Cerca del centro Izquierda)
+            {
+              sectionName: 'Contacto',
+              stories: [
+                {
+                  id: 'contact-social',
+                  type: 'content',
+                  content: {
+                    type: 'social',
+                    title: 'Canales Digitales',
+                    data: {
+                      socials: content.CONTACT_INFO?.socials || []
+                    }
+                  },
+                  section: 'contact'
+                },
+                {
+                  id: 'contact-info',
+                  type: 'content',
+                  content: {
+                    type: 'info',
+                    category: 'Atención Directa',
+                    title: 'Contacto',
+                    data: {
+                      address: content.CONTACT_INFO?.address,
+                      phone: content.CONTACT_INFO?.phone,
+                      email: content.CONTACT_INFO?.email
+                    }
+                  },
+                  section: 'contact'
+                },
+                {
+                  id: 'contact-clinic',
+                  type: 'content',
+                  content: {
+                    type: 'clinic',
+                    category: content.CONTACT_CONTENT?.cards?.clinic?.category,
+                    title: content.CONTACT_CONTENT?.cards?.clinic?.title,
+                    data: {
+                      clinicImage: '/clinica.webp'
+                    }
+                  },
+                  section: 'contact'
+                },
+                {
+                  id: 'contact-map',
+                  type: 'content',
+                  content: {
+                    type: 'map',
+                    title: content.CONTACT_CONTENT?.cards?.map?.title,
+                    data: {
+                      embedUrl: content.CONTACT_INFO?.mapEmbedUrl
+                    }
+                  },
+                  section: 'contact'
+                },
+                {
+                  id: 'contact-title',
+                  type: 'title',
+                  content: content.CONTACT_CONTENT,
+                  section: 'contact'
+                }
+              ]
+            },
+
+            // INICIO (NÚCLEO CENTRAL) - Index 3
             {
               sectionName: 'Inicio',
               stories: [
@@ -43,7 +158,7 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
               ]
             },
 
-            // SERVICES (Derecha 1) - 1 + N stories dinámicos
+            // SERVICES (Derecha)
             {
               sectionName: 'Servicios',
               stories: [
@@ -56,13 +171,18 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
                 ...content.SERVICES_LIST.map((service: any, index: number) => ({
                   id: `service-${index}`,
                   type: 'service' as const,
-                  content: service,
+                  content: {
+                    ...service,
+                    category: content.SERVICES_CONTENT?.cards?.category,
+                    overlayTag: content.SERVICES_CONTENT?.cards?.overlayTag,
+                    title: service.label
+                  },
                   section: 'services'
                 }))
               ]
             },
 
-            // RESULTS (Derecha 2) - 1 + N stories dinámicos
+            // RESULTS (Más a la derecha)
             {
               sectionName: 'Resultados',
               stories: [
@@ -74,14 +194,17 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
                 },
                 ...content.RESULTS_LIST.map((result: any, index: number) => ({
                   id: `result-${index}`,
-                  type: 'content' as const,
-                  content: result,
+                  type: 'result' as const,
+                  content: {
+                    ...result,
+                    comparison: content.RESULTS_CONTENT.comparison
+                  },
                   section: 'results'
                 }))
               ]
             },
 
-            // TESTIMONIALS (Derecha 3) - 1 + N stories dinámicos
+            // TESTIMONIALS (Extremo Derecha)
             {
               sectionName: 'Testimonios',
               stories: [
@@ -98,99 +221,6 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
                   section: 'testimonials'
                 }))
               ]
-            },
-
-            // CONTACT (Izquierda 1) - 5 stories fijos
-            {
-              sectionName: 'Contacto',
-              stories: [
-                {
-                  id: 'contact-title',
-                  type: 'title',
-                  content: content.CONTACT_CONTENT,
-                  section: 'contact'
-                },
-                {
-                  id: 'contact-map',
-                  type: 'content',
-                  content: content.CONTACT_INFO?.map || null,
-                  section: 'contact'
-                },
-                {
-                  id: 'contact-clinic',
-                  type: 'content',
-                  content: content.CONTACT_INFO?.clinic || null,
-                  section: 'contact'
-                },
-                {
-                  id: 'contact-info',
-                  type: 'content',
-                  content: content.CONTACT_INFO?.info || null,
-                  section: 'contact'
-                },
-                {
-                  id: 'contact-social',
-                  type: 'content',
-                  content: content.CONTACT_INFO?.social || null,
-                  section: 'contact'
-                }
-              ]
-            },
-
-            // GALLERY (Izquierda 2) - 1 + N stories dinámicos
-            {
-              sectionName: 'Galería',
-              stories: [
-                {
-                  id: 'gallery-title',
-                  type: 'title',
-                  content: content.GALLERY_CONTENT,
-                  section: 'gallery'
-                },
-                ...content.GALLERY_LIST.map((photo: any, index: number) => ({
-                  id: `photo-${index}`,
-                  type: 'photo' as const,
-                  content: photo,
-                  section: 'gallery'
-                }))
-              ]
-            },
-
-            // ABOUT (Izquierda 3) - 5 stories fijos
-            {
-              sectionName: 'Nosotros',
-              stories: [
-                {
-                  id: 'about-mission',
-                  type: 'content',
-                  content: content.ABOUT_CONTENT?.mission || null,
-                  section: 'about'
-                },
-                {
-                  id: 'about-history',
-                  type: 'content',
-                  content: content.ABOUT_CONTENT?.history || null,
-                  section: 'about'
-                },
-                {
-                  id: 'about-values',
-                  type: 'content',
-                  content: content.ABOUT_CONTENT?.values || null,
-                  section: 'about'
-                },
-                {
-                  id: 'about-marble',
-                  type: 'content',
-                  content: content.ABOUT_CONTENT?.marble || null,
-                  section: 'about'
-                },
-                {
-                  id: 'about-team',
-                  type: 'content',
-                  content: content.ABOUT_CONTENT?.team || null,
-                  section: 'about'
-                }
-              ]
             }
           ];
 
@@ -205,7 +235,7 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
         console.error('MobileStoriesLayout: No content provided - fallback not implemented');
         setLoading(false);
         return;
-        
+
       } catch (error) {
         console.error('Error loading stories data:', error);
         setLoading(false);
@@ -216,7 +246,8 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
   }, [content]);
 
   // === NAVEGACIÓN DE STORIES ===
-  const navigation = useStoriesNavigation(allSections);
+  // Iniciamos en la sección de 'Inicio' (index 3)
+  const navigation = useStoriesNavigation(allSections, 3);
 
   // === ESTADO DE CARGA ===
   if (loading) {
@@ -234,6 +265,12 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
         stories={navigation.currentStories}
         currentStoryIndex={navigation.currentStoryIndex}
         onStoryChange={(index) => navigation.goToStory(navigation.currentSectionIndex, index)}
+        onNextSection={() => navigation.nextStory()}
+        onPrevSection={() => navigation.previousStory()}
+        onHomeClick={() => navigation.goToSection(3)}
+        onSectionClick={(index) => navigation.goToSection(index)}
+        allSections={allSections.map((s, i) => ({ name: s.sectionName, index: i }))}
+        currentSectionIndex={navigation.currentSectionIndex}
         sectionName={navigation.currentSection.sectionName}
       />
     );

@@ -40,16 +40,18 @@ const FloatingActionUI: React.FC<FloatingActionUIProps> = ({
     const messageIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
     // === HELPER FUNCTIONS ===
-    
+
     // Mapeo de secciones optimizado
     const getSectionKey = useCallback((idx: number) => {
         if (isMobile) {
             const mobileMap: Record<number, number> = {
-                0: 2, // Contacto
-                1: 0, // Nosotros  
-                2: 3, // Hero
-                3: 4, // Servicios
-                4: 5, // Resultados
+                0: 0, // Nosotros
+                1: 1, // Galería
+                2: 2, // Contacto
+                3: 3, // Inicio
+                4: 4, // Servicios
+                5: 5, // Resultados
+                6: 6, // Testimonios
             };
             return mobileMap[idx] ?? 3;
         }
@@ -71,20 +73,25 @@ const FloatingActionUI: React.FC<FloatingActionUIProps> = ({
         const sectionMessages = fabContent.sectionMessages;
         const currentSectionMsgs = sectionMessages[sectionKey] || sectionMessages[3];
         const generalPhrases = fabContent.generalPhrases || [];
-        
+
         const pool = [...currentSectionMsgs, ...generalPhrases];
         return pool[Math.floor(Math.random() * pool.length)];
     }, [fabContent]);
 
+    // === LÓGICA DE MONTAJE ===
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     // === LÓGICA DE MENSAJES SIMPLIFICADA ===
-    
+
     // Mensaje inicial (bienvenida)
     useEffect(() => {
         if (!isMounted || hasInteracted) return;
 
         const sectionKey = getSectionKey(activeIndex);
         const message = getRandomMessage(sectionKey);
-        
+
         setCurrentMessage(message);
         setShowMessage(true);
         playNotification();

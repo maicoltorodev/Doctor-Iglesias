@@ -87,10 +87,9 @@ export const useSwipeGestures = (
     touchStartRef.current = null;
     isSwipingRef.current = false;
 
-    // Validar que el swipe sea válido
+    // Validar que el swipe sea válido (al menos una dimensión debe superar el umbral)
     if (
-      Math.abs(deltaX) < threshold || 
-      Math.abs(deltaY) < threshold ||
+      (Math.abs(deltaX) < threshold && Math.abs(deltaY) < threshold) ||
       deltaTime > 500 // Swipe muy lento
     ) {
       return;
@@ -147,7 +146,7 @@ export const useSwipeGestures = (
       element.removeEventListener('touchstart', handleTouchStartRef.current);
       element.removeEventListener('touchmove', handleTouchMoveRef.current);
       element.removeEventListener('touchend', handleTouchEndRef.current);
-      
+
       // Limpiar debounce al desmontar
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
