@@ -59,6 +59,12 @@ export const HeroStoryContent: React.FC<HeroStoryContentProps> = ({ content }) =
             transition={{ delay: 0.7, duration: 0.8 }}
             className="relative w-32 h-12 flex items-center justify-center"
           >
+            {/* Card glassmorphism de fondo */}
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl"></div>
+            
+            {/* Sheen arquitectónico */}
+            <div className="marble-architectural-sheen rounded-2xl"></div>
+            
             <div className="relative z-10">
               <img 
                 src="/logo-full.webp" 

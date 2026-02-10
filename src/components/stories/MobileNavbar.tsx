@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { CtaButton } from '@/components/ui/CtaButton';
 
 interface MobileNavbarProps {
   sectionName: string;
@@ -18,6 +19,7 @@ interface MobileNavbarProps {
  * - Micro-interacciones sutiles y premium
  * - Autoridad médica constante pero elegante
  * - Integración perfecta con video hero
+ * - CTA Button premium igual que desktop
  */
 export const MobileNavbar: React.FC<MobileNavbarProps> = ({
   sectionName,
@@ -69,31 +71,13 @@ export const MobileNavbar: React.FC<MobileNavbarProps> = ({
             </div>
           </motion.div>
 
-          {/* ZONA CENTRAL - CTA premium */}
-          <motion.button
-            whileHover={{ scale: 1.03, y: -1 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={onBookingClick}
-            className="relative group"
-          >
-            {/* Background effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white/15 to-white/5 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-            
-            {/* Main button */}
-            <div className="relative bg-white/10 backdrop-blur-md border border-white/15 rounded-full px-5 py-2.5">
-              <div className="flex items-center space-x-2">
-                {/* Icono calendario */}
-                <svg className="w-4 h-4 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                
-                {/* Texto */}
-                <span className="text-white text-xs font-light tracking-wider uppercase">
-                  Agendar
-                </span>
-              </div>
-            </div>
-          </motion.button>
+          {/* ZONA CENTRAL - CTA Button Premium (igual que desktop) */}
+          <div className="relative">
+            <CtaButton 
+              onClick={onBookingClick}
+              className="px-6 py-2.5 text-[10px] tracking-[0.25em]"
+            />
+          </div>
 
           {/* ZONA DERECHA - Menú arquitectónico */}
           <motion.button
