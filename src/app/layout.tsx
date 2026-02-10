@@ -75,22 +75,30 @@ export default function RootLayout({
       <body className={`${inter.variable} ${instrumentSerif.variable} antialiased`}>
 
         <div id="initial-loader">
+          {/* Textura de ruido compartida con los componentes de carga de React */}
+          <div className="loader-texture"></div>
+
           <div className="loader-content">
-            <div className="ring-wrapper">
-              {/* Añadimos 3 anillos para un efecto más sofisticado */}
-              <div className="ring ring-1"></div>
-              <div className="ring ring-2"></div>
-              <div className="ring ring-3"></div>
+            {/* Versión Desktop (Sincronizada con DesktopLoading.tsx) */}
+            <div className="desktop-loader-only">
+              <div className="ring-wrapper">
+                <svg className="ring-ext" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="1" strokeDasharray="120 200" strokeLinecap="round" /></svg>
+                <svg className="ring-mid" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="1.2" strokeDasharray="80 250" strokeLinecap="round" /></svg>
+                <svg className="ring-int" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="0.8" strokeDasharray="180 100" strokeLinecap="round" /></svg>
+              </div>
+              <div className="loader-logo">
+                <img src="/logo.webp" alt="Dr. Jorge Iglesias" width={130} height={130} />
+              </div>
             </div>
 
-            <div className="loader-logo">
-              <img
-                src="/logo.webp"
-                alt="Dr. Jorge Iglesias"
-                width={100}
-                height={100}
-                style={{ display: 'block', objectFit: 'contain' }}
-              />
+            {/* Versión Mobile (Sincronizada con MobileLoading.tsx) */}
+            <div className="mobile-loader-only">
+              <div className="ring-wrapper">
+                <svg className="ring-mobile" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="2" strokeDasharray="140 160" strokeLinecap="round" /></svg>
+              </div>
+              <div className="loader-logo">
+                <img src="/logo.webp" alt="Dr. Jorge Iglesias" width={80} height={80} />
+              </div>
             </div>
           </div>
 
@@ -104,9 +112,18 @@ export default function RootLayout({
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: opacity 0.6s ease-in-out;
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       }
       
+      .loader-texture {
+        position: absolute;
+        inset: 0;
+        opacity: 0.3;
+        background-image: url('/noise.png');
+        mix-blend-mode: overlay;
+        pointer-events: none;
+      }
+
       .loader-content {
         position: relative;
         display: flex;
@@ -121,51 +138,49 @@ export default function RootLayout({
         justify-content: center;
       }
 
-      .ring {
-        position: absolute;
-        border-radius: 50%;
-        border: 2px solid transparent; /* El "hueco" */
-        will-change: transform;
-      }
+      /* Desktop Rings */
+      .ring-wrapper svg { position: absolute; }
+      
+      .ring-ext { width: 240px; height: 240px; opacity: 0.4; animation: spin 1.5s linear infinite; }
+      .ring-mid { width: 190px; height: 190px; opacity: 0.2; animation: spin 2.5s linear infinite reverse; }
+      .ring-int { width: 150px; height: 150px; opacity: 0.1; animation: spin 4s linear infinite; }
 
-      /* Anillo Exterior */
-      .ring-1 { 
-        width: 180px; 
-        height: 180px; 
-        border-top-color: #000000; /* Color del trazo */
-        animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-      }
-
-      /* Anillo Medio */
-      .ring-2 { 
-        width: 150px; 
-        height: 150px; 
-        border-right-color: rgba(0,0,0,0.4); 
-        animation: spin 2s linear infinite reverse; /* Gira al revés */
-      }
-
-      /* Anillo Interior */
-      .ring-3 { 
-        width: 120px; 
-        height: 120px; 
-        border-bottom-color: rgba(0,0,0,0.2); 
-        animation: spin 1.5s ease-in-out infinite;
+      /* Mobile Ring */
+      .ring-mobile { 
+        width: 130px; height: 130px; opacity: 0.3; 
+        animation: spin 1.5s linear infinite; 
       }
 
       .loader-logo {
         position: relative;
         z-index: 10;
-        animation: logoFade 1s ease-out forwards;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: logoEnter 0.8s ease-out forwards;
       }
 
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+      @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      @keyframes logoEnter { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+      /* Responsividad del Loader (Sin JS para evitar saltos) */
+      @media (max-width: 1023px) {
+        .desktop-loader-only { display: none; }
+        .mobile-loader-only { display: block; }
+      }
+      @media (min-width: 1024px) {
+        .desktop-loader-only { display: block; }
+        .mobile-loader-only { display: none; }
       }
 
-      @keyframes logoFade {
-        from { opacity: 0; transform: scale(0.9); }
-        to { opacity: 1; transform: scale(1); }
+      /* EVITAR DOBLE ANIMACIÓN: Ocultar el contenido de Next.js (y su loading.tsx) mientras el splash está activo */
+      #main-content {
+        opacity: 0;
+        transition: opacity 0.8s ease-in-out;
+      }
+      
+      body.loaded #main-content {
+        opacity: 1;
       }
 
       body:not(.loaded) { overflow: hidden; }
@@ -173,7 +188,9 @@ export default function RootLayout({
     `}} />
         </div>
 
-        {children}
+        <div id="main-content">
+          {children}
+        </div>
 
         <script dangerouslySetInnerHTML={{
           __html: `
@@ -185,6 +202,7 @@ export default function RootLayout({
               });
             })();
           `}} />
+
       </body>
     </html>
   );
