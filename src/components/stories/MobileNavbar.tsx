@@ -61,11 +61,13 @@ export const MobileNavbar: React.FC<MobileNavbarProps> = ({
             />
           </div>
 
-          {/* ZONA CENTRAL - CTA Button */}
-          <CtaButton 
-            onClick={onBookingClick}
-            className="px-6 py-2.5 text-[10px] tracking-[0.25em]"
-          />
+          {/* ZONA CENTRAL - CTA Button (contenedor flex-1 para centrado real) */}
+          <div className="flex-1 flex items-center justify-center">
+            <CtaButton 
+              onClick={onBookingClick}
+              className="px-6 py-2.5 text-[10px] tracking-[0.25em] !flex !w-auto"
+            />
+          </div>
 
           {/* ZONA DERECHA - Menú */}
           <div className="w-10 h-10 flex items-center justify-center">
