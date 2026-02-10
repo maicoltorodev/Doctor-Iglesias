@@ -47,9 +47,7 @@ export const COMMON_CONTENT = {
 
 export const HERO_CONTENT = {
     slogan: {
-        italic: "Excelencia Quirúrgica &",
-        bold: "Arte en Dermatología",
-        mobile: "Expertos en el cuidado de tu piel"
+        text: "Excelencia Quirúrgica & Arte en Dermatología"
     },
     cta: "Agendar Cita",
     sideTexts: {

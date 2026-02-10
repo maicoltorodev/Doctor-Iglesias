@@ -78,11 +78,10 @@ export default function RootLayout({
           <div className="loader-texture"></div>
 
           <div className="loader-center">
-            {/* Anillos unificados */}
-            <svg className="ring ring-d ring-1" width="240" height="240" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="1" strokeDasharray="120 200" strokeLinecap="round" /></svg>
-            <svg className="ring ring-d ring-2" width="190" height="190" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="1.2" strokeDasharray="80 250" strokeLinecap="round" /></svg>
-            <svg className="ring ring-d ring-3" width="150" height="150" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="0.8" strokeDasharray="180 100" strokeLinecap="round" /></svg>
-            <svg className="ring ring-m" width="130" height="130" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="2" strokeDasharray="140 160" strokeLinecap="round" /></svg>
+            {/* Anillos unificados (3 capas) */}
+            <svg className="ring ring-1" width="240" height="240" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="1" strokeDasharray="120 200" strokeLinecap="round" /></svg>
+            <svg className="ring ring-2" width="190" height="190" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="1.2" strokeDasharray="80 250" strokeLinecap="round" /></svg>
+            <svg className="ring ring-3" width="150" height="150" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="0.8" strokeDasharray="180 100" strokeLinecap="round" /></svg>
 
             {/* Logo centrado */}
             <div className="center-logo">
@@ -127,10 +126,10 @@ export default function RootLayout({
         will-change: transform;
       }
 
-      .ring-1 { width: 240px; height: 240px; opacity: 0.4; animation: spin 1.5s linear infinite; }
-      .ring-2 { width: 190px; height: 190px; opacity: 0.2; animation: spin 2.5s linear infinite reverse; }
-      .ring-3 { width: 150px; height: 150px; opacity: 0.1; animation: spin 4s linear infinite; }
-      .ring-m { width: 130px; height: 130px; opacity: 0.3; animation: spin 1.5s linear infinite; }
+      .ring-1 { width: 240px; height: 240px; opacity: 0.4; animation: spin 0.8s linear infinite; }
+      .ring-2 { width: 190px; height: 190px; opacity: 0.2; animation: spin 1.2s linear infinite reverse; }
+      .ring-3 { width: 150px; height: 150px; opacity: 0.1; animation: spin 2s linear infinite; }
+      .ring-m { width: 130px; height: 130px; opacity: 0.3; animation: spin 0.8s linear infinite; }
 
       .center-logo {
         position: relative;
@@ -144,17 +143,23 @@ export default function RootLayout({
       @keyframes logoEnter { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
       @media (max-width: 1023px) {
-        .ring-d { display: none; }
-        .ring-m { display: block; }
+        .ring-1 { width: 160px; height: 160px; stroke-width: 1.5; opacity: 0.4; animation: spin 0.8s linear infinite; }
+        .ring-2 { width: 130px; height: 130px; stroke-width: 1.8; opacity: 0.2; animation: spin 1.2s linear infinite reverse; }
+        .ring-3 { width: 100px; height: 100px; stroke-width: 1.2; opacity: 0.1; animation: spin 2s linear infinite; }
         .logo-img { width: 80px; height: 80px; }
       }
       @media (min-width: 1024px) {
-        .ring-d { display: block; }
-        .ring-m { display: none; }
+        .ring-1 { width: 240px; height: 240px; stroke-width: 1; opacity: 0.4; animation: spin 0.8s linear infinite; }
+        .ring-2 { width: 190px; height: 190px; stroke-width: 1.2; opacity: 0.2; animation: spin 1.2s linear infinite reverse; }
+        .ring-3 { width: 150px; height: 150px; stroke-width: 0.8; opacity: 0.1; animation: spin 2s linear infinite; }
         .logo-img { width: 130px; height: 130px; }
       }
 
-      #main-content { opacity: 0; transition: opacity 0.8s ease-in-out; }
+      #main-content { 
+        opacity: 0; 
+        transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1); 
+        will-change: opacity;
+      }
       body.loaded #main-content { opacity: 1; }
       body:not(.loaded) { overflow: hidden; }
       body.loaded #initial-loader { opacity: 0; pointer-events: none; }
@@ -171,7 +176,7 @@ export default function RootLayout({
               window.addEventListener('load', function() {
                 setTimeout(function() {
                   document.body.classList.add('loaded');
-                }, 400);
+                }, 200);
               });
             })();
           `}} />

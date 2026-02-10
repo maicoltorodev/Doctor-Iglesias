@@ -14,10 +14,14 @@ interface DesktopNavbarProps {
 
 const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSection, isLogoHovered, navLinks, heroContent }) => {
     return (
-        <nav
+        <motion.nav
             suppressHydrationWarning
-            className={`fixed top-0 left-0 right-0 h-[100px] z-[100] transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isLogoHovered ? '-translate-y-full' : 'translate-y-0'
-                }`}
+            initial={{ y: -100 }}
+            animate={{ y: isLogoHovered ? -100 : 0 }}
+            transition={{
+                y: { duration: 1.2, ease: [0.23, 1, 0.32, 1], delay: 0.8 }
+            }}
+            className="fixed top-0 left-0 right-0 h-[100px] z-[100]"
         >
             {/* FONDO DE TEXTURA DE MÁRMOL CON PROFUNDIDAD Y SOMBRA MARCADA */}
             <div className="absolute inset-0 bg-marble-texture opacity-100 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border-b border-black/5">
@@ -49,7 +53,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSect
                                 <button
                                     key={link.id}
                                     onClick={() => scrollToSection(link.id)}
-                                    className="relative px-4 py-3 group transition-colors duration-500"
+                                    className="relative px-4 py-3 group transition-colors duration-500 outline-none focus:outline-none"
                                 >
                                     {/* 2. EL RESALTADO: Una cápsula sutil que "vuela" entre botones */}
                                     <AnimatePresence>
@@ -113,7 +117,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSect
                                         ease: "easeInOut"
                                     }
                                 }}
-                                className="relative px-8 flex items-center justify-center group"
+                                className="relative px-8 flex items-center justify-center group outline-none focus:outline-none"
                             >
                                 {/* LÍNEAS VERTICALES: Efecto Pulso */}
                                 <AnimatePresence>
@@ -157,7 +161,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSect
                                 <button
                                     key={link.id}
                                     onClick={() => scrollToSection(link.id)}
-                                    className="relative px-4 py-3 group transition-colors duration-500"
+                                    className="relative px-4 py-3 group transition-colors duration-500 outline-none focus:outline-none"
                                 >
                                     {/* 2. EL RESALTADO: Una cápsula sutil que "vuela" entre botones */}
                                     <AnimatePresence>
@@ -211,7 +215,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSect
 
                 </div>
             </div>
-        </nav>
+        </motion.nav>
     );
 };
 

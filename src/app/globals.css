@@ -57,15 +57,9 @@ body {
 }
 
 @media (min-width: 1024px) {
-
-    html,
-    body {
-        cursor: none !important;
-    }
-
-    a,
-    button,
-    [role="button"] {
+    *,
+    *::before,
+    *::after {
         cursor: none !important;
     }
 }

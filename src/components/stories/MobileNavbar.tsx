@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CtaButton } from '@/components/ui/CtaButton';
+import { CtaButton } from '@/components/ui/mobile/CtaButton';
 import {
   Users,
   Camera,

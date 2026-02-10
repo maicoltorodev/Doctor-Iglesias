@@ -1,15 +1,48 @@
 import React from 'react';
 import Image from 'next/image';
+import { motion, Variants } from 'framer-motion';
 import { SERVICE_DETAIL_CONTENT, COMMON_CONTENT } from '@/constants/content';
 import { ServiceCursor } from "@/components/ui/ServiceCursor";
 import DesktopFloatingAction from "@/components/ui/FloatingAction/Desktop";
-import { CtaButton } from '@/components/ui/CtaButton';
+import { CtaButton } from '@/components/ui/desktop/CtaButton';
 import { Clock, Activity, Calendar, Sparkles } from 'lucide-react';
 import { Obra } from '@/components/ui/desktop/Obra';
 import { BackLink } from '@/components/ui/BackLink';
 import { MarbleBackground } from '@/components/layout/desktop/MarbleBackground';
-import { Accordion } from '@/components/ui/Accordion';
+import { Accordion } from '@/components/ui/desktop/Accordion';
 import { DesktopScrollProvider } from '@/components/providers/DesktopScrollProvider';
+
+// Variantes de entrada coreografiada
+const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.15,
+            delayChildren: 0.4 // Sincronizado con el fin del loader global
+        }
+    }
+};
+
+const itemVariants: Variants = {
+    hidden: { y: 30, opacity: 0, filter: 'blur(10px)' },
+    visible: {
+        y: 0,
+        opacity: 1,
+        filter: 'blur(0px)',
+        transition: { duration: 1, ease: [0.23, 1, 0.32, 1] }
+    }
+};
+
+const imageVariants: Variants = {
+    hidden: { scale: 1.1, opacity: 0, rotate: 5 },
+    visible: {
+        scale: 1,
+        opacity: 1,
+        rotate: 0,
+        transition: { duration: 1.5, ease: [0.23, 1, 0.32, 1] }
+    }
+};
 
 interface Service {
     id: number;
@@ -55,44 +88,59 @@ export default function DesktopServiceDetail({ service, fabContent, contactInfo 
                     data-lenis-prevent="true"
                 >
                     {/* BARRA DE NAVEGACIÓN SUPERIOR (Client Component used as island) */}
-                    <div className="absolute top-8 lg:top-12 left-0 right-0 z-[60] flex items-center justify-center px-8 lg:px-20 pointer-events-none">
+                    <motion.div
+                        initial={{ y: -50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 1, duration: 1 }}
+                        className="absolute top-8 lg:top-12 left-0 right-0 z-[60] flex items-center justify-center px-8 lg:px-20 pointer-events-none"
+                    >
                         <BackLink />
-                    </div>
+                    </motion.div>
 
                     <section className="min-h-screen flex flex-col items-center justify-center px-8 lg:px-20 max-w-7xl w-full mx-auto relative pt-40 lg:pt-0">
-                        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center w-full">
+                        <motion.div
+                            variants={containerVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center w-full"
+                        >
 
                             {/* COLUMNA IZQUIERDA: TITULAR Y DESCRIPCIÓN */}
                             <div className="lg:col-span-7 space-y-12 lg:pr-12">
                                 <div className="space-y-6">
-                                    <div className="flex items-center space-x-4 opacity-40">
+                                    <motion.div variants={itemVariants} className="flex items-center space-x-4 opacity-40">
                                         <span className="h-[1px] w-12 bg-black"></span>
                                         <p className="text-[10px] tracking-[0.6em] uppercase font-bold italic font-serif text-black">{SERVICE_DETAIL_CONTENT.badges.protocol}</p>
-                                    </div>
-                                    <h1 className="relative">
+                                    </motion.div>
+                                    <motion.h1 variants={itemVariants} className="relative">
                                         <span className="text-6xl lg:text-[100px] xl:text-[130px] font-extralight tracking-tighter leading-[0.8] text-black block">
                                             {service.label}
                                         </span>
                                         <span className="font-serif italic text-black/25 tracking-[0.2em] uppercase text-xl lg:text-[40px] xl:text-[50px] block mt-4 lg:mt-8">
                                             Excelencia <span className="text-black/10">/</span> Médica
                                         </span>
-                                    </h1>
+                                    </motion.h1>
                                 </div>
 
                                 <div className="space-y-10">
-                                    <p className="text-xl lg:text-2xl font-serif italic text-black/50 leading-relaxed max-w-xl border-l border-black/10 pl-8">
+                                    <motion.p variants={itemVariants} className="text-xl lg:text-2xl font-serif italic text-black/50 leading-relaxed max-w-xl border-l border-black/10 pl-8">
                                         "{service.description}"
-                                    </p>
+                                    </motion.p>
 
-                                    <div className="flex items-center space-x-8 pt-4">
-                                        <CtaButton label={SERVICE_DETAIL_CONTENT.cta} className="min-w-[260px] py-6 shadow-xl" />
+                                    <motion.div variants={itemVariants} className="flex items-center space-x-8 pt-4">
+                                        <CtaButton
+                                            label={SERVICE_DETAIL_CONTENT.cta}
+                                            className="min-w-[260px] py-6 shadow-xl"
+                                            isAutoShimmer={true}
+                                        />
                                         <div className="hidden lg:block h-[1px] flex-1 bg-gradient-to-r from-black/10 to-transparent"></div>
-                                    </div>
+                                    </motion.div>
                                 </div>
                             </div>
 
                             {/* COLUMNA DERECHA: IMAGEN PRINCIPAL */}
-                            <div className="lg:col-span-5 relative">
+                            <motion.div variants={imageVariants} className="lg:col-span-5 relative">
                                 <div className="absolute -inset-10 border border-black/[0.03] rounded-full rotate-45 pointer-events-none"></div>
 
                                 <div className="relative z-10 scale-105 lg:scale-110 translate-x-4 lg:translate-x-12">
@@ -107,8 +155,8 @@ export default function DesktopServiceDetail({ service, fabContent, contactInfo 
                                         hideInfo={true}
                                     />
                                 </div>
-                            </div>
-                        </div>
+                            </motion.div>
+                        </motion.div>
 
                         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center opacity-20">
                             <div className="w-[1px] h-16 bg-gradient-to-b from-black to-transparent"></div>

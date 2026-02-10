@@ -10,48 +10,70 @@ export default function MobileLoading() {
             {/* Texture Overlay */}
             <div className="absolute inset-0 opacity-30 bg-[url('/noise.png')] mix-blend-overlay pointer-events-none z-0" />
 
-            {/* Contenedor Atómico de Animación */}
-            <div className="relative flex items-center justify-center w-32 h-32">
+            <div className="relative flex items-center justify-center">
 
-                {/* Único Anillo Giratorio con Hueco */}
+                {/* Anillo Exterior (Rápido) */}
                 <motion.div
                     animate={{ rotate: 360 }}
-                    transition={{
-                        duration: 1.5, // Giro un poco más pausado y elegante
-                        repeat: Infinity,
-                        ease: "linear"
-                    }}
-                    className="absolute inset-0"
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                    className="absolute"
                 >
-                    <svg className="w-full h-full" viewBox="0 0 100 100">
+                    <svg width="160" height="160" viewBox="0 0 100 100">
                         <circle
-                            cx="50"
-                            cy="50"
-                            r="48"
-                            fill="none"
-                            stroke="black"
-                            strokeWidth="2" // Un poco más definido para mobile
+                            cx="50" cy="50" r="48"
+                            fill="none" stroke="black" strokeWidth="1.5"
+                            strokeDasharray="120 200"
+                            className="opacity-40"
                             strokeLinecap="round"
-                            /* strokeDasharray="segmento_visible espacio_vacio" 
-                               Crea el efecto de "hueco" que buscabas
-                            */
-                            strokeDasharray="140 160"
-                            className="opacity-30"
                         />
                     </svg>
                 </motion.div>
 
-                {/* Logo - Entrada sutil */}
+                {/* Anillo Medio (Inverso) */}
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ rotate: -360 }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+                    className="absolute"
+                >
+                    <svg width="130" height="130" viewBox="0 0 100 100">
+                        <circle
+                            cx="50" cy="50" r="48"
+                            fill="none" stroke="black" strokeWidth="1.8"
+                            strokeDasharray="80 250"
+                            className="opacity-20"
+                            strokeLinecap="round"
+                        />
+                    </svg>
+                </motion.div>
+
+                {/* Anillo Interior (Suave) */}
+                <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                    className="absolute"
+                >
+                    <svg width="100" height="100" viewBox="0 0 100 100">
+                        <circle
+                            cx="50" cy="50" r="48"
+                            fill="none" stroke="black" strokeWidth="1.2"
+                            strokeDasharray="180 100"
+                            className="opacity-10"
+                            strokeLinecap="round"
+                        />
+                    </svg>
+                </motion.div>
+
+                {/* Logo */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="relative z-20"
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="relative z-10 flex items-center justify-center"
                 >
                     <Image
                         src="/logo.webp"
-                        alt="Dr. Jorge Iglesias"
-                        width={80} // Tamaño optimizado para pantallas pequeñas
+                        alt="Logo"
+                        width={80}
                         height={80}
                         className="object-contain"
                         priority

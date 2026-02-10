@@ -58,19 +58,16 @@ export const HeroStoryContent: React.FC<HeroStoryContentProps> = ({ content }) =
             </div>
           </div>
 
-          {/* 2. SLOGAN TEXT (ESTILO DESKTOP) */}
+          {/* 2. SLOGAN TEXT (ESTILO UNIFICADO) */}
           {content?.slogan && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 1 }}
-              className="text-center px-4"
+              className="text-center px-6"
             >
-              <div className="text-xl font-extralight text-white/80 leading-relaxed tracking-[0.05em] font-serif italic mb-2">
-                {content.slogan.italic}
-              </div>
-              <div className="font-sans not-italic font-bold text-white tracking-[0.2em] uppercase text-lg">
-                {content.slogan.bold}
+              <div className="text-xl lg:text-2xl font-extralight text-white/70 leading-relaxed tracking-[0.2em] font-serif italic uppercase">
+                {content.slogan.text}
               </div>
             </motion.div>
           )}

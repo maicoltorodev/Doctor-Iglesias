@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { CtaButton } from '@/components/ui/CtaButton';
+import { CtaButton } from '@/components/ui/mobile/CtaButton';
 
 export const HeroBackground = () => (
     <div className="absolute inset-0 flex items-center justify-center">
@@ -24,8 +24,8 @@ export const HeroLogo = () => (
 );
 
 export const HeroText = ({ content }: { content: any }) => (
-    <p className="text-2xl lg:text-5xl font-normal text-black/60 leading-tight tracking-[0.08em] max-w-4xl text-center">
-        {content.slogan.mobile}
+    <p className="text-lg lg:text-3xl font-light text-white/60 leading-tight tracking-[0.1em] max-w-4xl text-center">
+        {content.slogan.text}
     </p>
 );
 

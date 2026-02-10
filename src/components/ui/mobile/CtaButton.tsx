@@ -13,6 +13,10 @@ interface CtaButtonProps {
     isAutoShimmer?: boolean;
 }
 
+/**
+ * CTA BUTTON MOBILE - Optimizado para rendimiento táctil.
+ * Se eliminan lógicas de hover innecesarias para ahorrar ciclos de CPU en móviles.
+ */
 export const CtaButton: React.FC<CtaButtonProps> = ({
     href = CONTACT_INFO.whatsappUrl,
     label = "Agendar Cita",
@@ -20,30 +24,14 @@ export const CtaButton: React.FC<CtaButtonProps> = ({
     onClick,
     isAutoShimmer = false
 }) => {
-    // Definimos el ADN de lujo con Framer Motion para control absoluto del movimiento
+    // Definimos animaciones simplificadas para móvil (solo feedback táctil)
     const buttonVariants: Variants = {
         initial: { scale: 1 },
-        hover: {
-            scale: 1.03,
-            transition: {
-                duration: 0.8,
-                ease: [0.23, 1, 0.32, 1] as [number, number, number, number]
-            }
-        },
-        tap: { scale: 0.96 }
+        tap: { scale: 0.95 }
     };
 
     const shimmerVariants: Variants = {
         initial: { x: "-150%", skewX: -45 },
-        hover: {
-            x: "150%",
-            transition: {
-                duration: 1.2,
-                ease: "easeInOut",
-                repeat: Infinity,
-                repeatDelay: 0.5
-            }
-        },
         animate: {
             x: "150%",
             transition: {
@@ -57,24 +45,25 @@ export const CtaButton: React.FC<CtaButtonProps> = ({
 
     const content = (
         <>
-            {/* 1. Shimmer dinámico con Framer Motion (Efecto barrido infinito) */}
-            <motion.div
-                variants={shimmerVariants}
-                initial="initial"
-                animate={isAutoShimmer ? "animate" : undefined}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent z-20 pointer-events-none"
-            />
+            {/* Shimmer Automático (Efecto barrido) */}
+            {isAutoShimmer && (
+                <motion.div
+                    variants={shimmerVariants}
+                    initial="initial"
+                    animate="animate"
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent z-20 pointer-events-none"
+                />
+            )}
 
-            {/* 2. Overlay de gradiente estático para profundidad */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-100 group-hover:opacity-0 transition-opacity duration-700 z-10"></div>
+            {/* Overlay sutil de profundidad */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent z-10"></div>
 
-            {/* 3. Contenedor de Texto */}
+            {/* Texto del Botón */}
             <div className="relative z-30 flex items-center justify-center">
-                <span className="text-[11px] lg:text-[13px] font-extrabold uppercase tracking-[0.3em] lg:tracking-[0.4em] group-hover:tracking-[0.55em] transition-all duration-700 text-center w-full">
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.25em] text-center w-full">
                     {label}
                 </span>
             </div>
-
         </>
     );
 
@@ -82,10 +71,11 @@ export const CtaButton: React.FC<CtaButtonProps> = ({
         relative inline-flex items-center justify-center 
         bg-black text-white 
         rounded-full 
-        group overflow-hidden 
+        overflow-hidden 
         decoration-none
         border border-white/10
-        shadow-[0_10px_30px_rgba(0,0,0,0.2)]
+        shadow-lg
+        active:bg-zinc-900
         ${className}
     `.replace(/\s+/g, ' ').trim();
 
@@ -96,7 +86,6 @@ export const CtaButton: React.FC<CtaButtonProps> = ({
                 className={fullClasses}
                 variants={buttonVariants}
                 initial="initial"
-                whileHover="hover"
                 whileTap="tap"
             >
                 {content}
@@ -105,12 +94,11 @@ export const CtaButton: React.FC<CtaButtonProps> = ({
     }
 
     return (
-        <Link href={href} target="_blank" rel="noopener noreferrer" className="decoration-none">
+        <Link href={href} target="_blank" rel="noopener noreferrer" className="decoration-none block w-full">
             <motion.div
                 className={fullClasses}
                 variants={buttonVariants}
                 initial="initial"
-                whileHover="hover"
                 whileTap="tap"
             >
                 {content}

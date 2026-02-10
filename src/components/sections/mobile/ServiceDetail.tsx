@@ -2,10 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import { SERVICE_DETAIL_CONTENT, COMMON_CONTENT } from '@/constants/content';
 import MobileFloatingAction from "@/components/ui/FloatingAction/Mobile";
-import { CtaButton } from '@/components/ui/CtaButton';
+import { CtaButton } from '@/components/ui/mobile/CtaButton';
 import { Clock, Activity, Calendar, Sparkles } from 'lucide-react';
 import { MobileServiceHeader } from '@/components/layout/mobile/ServiceHeader';
-import { Accordion } from '@/components/ui/Accordion';
+import { Accordion } from '@/components/ui/mobile/Accordion';
 
 interface Service {
     id: number;

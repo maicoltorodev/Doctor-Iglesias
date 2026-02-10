@@ -227,7 +227,7 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
               backfaceVisibility: 'hidden',
               transformStyle: 'preserve-3d'
             }}
-            className="w-full h-full flex items-center justify-center p-4"
+            className={`w-full h-full flex items-center justify-center ${currentStory?.type === 'hero' ? 'p-0' : 'p-4'}`}
           >
             {currentStory && (
               <div className={`flex items-center justify-center ${currentStory.type === 'hero'

@@ -92,22 +92,23 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                         {/* ETIQUETA SECCIÓN */}
                         <motion.span
                             key={`label-sec-${previewIndex}`}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 0.2, y: 0 }}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 0.2, scale: 1 }}
+                            transition={{ duration: 0.2 }}
                             className="text-black text-[10px] uppercase font-bold tracking-[1em] mb-0"
                         >
                             Sección
                         </motion.span>
 
-                        {/* NOMBRE DE SECCIÓN (BLUR REVEAL) */}
+                        {/* NOMBRE DE SECCIÓN (BLUR REVEAL ULTRA-FAST) */}
                         <div className="h-24 flex items-center justify-center text-center">
-                            <AnimatePresence mode="wait">
+                            <AnimatePresence>
                                 <motion.h2
                                     key={sections[previewIndex].name}
-                                    initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                                    initial={{ opacity: 0, y: 15, filter: 'blur(8px)' }}
                                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                                    exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
-                                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                                    exit={{ opacity: 0, y: -15, filter: 'blur(8px)', position: 'absolute' }}
+                                    transition={{ duration: 0.3, ease: "easeOut" }}
                                     className="text-4xl font-serif italic text-black tracking-widest uppercase"
                                 >
                                     {sections[previewIndex].name}

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { CtaButton } from '@/components/ui/CtaButton';
+import { CtaButton } from '@/components/ui/mobile/CtaButton';
 
 interface MobileNavbarProps {
     activeIndex: number;
@@ -21,7 +21,12 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ activeIndex, scrollToSectio
 
     return (
         <>
-            <nav className="fixed top-0 left-0 right-0 h-[70px] z-[100]">
+            <motion.nav
+                initial={{ y: -100 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
+                className="fixed top-0 left-0 right-0 h-[70px] z-[100]"
+            >
                 {/* FONDO DE TEXTURA DE MÁRMOL */}
                 <div className="absolute inset-0 bg-marble-texture opacity-100 shadow-md">
                     <div className="absolute inset-0 marble-architectural-sheen opacity-50"></div>
@@ -64,7 +69,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ activeIndex, scrollToSectio
                         <span className={`block w-6 h-[2px] bg-black transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-[8px]' : ''}`}></span>
                     </button>
                 </div>
-            </nav>
+            </motion.nav>
 
             {/* --- MOBILE FULLSCREEN MENU --- */}
             <div

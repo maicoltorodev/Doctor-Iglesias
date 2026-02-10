@@ -56,8 +56,8 @@ export const HeroInteractiveContent = ({ logo, text, cta }: HeroInteractiveConte
         visible: {
             opacity: 1,
             transition: {
-                delayChildren: 0.2,
-                staggerChildren: 0.1
+                delayChildren: 0.5, // Espera a que el loader empiece a desvanecerse
+                staggerChildren: 0.2
             }
         }
     };
@@ -71,8 +71,9 @@ export const HeroInteractiveContent = ({ logo, text, cta }: HeroInteractiveConte
         >
             <div className="flex flex-col items-center justify-center pointer-events-auto w-full max-w-[900px] space-y-8 lg:space-y-12 translate-y-[2vh]">
 
-                {/* LOGO WRAPPER - Estático (Sin animación de entrada) */}
-                <div
+                {/* LOGO WRAPPER - Ahora animado con la secuencia */}
+                <motion.div
+                    variants={itemVariants}
                     onMouseEnter={() => setIsLogoHovered?.(true)}
                     onMouseLeave={() => setIsLogoHovered?.(false)}
                     onClick={handleLogoClick}
@@ -82,7 +83,7 @@ export const HeroInteractiveContent = ({ logo, text, cta }: HeroInteractiveConte
                     <div className="relative z-10 w-full h-full flex items-center justify-center">
                         {logo}
                     </div>
-                </div>
+                </motion.div>
 
                 {/* TEXTO Y CTA */}
                 <div className="flex flex-col items-center space-y-12 lg:space-y-20">

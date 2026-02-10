@@ -15,7 +15,7 @@ export default function DesktopLoadingMotion() {
         {/* Anillo Exterior (Rápido) */}
         <motion.div
           animate={{ rotate: 360 }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
           className="absolute"
         >
           <svg width="240" height="240" viewBox="0 0 100 100">
@@ -32,7 +32,7 @@ export default function DesktopLoadingMotion() {
         {/* Anillo Medio (Inverso) */}
         <motion.div
           animate={{ rotate: -360 }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
           className="absolute"
         >
           <svg width="190" height="190" viewBox="0 0 100 100">
@@ -49,7 +49,7 @@ export default function DesktopLoadingMotion() {
         {/* Anillo Interior (Suave) */}
         <motion.div
           animate={{ rotate: 360 }}
-          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           className="absolute"
         >
           <svg width="150" height="150" viewBox="0 0 100 100">

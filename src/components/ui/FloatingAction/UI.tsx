@@ -36,8 +36,12 @@ const FloatingActionUI: React.FC<FloatingActionUIProps> = ({
 
     // === REFS OPTIMIZADAS ===
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const welcomeTimerRef = useRef<NodeJS.Timeout | null>(null);
-    const messageIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    const messageIntervalRef = useRef<NodeJS.Timeout | null>(null); // === REFS DE CONTROL DINÁMICO ===
+    const lastActiveIndexRef = useRef<number | null>(null);
+    const lastMessageTimeRef = useRef<number>(0);
+    const [isCooldownActive, setIsCooldownActive] = useState(true); // Bloqueo inicial
+    const COOLDOWN_MS = 20000;
+    const INITIAL_DELAY_MS = 5000; // 5 segundos de espera al cargar
 
     // === HELPER FUNCTIONS ===
 
@@ -78,35 +82,59 @@ const FloatingActionUI: React.FC<FloatingActionUIProps> = ({
         return pool[Math.floor(Math.random() * pool.length)];
     }, [fabContent]);
 
-    // === LÓGICA DE MONTAJE ===
+    // === LÓGICA DE MONTAJE Y DELAY INICIAL ===
     useEffect(() => {
         setIsMounted(true);
+
+        // Timer para liberar el primer mensaje a los 5 segundos
+        const timer = setTimeout(() => {
+            setIsCooldownActive(false);
+            // Seteamos el tiempo actual para que el CD empiece desde este punto si se requiere
+            lastMessageTimeRef.current = Date.now();
+        }, INITIAL_DELAY_MS);
+
+        return () => clearTimeout(timer);
     }, []);
 
-    // === LÓGICA DE MENSAJES SIMPLIFICADA ===
-
-    // Mensaje inicial (bienvenida)
+    // === LÓGICA DE MENSAJES DINÁMICA ===
     useEffect(() => {
-        if (!isMounted || hasInteracted) return;
+        if (!isMounted || isCooldownActive) return;
 
+        const now = Date.now();
         const sectionKey = getSectionKey(activeIndex);
-        const message = getRandomMessage(sectionKey);
 
-        setCurrentMessage(message);
-        setShowMessage(true);
-        playNotification();
-        setHasInteracted(true);
+        // CONDICIONES PARA MOSTRAR MENSAJE:
+        // 1. Es la primera vez que se carga (hasInteracted es falso)
+        // 2. O: Cambió la sección Y pasó el tiempo de cooldown
+        const shouldShow = !hasInteracted || (sectionKey !== lastActiveIndexRef.current && (now - lastMessageTimeRef.current) > COOLDOWN_MS);
 
-        welcomeTimerRef.current = setTimeout(() => {
-            setShowMessage(false);
-        }, 5000);
+        if (shouldShow) {
+            const message = getRandomMessage(sectionKey);
+            setCurrentMessage(message);
+            setShowMessage(true);
+
+            // Audio en cada notificación (Configuración "Valiente")
+            playNotification();
+
+            if (!hasInteracted) {
+                setHasInteracted(true);
+            }
+
+            // Actualizar históricos
+            lastActiveIndexRef.current = sectionKey;
+            lastMessageTimeRef.current = now;
+
+            // Timer para ocultar el mensaje
+            if (messageIntervalRef.current) clearTimeout(messageIntervalRef.current);
+            messageIntervalRef.current = setTimeout(() => {
+                setShowMessage(false);
+            }, 6000);
+        }
 
         return () => {
-            if (welcomeTimerRef.current) {
-                clearTimeout(welcomeTimerRef.current);
-            }
+            if (messageIntervalRef.current) clearTimeout(messageIntervalRef.current);
         };
-    }, [isMounted, hasInteracted, activeIndex, getSectionKey, getRandomMessage, playNotification]);
+    }, [isMounted, isCooldownActive, activeIndex, hasInteracted, getSectionKey, getRandomMessage, playNotification, setHasInteracted]);
 
     // === RENDER CONDICIONAL ===
     if (!isMounted) return null;
@@ -152,6 +180,9 @@ const FloatingActionUI: React.FC<FloatingActionUIProps> = ({
                 <div className="absolute inset-0 rounded-full border border-white/40 opacity-0 group-hover/fab:opacity-100 transition-opacity duration-300 pointer-events-none scale-110"></div>
             </motion.a>
             <div className="absolute inset-0 -z-10 bg-black/5 rounded-full blur-2xl group-hover:bg-black/10 transition-colors duration-1000 scale-90"></div>
+
+            {/* ELEMENTO DE AUDIO PARA NOTIFICACIONES */}
+            <audio ref={audioRef} src="/notificacion.mp3" preload="auto" />
         </div>
     );
 };
