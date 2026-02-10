@@ -9,6 +9,7 @@ interface MarbleTriangleProps {
     activeOnIndex?: number;
     currentIndex?: number;
     className?: string;
+    delay?: string;
 }
 
 export const MarbleTriangle = ({
@@ -17,7 +18,8 @@ export const MarbleTriangle = ({
     isVisible,
     activeOnIndex,
     currentIndex,
-    className = ""
+    className = "",
+    delay = "0s"
 }: MarbleTriangleProps) => {
     const [isHovered, setIsHovered] = useState(false);
 
@@ -54,7 +56,10 @@ export const MarbleTriangle = ({
                 onMouseLeave={() => setIsHovered(false)}
                 className={`absolute inset-0 pointer-events-auto cursor-none z-20 ${clipClass}`}
             />
-            <div className={`absolute inset-0 transition-all duration-[1.5s] ease-[cubic-bezier(0.16,1,0.3,1)] ${translateClass} z-10`}>
+            <div
+                className={`absolute inset-0 transition-all duration-[1.5s] ease-[cubic-bezier(0.16,1,0.3,1)] ${translateClass} z-10`}
+                style={{ transitionDelay: isActuallyVisible && !isHovered ? delay : '0s' }}
+            >
                 <div className={`absolute inset-0 ${clipClass} bg-marble-texture ${borderClass} border-white/20`}>
                     {/* Gloss effect */}
                     <div className={`absolute ${position === 'top' ? 'bottom-0' : 'top-0'} ${side === 'left' ? 'left-0' : 'right-0'} w-[150%] h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent transform ${side === 'left' ? '-rotate-[19.8deg]' : 'rotate-[19.8deg]'} origin-${position}-${side} ${position === 'bottom' ? (side === 'left' ? 'translate-y-[0.5px]' : 'translate-y-[0.5px]') : ''}`}></div>

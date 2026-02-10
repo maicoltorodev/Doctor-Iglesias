@@ -24,6 +24,7 @@ export const HeroMarbles = () => {
                 side="left"
                 position="bottom"
                 isVisible={showMarbles && activeIndex === 3 && !isLogoHovered}
+                delay="0.6s"
                 className="z-10"
             />
             {/* Esquina Inferior Derecha */}
@@ -31,6 +32,7 @@ export const HeroMarbles = () => {
                 side="right"
                 position="bottom"
                 isVisible={showMarbles && activeIndex === 3 && !isLogoHovered}
+                delay="0.6s"
                 className="z-10"
             />
         </div>

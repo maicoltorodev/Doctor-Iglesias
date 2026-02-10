@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Image from 'next/image';
 import { motion, Variants } from 'framer-motion';
@@ -165,10 +167,16 @@ export default function DesktopServiceDetail({ service, fabContent, contactInfo 
 
                     {/* 2. BARRA DE DATOS CLÍNICOS */}
                     <section className="w-full py-12 lg:py-24 relative z-40">
-                        <div className="max-w-7xl mx-auto px-6 lg:px-20">
-                            <div className="text-center mb-12 opacity-40">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: "-100px" }}
+                            variants={containerVariants}
+                            className="max-w-7xl mx-auto px-6 lg:px-20"
+                        >
+                            <motion.div variants={itemVariants} className="text-center mb-12 opacity-40">
                                 <span className="text-[9px] tracking-[0.6em] uppercase font-bold">{SERVICE_DETAIL_CONTENT.badges.technical}</span>
-                            </div>
+                            </motion.div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                                 {[
@@ -177,7 +185,11 @@ export default function DesktopServiceDetail({ service, fabContent, contactInfo 
                                     { icon: Calendar, label: "Frecuencia", value: service.specs?.frequency.value, sub: service.specs?.frequency.sub },
                                     { icon: Sparkles, label: "Resultado", value: service.specs?.result.value, sub: service.specs?.result.sub }
                                 ].map((item, i) => (
-                                    <div key={i} className="group relative bg-white/40 backdrop-blur-xl border border-white/50 rounded-2xl p-8 hover:bg-white/60 transition-all duration-500 hover:shadow-[0_10px_30px_-5px_rgba(0,0,0,0.05)] hover:-translate-y-1 overflow-hidden">
+                                    <motion.div
+                                        key={i}
+                                        variants={itemVariants}
+                                        className="group relative bg-white/40 backdrop-blur-xl border border-white/50 rounded-2xl p-8 hover:bg-white/60 transition-all duration-500 hover:shadow-[0_10px_30px_-5px_rgba(0,0,0,0.05)] hover:-translate-y-1 overflow-hidden"
+                                    >
                                         <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/40 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
                                         <div className="relative z-10 flex flex-col items-center text-center space-y-4">
@@ -193,16 +205,22 @@ export default function DesktopServiceDetail({ service, fabContent, contactInfo 
                                                 {item.sub}
                                             </span>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
-                        </div>
+                        </motion.div>
                     </section>
 
                     {/* 3. SECCIÓN DE BENEFICIOS */}
                     <section className="w-full max-w-7xl mx-auto py-24 lg:py-40 px-8 lg:px-20 relative z-30">
                         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
-                            <div className="lg:col-span-4 lg:sticky lg:top-40 h-fit space-y-10">
+                            <motion.div
+                                initial={{ opacity: 0, x: -30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 1, ease: "easeOut" }}
+                                className="lg:col-span-4 lg:sticky lg:top-40 h-fit space-y-10"
+                            >
                                 <div>
                                     <span className="text-[10px] tracking-[0.5em] uppercase font-extrabold text-black/30 block mb-6">{SERVICE_DETAIL_CONTENT.benefits.subtitle}</span>
                                     <h2 className="text-5xl lg:text-7xl font-light text-black leading-[0.9]">
@@ -216,12 +234,19 @@ export default function DesktopServiceDetail({ service, fabContent, contactInfo 
                                 <p className="text-black/60 text-sm leading-relaxed max-w-[300px] font-medium border-l-2 border-black/5 pl-6">
                                     {SERVICE_DETAIL_CONTENT.benefits.description}
                                 </p>
-                            </div>
+                            </motion.div>
 
-                            <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 pt-8">
+                            <motion.div
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true, margin: "-100px" }}
+                                variants={containerVariants}
+                                className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 pt-8"
+                            >
                                 {service.benefits.map((benefit: string, i: number) => (
-                                    <div
+                                    <motion.div
                                         key={i}
+                                        variants={itemVariants}
                                         className="group relative bg-white/30 backdrop-blur-md border border-white/40 hover:bg-white/50 hover:border-white/60 p-8 lg:p-10 rounded-2xl transition-all duration-500 hover:shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)] hover:-translate-y-1 overflow-hidden"
                                     >
                                         <span className="absolute top-2 right-4 text-6xl font-serif italic text-black/[0.03] group-hover:text-black/[0.06] transition-colors duration-500 scale-150 origin-top-right">
@@ -236,21 +261,27 @@ export default function DesktopServiceDetail({ service, fabContent, contactInfo 
                                                 {benefit}
                                             </h3>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 ))}
-                            </div>
+                            </motion.div>
                         </div>
                     </section>
 
                     {/* 4. PREGUNTAS FRECUENTES (Client Island) */}
                     <section className="w-full py-20 lg:py-32 relative z-30">
-                        <div className="max-w-4xl mx-auto px-8 lg:px-20">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1 }}
+                            className="max-w-4xl mx-auto px-8 lg:px-20"
+                        >
                             <div className="text-center mb-16 space-y-4">
                                 <span className="text-[10px] tracking-[0.4em] uppercase font-bold text-black/30">{SERVICE_DETAIL_CONTENT.faq.subtitle}</span>
                                 <h2 className="text-3xl lg:text-5xl font-light text-black">{SERVICE_DETAIL_CONTENT.faq.titleLight} <span className="font-serif italic text-black/40">{SERVICE_DETAIL_CONTENT.faq.titleBold}</span></h2>
                             </div>
                             <Accordion items={faqs} />
-                        </div>
+                        </motion.div>
                     </section>
 
                     {/* FOOTER - Static */}

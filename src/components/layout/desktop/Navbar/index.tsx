@@ -13,13 +13,24 @@ interface DesktopNavbarProps {
 }
 
 const DesktopNavbar: React.FC<DesktopNavbarProps> = ({ activeIndex, scrollToSection, isLogoHovered, navLinks, heroContent }) => {
+    const [hasMounted, setHasMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        const timer = setTimeout(() => setHasMounted(true), 2000);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <motion.nav
             suppressHydrationWarning
             initial={{ y: -100 }}
             animate={{ y: isLogoHovered ? -100 : 0 }}
             transition={{
-                y: { duration: 1.2, ease: [0.23, 1, 0.32, 1], delay: 0.8 }
+                y: {
+                    duration: isLogoHovered ? 0.4 : 0.6,
+                    ease: [0.23, 1, 0.32, 1],
+                    delay: !hasMounted ? 0.8 : 0
+                }
             }}
             className="fixed top-0 left-0 right-0 h-[100px] z-[100]"
         >
