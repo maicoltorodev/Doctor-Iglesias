@@ -106,10 +106,10 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
   return (
     <div 
       ref={containerRef}
-      className={`relative w-full h-screen overflow-hidden bg-[#e6e3e8] ${className}`}
+      className={`relative w-full h-screen overflow-hidden bg-black ${className}`}
       style={{ touchAction: 'pan-y' }}
     >
-      {/* NAVBAR PERSISTENTE */}
+      {/* NAVBAR PERSISTENTE - Overlay */}
       <MobileNavbar
         sectionName={sectionName}
         onMenuClick={handleMenuClick}
@@ -123,7 +123,8 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
         sectionName={sectionName}
       />
 
-      <div className="relative w-full h-full flex items-center justify-center pt-20">
+      {/* CONTENIDO FULL SCREEN - Sin padding para navbar */}
+      <div className="relative w-full h-full flex items-center justify-center">
         <AnimatePresence>
           <motion.div
             key={currentStory?.id}
@@ -148,10 +149,10 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
               damping: 30,
               mass: 0.8 
             }}
-            className="w-full h-full flex items-center justify-center p-6"
+            className="w-full h-full flex items-center justify-center"
           >
             {currentStory && (
-              <div className="w-full h-full max-w-lg mx-auto flex items-center justify-center">
+              <div className="w-full h-full flex items-center justify-center">
                 {renderStoryContent(currentStory)}
               </div>
             )}
