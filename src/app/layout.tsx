@@ -75,30 +75,18 @@ export default function RootLayout({
       <body className={`${inter.variable} ${instrumentSerif.variable} antialiased`}>
 
         <div id="initial-loader">
-          {/* Textura de ruido compartida con los componentes de carga de React */}
           <div className="loader-texture"></div>
 
-          <div className="loader-content">
-            {/* Versión Desktop (Sincronizada con DesktopLoading.tsx) */}
-            <div className="desktop-loader-only">
-              <div className="ring-wrapper">
-                <svg className="ring-ext" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="1" strokeDasharray="120 200" strokeLinecap="round" /></svg>
-                <svg className="ring-mid" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="1.2" strokeDasharray="80 250" strokeLinecap="round" /></svg>
-                <svg className="ring-int" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="0.8" strokeDasharray="180 100" strokeLinecap="round" /></svg>
-              </div>
-              <div className="loader-logo">
-                <img src="/logo.webp" alt="Dr. Jorge Iglesias" width={130} height={130} />
-              </div>
-            </div>
+          <div className="loader-center">
+            {/* Anillos unificados */}
+            <svg className="ring ring-d ring-1" width="240" height="240" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="1" strokeDasharray="120 200" strokeLinecap="round" /></svg>
+            <svg className="ring ring-d ring-2" width="190" height="190" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="1.2" strokeDasharray="80 250" strokeLinecap="round" /></svg>
+            <svg className="ring ring-d ring-3" width="150" height="150" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="0.8" strokeDasharray="180 100" strokeLinecap="round" /></svg>
+            <svg className="ring ring-m" width="130" height="130" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="2" strokeDasharray="140 160" strokeLinecap="round" /></svg>
 
-            {/* Versión Mobile (Sincronizada con MobileLoading.tsx) */}
-            <div className="mobile-loader-only">
-              <div className="ring-wrapper">
-                <svg className="ring-mobile" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="black" strokeWidth="2" strokeDasharray="140 160" strokeLinecap="round" /></svg>
-              </div>
-              <div className="loader-logo">
-                <img src="/logo.webp" alt="Dr. Jorge Iglesias" width={80} height={80} />
-              </div>
+            {/* Logo centrado */}
+            <div className="center-logo">
+              <img src="/logo.webp" alt="Dr. Jorge Iglesias" className="logo-img" />
             </div>
           </div>
 
@@ -109,9 +97,6 @@ export default function RootLayout({
         inset: 0;
         background: #f2f0f4;
         z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       }
       
@@ -124,65 +109,53 @@ export default function RootLayout({
         pointer-events: none;
       }
 
-      .loader-content {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .ring-wrapper {
+      .loader-center {
         position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 300px;
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      /* Desktop Rings */
-      .ring-wrapper svg { position: absolute; }
-      
-      .ring-ext { width: 240px; height: 240px; opacity: 0.4; animation: spin 1.5s linear infinite; }
-      .ring-mid { width: 190px; height: 190px; opacity: 0.2; animation: spin 2.5s linear infinite reverse; }
-      .ring-int { width: 150px; height: 150px; opacity: 0.1; animation: spin 4s linear infinite; }
-
-      /* Mobile Ring */
-      .ring-mobile { 
-        width: 130px; height: 130px; opacity: 0.3; 
-        animation: spin 1.5s linear infinite; 
+      .ring {
+        position: absolute;
+        transform-origin: center;
+        will-change: transform;
       }
 
-      .loader-logo {
+      .ring-1 { width: 240px; height: 240px; opacity: 0.4; animation: spin 1.5s linear infinite; }
+      .ring-2 { width: 190px; height: 190px; opacity: 0.2; animation: spin 2.5s linear infinite reverse; }
+      .ring-3 { width: 150px; height: 150px; opacity: 0.1; animation: spin 4s linear infinite; }
+      .ring-m { width: 130px; height: 130px; opacity: 0.3; animation: spin 1.5s linear infinite; }
+
+      .center-logo {
         position: relative;
         z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         animation: logoEnter 0.8s ease-out forwards;
       }
+
+      .logo-img { display: block; object-fit: contain; }
 
       @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       @keyframes logoEnter { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-      /* Responsividad del Loader (Sin JS para evitar saltos) */
       @media (max-width: 1023px) {
-        .desktop-loader-only { display: none; }
-        .mobile-loader-only { display: block; }
+        .ring-d { display: none; }
+        .ring-m { display: block; }
+        .logo-img { width: 80px; height: 80px; }
       }
       @media (min-width: 1024px) {
-        .desktop-loader-only { display: block; }
-        .mobile-loader-only { display: none; }
+        .ring-d { display: block; }
+        .ring-m { display: none; }
+        .logo-img { width: 130px; height: 130px; }
       }
 
-      /* EVITAR DOBLE ANIMACIÓN: Ocultar el contenido de Next.js (y su loading.tsx) mientras el splash está activo */
-      #main-content {
-        opacity: 0;
-        transition: opacity 0.8s ease-in-out;
-      }
-      
-      body.loaded #main-content {
-        opacity: 1;
-      }
-
+      #main-content { opacity: 0; transition: opacity 0.8s ease-in-out; }
+      body.loaded #main-content { opacity: 1; }
       body:not(.loaded) { overflow: hidden; }
       body.loaded #initial-loader { opacity: 0; pointer-events: none; }
     `}} />
