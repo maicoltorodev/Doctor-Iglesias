@@ -47,7 +47,7 @@ export const MobileNavbar: React.FC<MobileNavbarProps> = ({
         <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
       </div>
 
-      <div className="relative z-10 flex items-center justify-between px-[6vw] h-[clamp(70px,10vh,90px)]">
+      <div className="relative z-10 flex items-center justify-between px-[6vw] pt-[env(safe-area-inset-top,0px)] h-[calc(clamp(70px,10vh,90px)+env(safe-area-inset-top,0px))]">
         {/* LOGO IZQUIERDA */}
         <button
           onClick={onLogoClick}

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { StoriesContainer, Story } from '../stories/StoriesContainer';
-import { useStoriesNavigation, SectionStories } from '../../hooks/useStoriesNavigation';
+import { useStoriesNavigation, SectionStories, getSectionDisplayName } from '../../hooks/useStoriesNavigation';
 
 /**
  * MOBILE STORIES LAYOUT - Layout principal para navegación tipo Instagram
@@ -36,7 +36,7 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
               stories: [
                 {
                   id: 'about-doctor',
-                  type: 'service', // Usamos service para el doctor por su diseño de card
+                  type: 'service',
                   content: content.ABOUT_CONTENT?.doctor || null,
                   section: 'about'
                 },
@@ -65,7 +65,7 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
             {
               sectionName: 'Galería',
               stories: [
-                ...[...content.GALLERY_LIST].reverse().map((photo: any, index: number) => ({
+                ...[...content.GALLERY_LIST].map((photo: any, index: number) => ({
                   id: `photo-${index}`,
                   type: 'photo' as const,
                   content: photo,
@@ -245,12 +245,23 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
     loadStoriesData();
   }, [content]);
 
-  // === NAVEGACIÓN DE STORIES ===
-  // Iniciamos en la sección de 'Inicio' (index 3)
-  const navigation = useStoriesNavigation(allSections, 3);
+  // === NAVEGACIÓN DE STORIES (LISTA PLANA) ===
+  const allStories = React.useMemo(() => {
+    return allSections.flatMap(section => section.stories);
+  }, [allSections]);
+
+  const initialStoryIndex = React.useMemo(() => {
+    // Buscar primero por tipo 'hero' (estándar)
+    let idx = allStories.findIndex(s => s.type === 'hero');
+    // Fallback: buscar por sección 'hero'
+    if (idx === -1) idx = allStories.findIndex(s => s.section === 'hero');
+    return idx;
+  }, [allStories]);
+
+  const navigation = useStoriesNavigation(allStories, initialStoryIndex !== -1 ? initialStoryIndex : 0);
 
   // === ESTADO DE CARGA ===
-  if (loading) {
+  if (loading || allStories.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#e6e3e8]">
         <div className="text-black/40">Cargando historias...</div>
@@ -259,28 +270,25 @@ const MobileStoriesLayout: React.FC<MobileStoriesLayoutProps> = ({ children, con
   }
 
   // === RENDERIZADO PRINCIPAL ===
-  if (navigation.currentSection && navigation.currentStories.length > 0) {
-    return (
-      <StoriesContainer
-        stories={navigation.currentStories}
-        currentStoryIndex={navigation.currentStoryIndex}
-        onStoryChange={(index) => navigation.goToStory(navigation.currentSectionIndex, index)}
-        onNextSection={() => navigation.nextStory()}
-        onPrevSection={() => navigation.previousStory()}
-        onHomeClick={() => navigation.goToSection(3)}
-        onSectionClick={(index) => navigation.goToSection(index)}
-        allSections={allSections.map((s, i) => ({ name: s.sectionName, index: i }))}
-        currentSectionIndex={navigation.currentSectionIndex}
-        sectionName={navigation.currentSection.sectionName}
-      />
-    );
-  }
+  const sectionStories = allStories.filter(s => s.section === navigation.currentStory?.section);
+  const storyInSectionIndex = sectionStories.findIndex(s => s.id === navigation.currentStory?.id);
 
-  // Fallback - Mantener compatibilidad con children temporalmente
   return (
-    <div className="min-h-screen bg-[#e6e3e8]">
-      {children}
-    </div>
+    <StoriesContainer
+      stories={sectionStories} // Solo pasamos las necesarias para el progreso visual interno
+      currentStory={navigation.currentStory}
+      currentStoryIndex={storyInSectionIndex}
+      onNext={() => navigation.nextStory()}
+      onPrev={() => navigation.previousStory()}
+      onHomeClick={() => navigation.goToSection('hero')}
+      onSectionClick={(index) => {
+        const sectionName = allSections[index].stories[0].section;
+        navigation.goToSection(sectionName);
+      }}
+      allSections={allSections.map((s, i) => ({ name: s.sectionName, index: i }))}
+      currentSectionIndex={allSections.findIndex(s => s.stories.some(st => st.id === navigation.currentStory?.id))}
+      sectionName={getSectionDisplayName(navigation.sectionName)}
+    />
   );
 };
 

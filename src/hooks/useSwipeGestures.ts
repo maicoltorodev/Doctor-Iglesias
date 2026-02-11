@@ -17,19 +17,14 @@ export interface SwipeGestureConfig {
  * 
  * CARACTERÍSTICAS:
  * - Detección de swipe en 4 direcciones
- * - Configuración de umbral y debounce
- * - Prevención de scroll durante swipe
- * - Performance optimizada con RAF
+ * - Estabilidad garantizada mediante Refs (evita stale closures)
+ * - Prevención de scroll optimizada
  */
 export const useSwipeGestures = (
   elementRef: React.RefObject<HTMLElement | null>,
   config: SwipeGestureConfig = {}
 ) => {
   const {
-    onSwipeLeft,
-    onSwipeRight,
-    onSwipeUp,
-    onSwipeDown,
     threshold = 50,
     preventScroll = false,
     debounceMs = 100
@@ -39,37 +34,34 @@ export const useSwipeGestures = (
   const isSwipingRef = useRef(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Mantenemos una ref a la config actual para evitar stale closures en los event listeners
+  const configRef = useRef(config);
+  useEffect(() => {
+    configRef.current = config;
+  }, [config]);
+
   const handleTouchStart = useCallback((e: TouchEvent) => {
     if (e.touches.length !== 1) return;
-
     const touch = e.touches[0];
     touchStartRef.current = {
       x: touch.clientX,
       y: touch.clientY,
       time: Date.now()
     };
-
     isSwipingRef.current = false;
-
-    // Prevenir scroll vertical si está configurado
-    if (preventScroll) {
-      e.preventDefault();
-    }
-  }, [preventScroll]);
+  }, []);
 
   const handleTouchMove = useCallback((e: TouchEvent) => {
     if (!touchStartRef.current || e.touches.length !== 1) return;
-
     const touch = e.touches[0];
     const deltaX = touch.clientX - touchStartRef.current.x;
     const deltaY = touch.clientY - touchStartRef.current.y;
 
-    // Prevenir scroll vertical si estamos en swipe horizontal
+    // Prevenir scroll si estamos en swipe horizontal
     if (preventScroll && Math.abs(deltaX) > Math.abs(deltaY)) {
-      e.preventDefault();
+      if (e.cancelable) e.preventDefault();
     }
 
-    // Marcar que estamos en swipe si superamos umbral mínimo
     if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
       isSwipingRef.current = true;
     }
@@ -83,74 +75,45 @@ export const useSwipeGestures = (
     const deltaY = touch.clientY - touchStartRef.current.y;
     const deltaTime = Date.now() - touchStartRef.current.time;
 
-    // Limpiar referencia
     touchStartRef.current = null;
     isSwipingRef.current = false;
 
-    // Validar que el swipe sea válido (al menos una dimensión debe superar el umbral)
-    if (
-      (Math.abs(deltaX) < threshold && Math.abs(deltaY) < threshold) ||
-      deltaTime > 500 // Swipe muy lento
-    ) {
+    // Validar umbrales
+    if ((Math.abs(deltaX) < threshold && Math.abs(deltaY) < threshold) || deltaTime > 600) {
       return;
     }
 
-    // Limpiar debounce anterior
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
+    if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    // Debounce para evitar múltiples detecciones
     debounceRef.current = setTimeout(() => {
-      // Determinar dirección principal del swipe
+      const { onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown } = configRef.current;
+
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         // Swipe horizontal
-        if (deltaX > 0) {
-          onSwipeRight?.();
-        } else {
-          onSwipeLeft?.();
-        }
+        if (deltaX > 0) onSwipeRight?.();
+        else onSwipeLeft?.();
       } else {
         // Swipe vertical
-        if (deltaY > 0) {
-          onSwipeDown?.();
-        } else {
-          onSwipeUp?.();
-        }
+        if (deltaY > 0) onSwipeDown?.();
+        else onSwipeUp?.();
       }
     }, debounceMs);
-  }, [onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown, threshold, debounceMs]);
-
-  const handleTouchStartRef = useRef(handleTouchStart);
-  const handleTouchMoveRef = useRef(handleTouchMove);
-  const handleTouchEndRef = useRef(handleTouchEnd);
-
-  // Actualizar refs cuando las funciones cambian
-  useEffect(() => {
-    handleTouchStartRef.current = handleTouchStart;
-    handleTouchMoveRef.current = handleTouchMove;
-    handleTouchEndRef.current = handleTouchEnd;
-  }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
+  }, [threshold, debounceMs]);
 
   useEffect(() => {
     const element = elementRef.current;
     if (!element) return;
 
-    // Agregar event listeners con opciones pasivas para performance
-    element.addEventListener('touchstart', handleTouchStart, { passive: !preventScroll });
+    // Usar pasivo según configuración
+    element.addEventListener('touchstart', handleTouchStart, { passive: true });
     element.addEventListener('touchmove', handleTouchMove, { passive: !preventScroll });
     element.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
-      // Usar refs para eliminar exactamente los mismos listeners que se agregaron
-      element.removeEventListener('touchstart', handleTouchStartRef.current);
-      element.removeEventListener('touchmove', handleTouchMoveRef.current);
-      element.removeEventListener('touchend', handleTouchEndRef.current);
-
-      // Limpiar debounce al desmontar
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
+      element.removeEventListener('touchstart', handleTouchStart);
+      element.removeEventListener('touchmove', handleTouchMove);
+      element.removeEventListener('touchend', handleTouchEnd);
+      if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [elementRef, preventScroll]);
+  }, [elementRef, preventScroll, handleTouchStart, handleTouchMove, handleTouchEnd]);
 };

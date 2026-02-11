@@ -24,11 +24,11 @@ export interface Story {
 }
 
 interface StoriesContainerProps {
-  stories: Story[];
+  stories: Story[]; // Stories de la sección para el progreso visual interno
+  currentStory: Story;
   currentStoryIndex: number;
-  onStoryChange: (index: number) => void;
-  onNextSection?: () => void;
-  onPrevSection?: () => void;
+  onNext: () => void;
+  onPrev: () => void;
   onHomeClick?: () => void;
   onSectionClick?: (index: number) => void;
   allSections?: { name: string; index: number }[];
@@ -62,10 +62,10 @@ const renderStoryContent = (story: Story) => {
 
 export const StoriesContainer: React.FC<StoriesContainerProps> = ({
   stories,
+  currentStory,
   currentStoryIndex,
-  onStoryChange,
-  onNextSection,
-  onPrevSection,
+  onNext,
+  onPrev,
   onHomeClick,
   onSectionClick,
   allSections = [],
@@ -80,77 +80,49 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Tracking de posición global para dirección de animación
-  const [globalIndex, setGlobalIndex] = useState(currentSectionIndex * 100 + currentStoryIndex);
+  const [globalID, setGlobalID] = useState(currentStory?.id);
   const [direction, setDirection] = useState(0);
 
   useEffect(() => {
-    const newIndex = currentSectionIndex * 100 + currentStoryIndex;
-    if (newIndex !== globalIndex) {
-      setDirection(newIndex > globalIndex ? 1 : -1);
-      setGlobalIndex(newIndex);
+    if (currentStory?.id !== globalID) {
+      setGlobalID(currentStory?.id);
     }
-  }, [currentSectionIndex, currentStoryIndex, globalIndex]);
+  }, [currentStory, globalID]);
 
   const handleNext = () => {
-    if (isTransitioning || (currentStoryIndex >= stories.length - 1 && currentSectionIndex >= 6)) return;
-    onStoryChange(currentStoryIndex + 1);
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setDirection(1);
+    onNext();
+    setTimeout(() => setIsTransitioning(false), 500);
   };
 
   const handlePrev = () => {
-    if (isTransitioning || (currentStoryIndex <= 0 && currentSectionIndex <= 0)) return;
-    onStoryChange(currentStoryIndex - 1);
-  };
-
-  const handleSwipeLeft = () => {
     if (isTransitioning) return;
-
-    if (currentStoryIndex >= stories.length - 1) {
-      if (onNextSection) {
-        setIsTransitioning(true);
-        // La dirección se actualizará en el useEffect vía prop
-        onNextSection();
-        setTimeout(() => setIsTransitioning(false), 600);
-      }
-      return;
-    }
-
-    handleNext();
-  };
-
-  const handleSwipeRight = () => {
-    if (isTransitioning) return;
-
-    if (currentStoryIndex <= 0) {
-      if (onPrevSection) {
-        setIsTransitioning(true);
-        // La dirección se actualizará en el useEffect vía prop
-        onPrevSection();
-        setTimeout(() => setIsTransitioning(false), 600);
-      }
-      return;
-    }
-
-    handlePrev();
+    setIsTransitioning(true);
+    setDirection(-1);
+    onPrev();
+    setTimeout(() => setIsTransitioning(false), 500);
   };
 
   useSwipeGestures(containerRef, {
-    onSwipeLeft: handleSwipeLeft,
-    onSwipeRight: handleSwipeRight,
-    threshold: 50,
+    onSwipeLeft: handleNext,
+    onSwipeRight: handlePrev,
+    threshold: 40,
     preventScroll: true
   });
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') handleSwipeRight();
-      if (e.key === 'ArrowRight') handleSwipeLeft();
+      if (e.key === 'ArrowLeft') handlePrev();
+      if (e.key === 'ArrowRight') handleNext();
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentStoryIndex, isTransitioning]);
+  }, [isTransitioning, onNext, onPrev]);
 
-  const currentStory = stories[currentStoryIndex];
+  // Progreso de la sección
   const progress = ((currentStoryIndex + 1) / stories.length) * 100;
 
   // Handlers para navbar
@@ -166,25 +138,22 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
   const variants = {
     enter: (direction: number) => ({
       x: direction > 0 ? '100%' : '-100%',
-      rotateY: direction > 0 ? 25 : -25,
-      scale: 0.85,
+      rotateY: direction > 0 ? 30 : -30,
+      scale: 0.9,
       opacity: 0,
-      filter: 'blur(12px)'
     }),
     center: {
       x: 0,
       rotateY: 0,
       scale: 1,
       opacity: 1,
-      filter: 'blur(0px)',
       zIndex: 1
     },
     exit: (direction: number) => ({
       x: direction > 0 ? '-100%' : '100%',
-      rotateY: direction > 0 ? -25 : 25,
-      scale: 0.85,
+      rotateY: direction > 0 ? -30 : 30,
+      scale: 0.9,
       opacity: 0,
-      filter: 'blur(12px)',
       zIndex: 0
     })
   };
@@ -249,9 +218,8 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             whileTap={{ scale: 0.9, x: -5 }}
-            onClick={handleSwipeRight}
-            className={`pointer-events-auto flex items-center justify-center group transition-opacity duration-300 ${currentStoryIndex === 0 && !onPrevSection ? 'opacity-0 pointer-events-none' : 'opacity-100'
-              }`}
+            onClick={handlePrev}
+            className={`pointer-events-auto flex items-center justify-center group transition-opacity duration-300`}
           >
             <div className="relative w-10 h-10 flex items-center justify-center">
               <div
@@ -311,9 +279,8 @@ export const StoriesContainer: React.FC<StoriesContainerProps> = ({
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             whileTap={{ scale: 0.9, x: 5 }}
-            onClick={handleSwipeLeft}
-            className={`pointer-events-auto flex items-center justify-center group transition-opacity duration-300 ${currentStoryIndex === stories.length - 1 && !onNextSection ? 'opacity-0 pointer-events-none' : 'opacity-100'
-              }`}
+            onClick={handleNext}
+            className={`pointer-events-auto flex items-center justify-center group transition-opacity duration-300`}
           >
             <div className="relative w-10 h-10 flex items-center justify-center">
               <div
