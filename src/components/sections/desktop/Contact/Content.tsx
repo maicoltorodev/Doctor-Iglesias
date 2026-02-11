@@ -42,6 +42,8 @@ export const ContactClinicCard = ({ editorial, info }: { editorial: any; info: a
     />
 );
 
+import Image from 'next/image';
+
 export const ContactSocialsCard = ({ editorial, info }: { editorial: any; info: any }) => {
     const [hoveredColor, setHoveredColor] = useState<string | null>(null);
 
@@ -50,27 +52,36 @@ export const ContactSocialsCard = ({ editorial, info }: { editorial: any; info: 
             name: "Instagram",
             url: info.socials.find((s: any) => s.name === "Instagram")?.url || "#",
             hexColor: "#E1306C",
-            icon: (
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            )
+            iconPath: "/social-icons/instagram.webp",
+            gridClass: "col-start-1 row-start-1"
         },
         {
             name: "Facebook",
             url: info.socials.find((s: any) => s.name === "Facebook")?.url || "#",
             hexColor: "#1877F2",
-            icon: (<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>)
+            iconPath: "/social-icons/facebook.webp",
+            gridClass: "col-start-3 row-start-1"
+        },
+        {
+            name: "Waze",
+            url: "https://ul.waze.com/ul?place=ChIJJ2hWZsKaP44RU0Qn4tNzEPA&ll=4.68739310%2C-74.06175410&navigate=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location",
+            hexColor: "#33CCFF",
+            iconPath: "/social-icons/waze.webp",
+            gridClass: "col-start-2 row-start-2"
         },
         {
             name: "TikTok",
             url: info.socials.find((s: any) => s.name === "TikTok")?.url || "#",
             hexColor: "#000000",
-            icon: (<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>)
+            iconPath: "/social-icons/tiktok.webp",
+            gridClass: "col-start-1 row-start-3"
         },
         {
             name: "WhatsApp",
             url: info.whatsappUrl,
             hexColor: "#25D366",
-            icon: (<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-10.6 8.38 8.38 0 0 1 3.8.9L21 3.5Z"></path></svg>)
+            iconPath: "/social-icons/whatsapp.webp",
+            gridClass: "col-start-3 row-start-3"
         }
     ];
 
@@ -85,7 +96,7 @@ export const ContactSocialsCard = ({ editorial, info }: { editorial: any; info: 
                 style={{ backgroundColor: hoveredColor || '' }}
             />
 
-            <div className="grid grid-cols-2 grid-rows-2 h-full w-full absolute inset-0 z-10">
+            <div className="grid grid-cols-3 grid-rows-3 h-full w-full absolute inset-0 z-10 p-12">
                 {socials.map((social) => (
                     <a
                         key={social.name}
@@ -96,13 +107,24 @@ export const ContactSocialsCard = ({ editorial, info }: { editorial: any; info: 
                         onMouseLeave={() => setHoveredColor(null)}
                         className={`
                             group relative flex flex-col items-center justify-center transition-all duration-[400ms]
-                            ${hoveredColor ? 'text-white' : 'text-zinc-800'}
+                            ${social.gridClass}
                         `}
                     >
                         <div
-                            className={`transform transition-all duration-500 group-hover:scale-110 ${hoveredColor && hoveredColor !== social.hexColor ? 'opacity-40 scale-90' : 'opacity-100'}`}
+                            className={`
+                                relative w-28 h-28 flex items-center justify-center transform transition-all duration-500 rounded-full
+                                ${hoveredColor === social.hexColor ? 'border-[4px] border-white scale-110' : 'border-[4px] border-transparent'}
+                                ${hoveredColor && hoveredColor !== social.hexColor ? 'opacity-40 scale-75' : 'opacity-100'}
+                            `}
                         >
-                            {social.icon}
+                            <div className="relative w-20 h-20">
+                                <Image
+                                    src={social.iconPath}
+                                    alt={social.name}
+                                    fill
+                                    className="object-contain"
+                                />
+                            </div>
                         </div>
                     </a>
                 ))}
@@ -110,6 +132,7 @@ export const ContactSocialsCard = ({ editorial, info }: { editorial: any; info: 
         </Obra>
     );
 };
+
 
 export const ContactEditorialBlock = ({ content }: { content: any }) => {
     const data = content?.editorial || content || {};
